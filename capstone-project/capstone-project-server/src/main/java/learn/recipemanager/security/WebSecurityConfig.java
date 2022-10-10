@@ -29,7 +29,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.POST, "/api/security/create_account").permitAll()
 //                .antMatchers( HttpMethod.GET, "/api/widget/public" ).permitAll()
 //                .antMatchers( HttpMethod.GET, "/api/widget/personal/*").authenticated()
-                .anyRequest().denyAll();
+                .antMatchers("/**").denyAll()
+                .and()
+                .sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http.addFilterBefore( filter, UsernamePasswordAuthenticationFilter.class );
     }
     //todo I think this throw is not related to mongo db throw. so
