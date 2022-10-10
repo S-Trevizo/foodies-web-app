@@ -13,12 +13,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
-
-
-//TODO do I need to specify origins? Widget controller did, SolarPanel did not.
+//crossorigins is set up in appconfig file
 @RestController
 @RequestMapping("api/security")
-@CrossOrigin( origins={"http://localhost:3000"} )
 public class SecurityController {
     @Autowired
     AuthenticationManager authManager;
