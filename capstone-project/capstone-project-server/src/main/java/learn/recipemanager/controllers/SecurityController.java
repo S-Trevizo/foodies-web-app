@@ -52,7 +52,6 @@ public class SecurityController {
         if (!appUser.isSuccess()) {
             return new ResponseEntity<>(List.of(appUser.getMessages()), HttpStatus.BAD_REQUEST);
         }
-            // TODO: need to set up response entity and global exception handler
         //"happy path":
         HashMap<String, String> map = new HashMap<>();
         map.put("appUserId", appUser.getPayload().getUserId());
