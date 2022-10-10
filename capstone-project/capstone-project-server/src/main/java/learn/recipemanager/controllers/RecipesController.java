@@ -1,6 +1,7 @@
 package learn.recipemanager.controllers;
 
 import learn.recipemanager.domain.AppUserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,9 +15,13 @@ import java.util.Map;
 @RestController
 @RequestMapping("api/recipe")
 public class RecipesController {
-
+    @Autowired
     AppUserService service;
+    //todo does a hard-coded value need autowired?
+    // where is a better place to initialize these variables?
+    @Autowired
     private String app_id = "4357d5e9";
+    @Autowired
     private String app_key = "84496af29c091bb734dab8904e3d9df5";
 
     /*
@@ -44,7 +49,7 @@ public class RecipesController {
         return ResponseEntity.ok(apiQueryInput);
     }
 
-    //overloaded "searchTwentyRecipes" method with user preferences?
+    //overloaded "searchTwentyRecipes" method with user preferences method?
 
 
 
