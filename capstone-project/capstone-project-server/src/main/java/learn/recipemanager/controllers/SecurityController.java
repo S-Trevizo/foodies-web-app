@@ -2,6 +2,7 @@ package learn.recipemanager.controllers;
 
 
 import learn.recipemanager.models.AppUser;
+import learn.recipemanager.security.JwtConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -22,7 +23,7 @@ public class SecurityController {
     AuthenticationManager authManager;
     @Autowired
     JwtConverter converter;
-    
+
     @PostMapping
     ResponseEntity login(@RequestBody LoginRequest request){
         UsernamePasswordAuthenticationToken rawToken
