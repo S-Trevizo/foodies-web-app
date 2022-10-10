@@ -2,6 +2,7 @@ package learn.recipemanager.controllers;
 
 
 import learn.recipemanager.models.AppUser;
+import learn.recipemanager.models.viewmodels.LoginRequest;
 import learn.recipemanager.security.JwtConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
