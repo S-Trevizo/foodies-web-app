@@ -24,7 +24,7 @@ function NavBar(props) {
                     </li>
 
                     <li className="nav-item">
-                        <a className="nav-link disabled" href="#">Pnatry</a>
+                        <a className="nav-link disabled" href="#">Pantry</a>
                     </li>
 
                     <li className="nav-item">
@@ -36,10 +36,10 @@ function NavBar(props) {
                     </li>
 
                 </ul>
-                {auth.user ? <Link className="btn btn-outline-success my-2 my-sm-0" to="/login" >Log Out</Link> :
+                {auth.user ? <Link className="btn btn-outline-success my-2 my-sm-0" to="/" onClick={() => auth.logout()}>Log Out</Link> :
                     <div>
-                        <Link className="btn btn-outline-success my-2 my-sm-0" to="/login" >Log In</Link>
-                        <Link className="btn btn-outline-info my-2 my-sm-0" to="/register" >Register</Link>
+                        <Link className="btn btn-outline-success my-2 my-sm-0" to="/login"  >Log In</Link>
+                        <Link className="btn btn-outline-info my-2 my-sm-0" to="/register"  >Register</Link>
                     </div>
                 }
 

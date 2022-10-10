@@ -79,8 +79,8 @@ public class AppUser implements UserDetails {
         return email;
     }
 
-    public void setUsername(String email) {
-        setEmail(email);
+    public void setUsername(String username) {
+        setEmail(username);
     }
 
     @Override

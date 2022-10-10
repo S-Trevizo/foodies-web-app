@@ -6,7 +6,7 @@ function Login(props) {
 
     const history = useHistory();
 
-    const [user , setUser] = useState("");
+    const [username , setUsername] = useState("");
     const [password, setPassword] = useState("");
 
     const auth = useContext(AuthContext);
@@ -20,7 +20,7 @@ function Login(props) {
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({
-                user,
+                username,
                 password,
             }),
         })
@@ -54,7 +54,7 @@ function Login(props) {
                 <div className="form-group">
                     <label htmlFor="username">User Name (email)</label>
                     <input type="email" id="username" name="user" className="form-control" 
-                    onChange={(event) => setUser(event.target.value)}/>
+                    onChange={(event) => setUsername(event.target.value)}/>
                 </div>
                 <div className="form-group">
                     <label htmlFor="password">Password</label>
