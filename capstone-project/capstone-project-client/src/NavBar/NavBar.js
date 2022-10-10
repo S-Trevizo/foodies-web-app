@@ -1,6 +1,10 @@
+import { useContext } from 'react';
 import { Link } from 'react-router-dom';
+import AuthContext from '../AuthContext';
 
 function NavBar(props) {
+
+    const auth = useContext(AuthContext);
 
     return (
 
@@ -32,7 +36,14 @@ function NavBar(props) {
                     </li>
 
                 </ul>
-                <Link className="btn btn-outline-success my-2 my-sm-0" to="/login" >Log In</Link>
+                {auth.user ? <Link className="btn btn-outline-success my-2 my-sm-0" to="/login" >Log Out</Link> :
+                    <div>
+                        <Link className="btn btn-outline-success my-2 my-sm-0" to="/login" >Log In</Link>
+                        <Link className="btn btn-outline-info my-2 my-sm-0" to="/register" >Register</Link>
+                    </div>
+                }
+                
+                
             </div>
         </nav>
 
