@@ -10,6 +10,6 @@ import java.util.List;
 @Repository
 public interface AppUserRepo extends MongoRepository<AppUser, String> {
 
-    @Query("{'username' : {$regex: ?0}}")
-    List<AppUser> findByUsername(String username);
+    @Query("{'email' : {$regex: ?0}}")
+    List<AppUser> findByUsername(String email);
 }
