@@ -26,6 +26,7 @@ function Login(props) {
         })
             .then( response => {
                 if (response.status === 200) {
+                    console.log(response);
                     return response.json();
                 } else {
                     console.log(response);
@@ -53,8 +54,11 @@ function Login(props) {
             <form onSubmit={loginHandler} >
                 <div className="form-group">
                     <label htmlFor="username">User Name (email)</label>
-                    <input type="email" id="username" name="user" className="form-control" 
+
+                    <input id="username" name="username" className="form-control" 
                     onChange={(event) => setUsername(event.target.value)}/>
+
+
                 </div>
                 <div className="form-group">
                     <label htmlFor="password">Password</label>
