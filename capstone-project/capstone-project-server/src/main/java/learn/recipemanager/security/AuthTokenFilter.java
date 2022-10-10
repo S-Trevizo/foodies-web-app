@@ -2,10 +2,13 @@ package learn.recipemanager.security;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
+import learn.recipemanager.domain.AppUserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -18,9 +21,10 @@ import java.io.IOException;
 @Component
 public class AuthTokenFilter extends OncePerRequestFilter {
     @Autowired
-    UserDetailsServiceImpl service;
+    AppUserService service;
     @Autowired
     JwtConverter converter;
+
     @Override
     protected void doFilterInternal(
             HttpServletRequest request,
