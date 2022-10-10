@@ -10,7 +10,9 @@ services:
     ports:
       - "27017:27017"
     volumes:
-      - ../database-data:/data/db
+
+      - ../../../database-data:/data/db
+
 
   # Mongo Express Service
   mongo-express:
