@@ -1,6 +1,5 @@
 package learn.recipemanager.controllers;
 
-
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

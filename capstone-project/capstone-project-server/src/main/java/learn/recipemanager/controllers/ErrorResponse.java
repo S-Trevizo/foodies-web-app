@@ -4,9 +4,7 @@ import learn.recipemanager.domain.Result;
 import learn.recipemanager.domain.ResultType;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-
 import java.time.LocalDateTime;
-
 public class ErrorResponse {
     private final LocalDateTime timestamp = LocalDateTime.now();
     private final String message;
