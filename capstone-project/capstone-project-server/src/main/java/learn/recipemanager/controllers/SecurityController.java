@@ -47,10 +47,12 @@ public class SecurityController {
         //todo is it okay to use a map for credentials for create account?
         Result<AppUser> appUser = null;
 //removed try-catch: validationexception, duplicatekeyexception
-            String username = request.getUsername();//this is email
-            String password = request.getPassword();
-            appUser = appUserService.create(username, password);
-
+        String username = request.getUsername();//this is email
+        String password = request.getPassword();
+        appUser = appUserService.create(username, password);
+        if (!appUser.isSuccess()) {
+            return new ResponseEntity<>(List.of(appUser.getMessages()), HttpStatus.BAD_REQUEST);
+        }
             // TODO: need to set up response entity and global exception handler
 //            return new ResponseEntity<>(List.of(ex.getMessage()), HttpStatus.BAD_REQUEST);
 //            return new ResponseEntity<>(List.of("The provided username already exists"), HttpStatus.BAD_REQUEST);
