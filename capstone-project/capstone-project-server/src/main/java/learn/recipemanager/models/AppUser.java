@@ -1,5 +1,6 @@
 package learn.recipemanager.models;
 
+import org.springframework.data.annotation.Id;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 
@@ -8,16 +9,15 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class AppUser extends User {
-
+    @Id
     private String userId;
     private String email;
     private String passHash;
     private boolean isDeleted;
     private List<AppRole> userRoles;
 
-    public AppUser(String username, String userId, String email, String passHash, boolean isDeleted, List<AppRole> userRoles) {
-        super(username, passHash, userRoles.stream().map(AppRole::getAuthority).collect(Collectors.toList()));
-        this.userId = userId;
+    public AppUser( String email, String passHash, boolean isDeleted, List<AppRole> userRoles) {
+        super(email, passHash, userRoles.stream().map(AppRole::getAuthority).collect(Collectors.toList()));
         this.email = email;
         this.passHash = passHash;
         this.isDeleted = isDeleted;
