@@ -18,8 +18,7 @@ function NavBar(props) {
                         <a className="nav-link disabled" href="#">Disabled</a>
                     </li>
                 </ul>
-                <button className="btn btn-outline-success my-2 my-sm-0">Log Out </button>
-                <Link className="btn btn-outline-success my-2 my-sm-0" >Log In</Link>
+                <Link className="btn btn-outline-success my-2 my-sm-0" to="/login" >Log In</Link>
             </div>
         </nav>
 
