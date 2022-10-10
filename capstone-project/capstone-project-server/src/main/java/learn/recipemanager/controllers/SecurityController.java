@@ -21,13 +21,14 @@ import java.util.List;
 //crossorigins is set up in appconfig file
 @RestController
 @RequestMapping("api/security")
+@CrossOrigin
 public class SecurityController {
-    @Autowired
-    AuthenticationManager authManager;// todo currently, I think this is hard-coded. replace with class constructor later?
-    @Autowired
-    AppUserService appUserService;
-    @Autowired
-    JwtConverter converter;
+
+    private final AuthenticationManager authManager;
+
+    private final AppUserService appUserService;
+
+    private final JwtConverter converter;
 
     public SecurityController(AuthenticationManager authManager, AppUserService appUserService, JwtConverter converter) {
         this.authManager = authManager;
@@ -39,7 +40,7 @@ public class SecurityController {
     ResponseEntity login(@RequestBody LoginRequest request){
         UsernamePasswordAuthenticationToken rawToken
                 = new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword());
-        Authentication authentication = authManager.authenticate( rawToken );
+        Authentication authentication = authManager.authenticate(rawToken);
 
         if (authentication.isAuthenticated()) {
             String jwtToken = converter.buildJwt((AppUser) authentication.getPrincipal());

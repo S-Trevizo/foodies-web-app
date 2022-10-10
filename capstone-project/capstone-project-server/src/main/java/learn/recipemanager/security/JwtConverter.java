@@ -18,7 +18,7 @@ public class JwtConverter {
                 .setId( user.getUserId() + ""  )
                 .claim("email", user.getEmail())
                 .claim("roles", user.getUserRoles())
-                .setIssuer("widget manager")
+                .setIssuer("foodies")
                 .setSubject(user.getUsername())
                 .setIssuedAt( new Date())
                 .setExpiration( new Date( new Date().getTime() + 300000))
