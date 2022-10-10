@@ -6,7 +6,7 @@ function Login(props) {
 
     const history = useHistory();
 
-    const [user , setUser] = useState("");
+    const [username , setUsername] = useState("");
     const [password, setPassword] = useState("");
 
     const auth = useContext(AuthContext);
@@ -14,18 +14,19 @@ function Login(props) {
  function loginHandler(event) {
     event.preventDefault();
 
-        fetch("http://localhost:8081/api/securit/authenticate", {
+        fetch("http://localhost:8080/api/security/authenticate", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({
-                user,
+                username,
                 password,
             }),
         })
             .then( response => {
                 if (response.status === 200) {
+                    console.log(response);
                     return response.json();
                 } else {
                     console.log(response);
@@ -53,8 +54,8 @@ function Login(props) {
             <form onSubmit={loginHandler} >
                 <div className="form-group">
                     <label htmlFor="username">User Name (email)</label>
-                    <input id="username" name="user" className="form-control" 
-                    onChange={(event) => setUser(event.target.value)}/>
+                    <input id="username" name="username" className="form-control" 
+                    onChange={(event) => setUsername(event.target.value)}/>
                 </div>
                 <div className="form-group">
                     <label htmlFor="password">Password</label>
