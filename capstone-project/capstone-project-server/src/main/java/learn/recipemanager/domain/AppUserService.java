@@ -46,9 +46,15 @@ public class AppUserService implements UserDetailsService {
     }
 
     private void validatePass(String password) {
+
+
     }
 
     private void validate(String email) {
+
+        if (email == null || email.isBlank()) {
+
+        }
         
     }
 }
