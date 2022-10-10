@@ -46,14 +46,18 @@ public class AppUserService implements UserDetailsService {
 
         Result<AppUser> result = validate(email);
 
+
+
         if (!result.isSuccess()) {
             return result;
         }
+
 
         validatePass(password, result);
         AppRole appRole = new AppRole();
         appRole.setRoleName("User");
         password = encoder.encode(password);
+
 
         AppUser appUser = new AppUser( email, password, false, List.of(appRole));
 
@@ -72,6 +76,9 @@ public class AppUserService implements UserDetailsService {
             result.addMessage("Password is required and should be more than 8 characters", ResultType.INVALID);
             return result;
         }
+
+
+
 
         int digits = 0;
         int letters = 0;
@@ -106,8 +113,15 @@ public class AppUserService implements UserDetailsService {
 
         if (!email.matches(regex)) {
             result.addMessage("Entry should be a proper email", ResultType.INVALID);
+            return result;
         }
+
+        if (repo.findByUsername(email).size() > 0 ) {
+            result.addMessage("Email already registered", ResultType.INVALID);
+        }
+
         return result;
+
     }
 
 
