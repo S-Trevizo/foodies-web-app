@@ -21,7 +21,6 @@ import java.util.List;
 //crossorigins is set up in appconfig file
 @RestController
 @RequestMapping("api/security")
-@CrossOrigin
 public class SecurityController {
 
     private final AuthenticationManager authManager;
@@ -37,7 +36,7 @@ public class SecurityController {
     }
 
     @PostMapping("/authenticate")
-    ResponseEntity login(@RequestBody LoginRequest request){
+    public ResponseEntity login(@RequestBody LoginRequest request){
         UsernamePasswordAuthenticationToken rawToken
                 = new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword());
         Authentication authentication = authManager.authenticate(rawToken);

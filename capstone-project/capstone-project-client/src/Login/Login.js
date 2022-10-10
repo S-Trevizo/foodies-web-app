@@ -38,7 +38,7 @@ function Login(props) {
                 
                 console.log(jwt);
 
-                props.login(jwt);
+                auth.login(jwt);
                 history.push("/");
 
             })
@@ -54,8 +54,11 @@ function Login(props) {
             <form onSubmit={loginHandler} >
                 <div className="form-group">
                     <label htmlFor="username">User Name (email)</label>
+
                     <input id="username" name="username" className="form-control" 
                     onChange={(event) => setUsername(event.target.value)}/>
+
+
                 </div>
                 <div className="form-group">
                     <label htmlFor="password">Password</label>
