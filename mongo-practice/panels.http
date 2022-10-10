@@ -6,7 +6,7 @@ POST http://localhost:8080/api/solarpanel HTTP/1.1
 Content-Type: application/json
 
 {
-    "id": 1,
+    
     "section": "the hills",
     "row": 2,
     "column": 3,
@@ -30,13 +30,13 @@ Content-Type: application/json
 }
 
 ### 
-PUT http://localhost:8080/api/solarpanel/e2b43d42-c1e0-42d7-a822-917d1918186b HTTP/1.1
+PUT http://localhost:8080/api/solarpanel/b986039f-7c8x-479f-9e6a-48781544e598 HTTP/1.1
 Content-Type: application/json
 
 {
-    "id": "e2b43d42-c1e0-42d7-a822-917d1918186b",
+    "id": "b986039f-7c8x-479f-9e6a-48781544e598",
     "section": "the flats",
-    "row": 2,
+    "row": 4,
     "column": 3,
     "yearInstalled": 2000,
     "material": "MONO_SI",
@@ -59,4 +59,4 @@ Content-Type: application/json
 
 ###
 
-DELETE http://localhost:8080/api/solarpanel/f8ede118-e8df-4f5c-9776-6ba9071d32d9 HTTP/1.1
+DELETE http://localhost:8080/api/solarpanel/d18df834-d70c-4498-a762-62ba28c907da HTTP/1.1

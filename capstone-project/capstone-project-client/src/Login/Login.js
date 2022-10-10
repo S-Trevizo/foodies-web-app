@@ -14,7 +14,7 @@ function Login(props) {
  function loginHandler(event) {
     event.preventDefault();
 
-        fetch("http://localhost:8081/api/securit/authenticate", {
+        fetch("http://localhost:8080/api/security/authenticate", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -37,7 +37,7 @@ function Login(props) {
                 
                 console.log(jwt);
 
-                props.login(jwt);
+                auth.login(jwt);
                 history.push("/");
 
             })
@@ -53,7 +53,7 @@ function Login(props) {
             <form onSubmit={loginHandler} >
                 <div className="form-group">
                     <label htmlFor="username">User Name (email)</label>
-                    <input id="username" name="user" className="form-control" 
+                    <input type="email" id="username" name="user" className="form-control" 
                     onChange={(event) => setUser(event.target.value)}/>
                 </div>
                 <div className="form-group">
