@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import {Link, useHistory} from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import jwtDecode from 'jwt-decode';
 
 function Login(props) {
@@ -14,27 +14,24 @@ function Login(props) {
         const password = document.getElementById("password").value;
         const loginRequest = { username, password };
 
-        fetch("http://localhost:8081/api/security", {
+        fetch("http://localhost:8081/api/securit/authenticate", {
             method: "POST",
-                headers: {
+            headers: {
                 "Content-Type": "application/json"
             },
             body: JSON.stringify(loginRequest)
         })
-        .then(response => {
-            if (response.status === 200) {
-                return response.json(); 
-            } else {
-                console.log(response);
-            }
-        })
+            .then(response => {
+                if (response.status === 200) {
+                    return response.json();
+                } else {
+                    console.log(response);
+                }
+            })
             .then(jwtContainer => {
 
                 const jwt = jwtContainer.jwt_token;
                 const claimsObject = jwtDecode(jwt);
-
-                console.log(jwt);
-                console.log(claimsObject);
 
                 props.setLoginInfo({ jwt, claims: claimsObject });
                 history.push("/");

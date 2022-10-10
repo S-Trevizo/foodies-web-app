@@ -4,6 +4,7 @@ function NavBar(props) {
 
     return (
 
+        
         <nav className="navbar navbar-expand-lg navbar-light bg-light">
             <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
                 <span className="navbar-toggler-icon"></span>
@@ -12,11 +13,24 @@ function NavBar(props) {
             <div className="collapse navbar-collapse" id="navbarTogglerDemo02">
                 <ul className="navbar-nav mr-auto mt-2 mt-lg-0">
                     <li className="nav-item">
-                        <a className="nav-link" href="#">Link</a>
+                        <a className="nav-link" href="#">Foodies</a>
                     </li>
                     <li className="nav-item">
-                        <a className="nav-link disabled" href="#">Disabled</a>
+                        <a className="nav-link disabled" href="#">Favorites</a>
                     </li>
+
+                    <li className="nav-item">
+                        <a className="nav-link disabled" href="#">Pnatry</a>
+                    </li>
+
+                    <li className="nav-item">
+                        <a className="nav-link disabled" href="#">Preferences</a>
+                    </li>
+
+                    <li className="nav-item">
+                        <a className="nav-link disabled" href="#">Account</a>
+                    </li>
+
                 </ul>
                 <Link className="btn btn-outline-success my-2 my-sm-0" to="/login" >Log In</Link>
             </div>
