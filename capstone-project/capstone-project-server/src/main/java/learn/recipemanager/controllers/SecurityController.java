@@ -1,6 +1,7 @@
 package learn.recipemanager.controllers;
 
 
+import learn.recipemanager.domain.AppUserService;
 import learn.recipemanager.models.AppUser;
 import learn.recipemanager.models.viewmodels.LoginRequest;
 import learn.recipemanager.security.JwtConverter;
@@ -20,9 +21,11 @@ public class SecurityController {
     @Autowired
     AuthenticationManager authManager;
     @Autowired
+    AppUserService appUserService;
+    @Autowired
     JwtConverter converter;
 
-    @PostMapping
+    @PostMapping("/authenticate")
     ResponseEntity login(@RequestBody LoginRequest request){
         UsernamePasswordAuthenticationToken rawToken
                 = new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword());
