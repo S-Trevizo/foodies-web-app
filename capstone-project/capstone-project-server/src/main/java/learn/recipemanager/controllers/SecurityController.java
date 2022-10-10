@@ -28,17 +28,30 @@ public class SecurityController {
     AppUserService appUserService;
     @Autowired
     JwtConverter converter;
+
+    public SecurityController(AuthenticationManager authManager, AppUserService appUserService, JwtConverter converter) {
+        this.authManager = authManager;
+        this.appUserService = appUserService;
+        this.converter = converter;
+    }
+
     @PostMapping("/authenticate")
     ResponseEntity login(@RequestBody LoginRequest request){
         UsernamePasswordAuthenticationToken rawToken
                 = new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword());
         Authentication authentication = authManager.authenticate( rawToken );
-        AppUser user = (AppUser)authentication.getPrincipal();
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-        String token = converter.buildJwt(user);
-        HashMap<String, String> tokenHolder = new HashMap<>();
-        tokenHolder.put("jwt_token", token);
-        return ResponseEntity.ok( tokenHolder );
+
+        if (authentication.isAuthenticated()) {
+            String jwtToken = converter.buildJwt((AppUser) authentication.getPrincipal());
+
+            HashMap<String, String> tokenHolder = new HashMap<>();
+            tokenHolder.put("jwt_token", jwtToken);
+
+            return ResponseEntity.ok( tokenHolder );
+        }
+
+        return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+
     }
 
     // 10/10/2022: sign-up functionality
