@@ -1,6 +1,5 @@
 package learn.recipemanager.controllers;
 
-
 import learn.recipemanager.domain.AppUserService;
 import learn.recipemanager.domain.Result;
 import learn.recipemanager.models.AppUser;
@@ -14,13 +13,11 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.HashMap;
 import java.util.List;
 
-//crossorigins is set up in appconfig file
 @RestController
-@RequestMapping("api/security")
+@RequestMapping("api/security")//crossorigins is set up in appconfig file
 public class SecurityController {
     private final AuthenticationManager authManager;
     private final AppUserService appUserService;
