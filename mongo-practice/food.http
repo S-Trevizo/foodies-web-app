@@ -1,0 +1,16 @@
+GET http://localhost:8080/restaurants HTTP/1.1
+
+###
+
+POST http://localhost:8080/restaurants HTTP/1.1
+Content-Type: application/json
+
+{
+    "id": "3",
+    "name": "Frank's",
+    "address": "Some place",
+    "capacity": 300,
+    "openingDays": [
+        "MONDAY"
+    ]
+}

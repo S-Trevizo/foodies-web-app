@@ -1,0 +1,4 @@
+2~The Ridge~1~2~2019~MONO_SI~true
+3~Flats~1~1~2017~A_SI~true
+4~Flats~2~6~2017~CD_TE~true
+5~Flats~3~7~2000~CIGS~false

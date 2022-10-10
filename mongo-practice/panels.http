@@ -1,0 +1,62 @@
+GET http://localhost:8080/api/solarpanel HTTP/1.1
+
+###
+
+POST http://localhost:8080/api/solarpanel HTTP/1.1
+Content-Type: application/json
+
+{
+    "id": 1,
+    "section": "the hills",
+    "row": 2,
+    "column": 3,
+    "yearInstalled": 1999,
+    "material": "POLY_SI",
+    "isTracking": false
+}
+
+###
+
+POST http://localhost:8080/api/solarpanel HTTP/1.1
+Content-Type: application/json
+
+{
+    "section": "the FLATS",
+    "row": 2,
+    "column": 3,
+    "yearInstalled": 1999,
+    "material": "MONO_SI",
+    "isTracking": true
+}
+
+### 
+PUT http://localhost:8080/api/solarpanel/e2b43d42-c1e0-42d7-a822-917d1918186b HTTP/1.1
+Content-Type: application/json
+
+{
+    "id": "e2b43d42-c1e0-42d7-a822-917d1918186b",
+    "section": "the flats",
+    "row": 2,
+    "column": 3,
+    "yearInstalled": 2000,
+    "material": "MONO_SI",
+    "isTracking": true
+}
+
+###
+
+POST http://localhost:8080/api/solarpanel HTTP/1.1
+Content-Type: application/json
+
+{
+    "section": "the hills",
+    "row": 2,
+    "column": 4,
+    "yearInstalled": 2010,
+    "material": "MONO_SI",
+    "isTracking": false
+}
+
+###
+
+DELETE http://localhost:8080/api/solarpanel/f8ede118-e8df-4f5c-9776-6ba9071d32d9 HTTP/1.1
