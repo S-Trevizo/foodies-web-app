@@ -3,12 +3,13 @@ package learn.recipemanager.models;
 import org.springframework.data.annotation.Id;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class AppUser extends User {
+public class AppUser implements UserDetails {
     @Id
     private String userId;
     private String email;
@@ -17,7 +18,6 @@ public class AppUser extends User {
     private List<AppRole> userRoles;
 
     public AppUser( String email, String passHash, boolean isDeleted, List<AppRole> userRoles) {
-        super(email, passHash, userRoles.stream().map(AppRole::getAuthority).collect(Collectors.toList()));
         this.email = email;
         this.passHash = passHash;
         this.isDeleted = isDeleted;
@@ -62,5 +62,44 @@ public class AppUser extends User {
 
     public void setUserRoles(List<AppRole> userRoles) {
         this.userRoles = userRoles;
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return userRoles.stream().map(AppRole::getAuthority).collect(Collectors.toList());
+    }
+
+    @Override
+    public String getPassword() {
+        return passHash;
+    }
+
+    @Override
+    public String getUsername() {
+        return email;
+    }
+
+    public void setUsername(String email) {
+        setEmail(email);
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return !isDeleted;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return !isDeleted;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return !isDeleted;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return !isDeleted;
     }
 }

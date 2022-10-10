@@ -1,33 +1,36 @@
-import { useState } from 'react';
-import {Link, useHistory} from 'react-router-dom';
-import jwtDecode from 'jwt-decode';
+import { useContext, useState } from 'react';
+import { Link, useHistory } from 'react-router-dom';
+import AuthContext from '../AuthContext';
 
 function Login(props) {
 
     const history = useHistory();
 
-    function loginHandler(event) {
+    const [user , setUser] = useState("");
+    const [password, setPassword] = useState("");
 
-        event.preventDefault();
+    const auth = useContext(AuthContext);
 
-        const username = document.getElementById("username").value;
-        const password = document.getElementById("password").value;
-        const loginRequest = { username, password };
+ function loginHandler(event) {
+    event.preventDefault();
 
-        fetch("http://localhost:8081/api/security", {
+        fetch("http://localhost:8081/api/securit/authenticate", {
             method: "POST",
-                headers: {
+            headers: {
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify(loginRequest)
+            body: JSON.stringify({
+                user,
+                password,
+            }),
         })
-        .then(response => {
-            if (response.status === 200) {
-                return response.json(); 
-            } else {
-                console.log(response);
-            }
-        })
+            .then( response => {
+                if (response.status === 200) {
+                    return response.json();
+                } else {
+                    console.log(response);
+                }
+            })
             .then(jwtContainer => {
 
                 const jwt = jwtContainer.jwt_token;
@@ -46,14 +49,17 @@ function Login(props) {
 
     return (
         <div className="container">
+            <h2>Login</h2>
             <form onSubmit={loginHandler} >
                 <div className="form-group">
-                    <label htmlFor="username">User Name</label>
-                    <input id="username" name="username" className="form-control" />
+                    <label htmlFor="username">User Name (email)</label>
+                    <input id="username" name="user" className="form-control" 
+                    onChange={(event) => setUser(event.target.value)}/>
                 </div>
                 <div className="form-group">
                     <label htmlFor="password">Password</label>
-                    <input id="password" name="password" type="password" className="form-control" />
+                    <input id="password" name="password" type="password" className="form-control"
+                    onChange={(event) => setPassword(event.target.value)} />
                 </div>
 
                 <div className="text-right">
