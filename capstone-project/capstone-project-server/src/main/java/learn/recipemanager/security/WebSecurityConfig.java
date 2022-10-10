@@ -25,9 +25,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.sessionManagement().sessionCreationPolicy( SessionCreationPolicy.STATELESS );
         //http.exceptionHandling().authenticationEntryPoint(entryPoint);
         http.authorizeRequests()
+                .antMatchers(HttpMethod.POST,  "/api/security/authenticate").permitAll()//HttpMethod.POST,
                 .antMatchers(HttpMethod.POST, "/api/security/create_account").permitAll()
 //                .antMatchers( HttpMethod.GET, "/api/widget/public" ).permitAll()
-                .antMatchers( HttpMethod.POST, "/api/security/authenticate").permitAll()
 //                .antMatchers( HttpMethod.GET, "/api/widget/personal/*").authenticated()
                 .anyRequest().denyAll();
         http.addFilterBefore( filter, UsernamePasswordAuthenticationFilter.class );

@@ -95,7 +95,7 @@ public class AppUserService implements UserDetailsService {
 
         String regex = "^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$";
 
-        if (email.matches(regex)) {
+        if (!email.matches(regex)) {
             result.addMessage("Entry should be a proper email", ResultType.INVALID);
         }
         return result;

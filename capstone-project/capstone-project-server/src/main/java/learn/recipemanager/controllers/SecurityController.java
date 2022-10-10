@@ -53,6 +53,7 @@ public class SecurityController {
         if (!appUser.isSuccess()) {
             return new ResponseEntity<>(List.of(appUser.getMessages()), HttpStatus.BAD_REQUEST);
         }
+        // todo add duplicate error to validation
             // TODO: need to set up response entity and global exception handler
 //            return new ResponseEntity<>(List.of(ex.getMessage()), HttpStatus.BAD_REQUEST);
 //            return new ResponseEntity<>(List.of("The provided username already exists"), HttpStatus.BAD_REQUEST);
