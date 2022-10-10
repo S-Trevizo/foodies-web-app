@@ -31,12 +31,10 @@ function Login(props) {
             .then(jwtContainer => {
 
                 const jwt = jwtContainer.jwt_token;
-                const claimsObject = jwtDecode(jwt);
-
+                
                 console.log(jwt);
-                console.log(claimsObject);
 
-                props.setLoginInfo({ jwt, claims: claimsObject });
+                props.login(jwt);
                 history.push("/");
 
             })
