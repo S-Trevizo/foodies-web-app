@@ -12,7 +12,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("api/recipe")
 public class RecipesController {
-<<<<<<< HEAD
+
     @Autowired
     AppUserService service;
     //todo does a hard-coded value need autowired?
@@ -47,7 +47,7 @@ public class RecipesController {
     }
 
     //overloaded "searchTwentyRecipes" method with user preferences method?
-=======
+
 //    @Autowired
 //    AppUserService service;
 //    //todo does a hard-coded value need autowired?
@@ -83,7 +83,7 @@ public class RecipesController {
 //    }
 //
 //    //overloaded "searchTwentyRecipes" method with user preferences method?
->>>>>>> e49d3755dded50f537c507350ce53ffb2685ff2d
+
 
 
 
