@@ -25,10 +25,9 @@ function TwentyRandomRecipes() {
                 //input the app_key, app_id, and input/q
 
                 console.log("under === 200 request");
-                console.log(input);
-                console.log(input.searchCriteria);
+                console.log(response.json());
                 // fetch( "https://api.edamam.com/api/recipes/v2?type=public&q="+input.searchCriteria+"&app_id=4357d5e9&app_key=84496af29c091bb734dab8904e3d9df5", {
-                fetch( "https://api.edamam.com/api/recipes/v2?type=public&q=salt&app_id=4357d5e9&app_key=84496af29c091bb734dab8904e3d9df5", {
+                fetch( "https://api.edamam.com/api/recipes/v2?type=public&q="+input.searchCriteria+"&app_id=4357d5e9&app_key=84496af29c091bb734dab8904e3d9df5", {
                     method: "GET",
                     headers: {
                         "Content-Type": "application/json"
