@@ -17,7 +17,7 @@ import java.util.Map;
 public class RecipesController {
     @Autowired
     AppUserService service;
-    // todo where is a better place to initialize these variables?
+    // todo is there a better place to initialize these variables?
     private String app_id = "4357d5e9";
     private String app_key = "84496af29c091bb734dab8904e3d9df5";
 
@@ -35,13 +35,12 @@ public class RecipesController {
         return ResponseEntity.ok(apiQueryInput);
     }
 
-    /*
-    recipe searchbar per role:
-    get recipes:
-    admin: can view filtered recipes
-    user: can view filtered recipes
-    guest: can view only random recipes
-     */
+    //search recipe as a user and admin:
+    //take CreateRequest in. verify permissions. then return inputs for external api for filtered recipe list.
+
+
+
+
 
 
 
