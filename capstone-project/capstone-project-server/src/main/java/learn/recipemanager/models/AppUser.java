@@ -22,11 +22,15 @@ public class AppUser implements UserDetails {
     private List<String> healthLabels;
 
 
-    public AppUser( String email, String passHash, boolean isDeleted, List<AppRole> userRoles) {
+    public AppUser( String email, String passHash, boolean isDeleted, List<AppRole> userRoles,
+                    String name, List<String> favorites, List<String> healthLabels) {
         this.email = email;
         this.passHash = passHash;
         this.isDeleted = isDeleted;
         this.userRoles = userRoles;
+        this.favorites = favorites;
+        this.healthLabels = healthLabels;
+        this.name = name;
     }
 
     public String getUserId() {
