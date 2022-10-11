@@ -53,7 +53,7 @@ public class SecurityController {
             tokenHolder.put("jwt_token", jwtToken);
             return ResponseEntity.ok( tokenHolder );
         }
-        return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        return new ResponseEntity<>("Credentials not found",HttpStatus.FORBIDDEN);
     }
 
     @PostMapping("/create_account")
@@ -62,7 +62,7 @@ public class SecurityController {
         Result<AppUser> appUser = appUserService.create(request.getEmail(), request.getPassword(), request.getName(), new ArrayList<>(), request.getHealthLabels());
 
         if (!appUser.isSuccess()) {
-            return new ResponseEntity<>(List.of(appUser.getMessages()), HttpStatus.BAD_REQUEST);
+            return ErrorResponse.build(appUser);
         }
         //"happy path":
         HashMap<String, String> map = new HashMap<>();
