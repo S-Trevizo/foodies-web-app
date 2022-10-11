@@ -24,10 +24,10 @@ function Register() {
                     <label htmlFor="password">Password:</label>
                     <input id="password" name="password" type="password " className="form-control" />
                 </div>
-                <div className='form-group'>
+                <div>
                     
                     <label htmlFor="healthLabel">Health Labels:</label>
-                    <select title='Select your preferences' actionsbox="true" data-live-search="true" className='selectpicker col-12' id='healthLabel' multiple>
+                    <select title='Select your preferences' data-live-search="true" className='selectpicker col-12' id='healthLabel' multiple>
                          <option value="alcohol-cocktail"> Alcohol-Cocktail  </option>
                         <option value="alcohol-free"> Alcohol-Free  </option>
                         <option value="celery-free"> Celery-Free  </option>
