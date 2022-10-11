@@ -56,5 +56,4 @@ public class SecurityController {
         map.put("appUserId", appUser.getPayload().getUserId());
         return new ResponseEntity<>(map, HttpStatus.CREATED);
     }
-
 }

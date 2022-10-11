@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.multipart.MultipartException;
 
-//@ControllerAdvice
-//public class GlobalExceptionHandler {
+@ControllerAdvice
+public class GlobalExceptionHandler {
 //    @ExceptionHandler(DataAccessException.class)    // DataAccessException is the super class of many Spring database exceptions
 //    public ResponseEntity<ErrorResponse> handleException(DataAccessException ex) {
 //        return new ResponseEntity<ErrorResponse>(
@@ -44,4 +44,4 @@ import org.springframework.web.multipart.MultipartException;
 //                new ErrorResponse("Something went wrong on our end. Your request failed. :("),
 //                HttpStatus.INTERNAL_SERVER_ERROR);//500
 //    }
-//}
+}

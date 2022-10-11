@@ -4,8 +4,10 @@ POST {{url}}/create_account HTTP/1.1
 Content-Type: application/json
 
 {
+    "name": "bob",
     "email": "bob@bob.com",
-    "password": "password#1"
+    "password": "password#1",
+    "healthLabels": []
 }
 
 ###
