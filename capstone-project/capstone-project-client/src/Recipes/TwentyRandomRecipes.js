@@ -13,9 +13,13 @@ function TwentyRandomRecipes() {
     // const userData = useContext(AuthContext);
 
     function apiFetch(input) {
+        if (input === null) {
+            return;
+        }
+
         //how do I not hard-code the api key and stuff?
-        fetch("https://api.edamam.com/api/recipes/v2?type=public&q=" + input.searchCriteria + "&app_id=4357d5e9&app_key=84496af29c091bb734dab8904e3d9df5", {
-            method: "GET",
+        fetch("https://api.edamam.com/api/recipes/v2?type=public&q=" + input.searchCriteria + "&app_id="+input.app_id+"&app_key="+input.app_key, {
+        method: "GET",
             headers: {
                 "Content-Type": "application/json"
             }
@@ -54,26 +58,29 @@ function TwentyRandomRecipes() {
             }
         }).then(async response => {
             if (response.status === 200) {
-                const toReturn = response.json();
-                console.log(toReturn);
-
-                apiFetch(input);
                 return response.json();
             } else {
                 return Promise.reject(await response.json());
             }
+        }).then(searchObject => {//can be null
+            setFetchInfo(searchObject);
         }).catch(error => {
-            if (error instanceof TypeError) {
-                const copyArray = [];
-                copyArray.push("Could not connect to api.");
-                setErrorsToAppend(copyArray);
-            } else {
-                const copyArray = [];
-                copyArray.push(...error);
-                setErrorsToAppend(copyArray);
-            }
-        });
-    }
+                if (error instanceof TypeError) {
+                    const copyArray = [];
+                    copyArray.push("Could not connect to api.");
+                    setErrorsToAppend(copyArray);
+                } else {
+                    const copyArray = [];
+                    copyArray.push(...error);
+                    setErrorsToAppend(copyArray);
+                }
+            });
+
+        apiFetch(fetchInfo);
+
+        }
+
+    
 
     useEffect(
         () => {
@@ -83,19 +90,17 @@ function TwentyRandomRecipes() {
         },
         []);
 
-        console.log(errorsToAppend);
     return (
         <>
 
             <div>
-{/* I want to make the id/key the uri or whatever it was. string select.*/} 
-
+                {/* I want to make the id/key the uri or whatever it was. string select.*/}
+                {/* also: if no recipes are found, nothing prints out to let the user know. */}
+                
                 {errorsToAppend.map((r, index) => <ErrorMessages key={index} errorData={r} />)}
-
-
-                {recipes.map((r, index) => <Recipe key={index} recipeData={r.recipe} />)}
-                if the recipe array is not empty, then call recipe.js and print out the desired values.
-                if it is empty, then display a message "no results found"
+                {recipes ? 
+                recipes.map((r, index) => <Recipe key={index} recipeData={r.recipe} />) :
+                null}
             </div>
 
         </>

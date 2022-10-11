@@ -11,6 +11,8 @@ function Recipe({ recipeData }) {
 
     */
     //print out: 
+    
+    console.log(recipeData);
     return (
     <>
         <p>{recipeData.calories}</p>
