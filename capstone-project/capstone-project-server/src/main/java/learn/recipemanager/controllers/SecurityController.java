@@ -33,19 +33,13 @@ public class SecurityController {
     @GetMapping("/users")
     public ResponseEntity<List<AppUser>> getUsers(){
 
-        AppUser currentUser = (AppUser) SecurityContextHolder
-                .getContext()
-                .getAuthentication()
-                .getPrincipal();
+        List<AppUser> users = appUserService.findAll();
 
-        boolean isAdmin = currentUser.getUserRoles().stream().anyMatch( r -> r.getRoleName().equals("ADMIN") );
+        for (AppUser u : users) {
+            u.setPassHash("");
+        };
 
-        if (!isAdmin) {
-            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
-        }
-
-
-        return new ResponseEntity(appUserService.findAll(),HttpStatus.OK);
+        return new ResponseEntity(users,HttpStatus.OK);
     }
 
     @PostMapping("/authenticate")
