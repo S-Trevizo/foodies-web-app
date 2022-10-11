@@ -4,7 +4,7 @@ POST {{url}}/create_account HTTP/1.1
 Content-Type: application/json
 
 {
-    "username": "bob@gmail.com",
+    "username": "bob@bob.com",
     "password": "password#1"
 }
 

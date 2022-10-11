@@ -36,9 +36,9 @@ function NavBar(props) {
                     </li>
 
                 </ul>
-                {auth.user ? <Link className="btn btn-outline-success my-2 my-sm-0" to="/" onClick={() => auth.logout()}>Log Out</Link> :
+                {auth.user ? <Link className="btn btn-outline-success my-2 my-sm-0 mr-2" to="/" onClick={() => auth.logout()}>Log Out</Link> :
                     <div>
-                        <Link className="btn btn-outline-success my-2 my-sm-0" to="/login"  >Log In</Link>
+                        <Link className="btn btn-outline-success my-2 my-sm-0 mr-2" to="/login"  >Log In</Link>
                         <Link className="btn btn-outline-info my-2 my-sm-0" to="/register"  >Register</Link>
                     </div>
                 }

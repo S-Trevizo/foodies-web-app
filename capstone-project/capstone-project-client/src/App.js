@@ -78,7 +78,7 @@ function App() {
               <Login setLoginInfo={setLoginInfo} />
             </Route>
             <Route path="/register">
-              <Register/>
+              <Register setLoginInfo={setLoginInfo}/>
             </Route>
           </Switch>
         </BrowserRouter>
