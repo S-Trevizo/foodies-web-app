@@ -27,6 +27,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.sessionManagement().sessionCreationPolicy( SessionCreationPolicy.STATELESS );
 
         http.authorizeRequests()
+                .antMatchers(HttpMethod.GET, "/api/recipe/public/salt").permitAll()
                 .antMatchers(HttpMethod.POST,  "/api/security/authenticate").permitAll()//HttpMethod.POST,
                 .antMatchers(HttpMethod.POST, "/api/security/create_account").permitAll()
                 .antMatchers("/**").denyAll()
