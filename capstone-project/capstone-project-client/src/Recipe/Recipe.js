@@ -1,4 +1,4 @@
-function Recipe({recipeData}) {
+function Recipe({ recipeData }) {
     /*
     what information do I want to print out? 
     recipeId
@@ -11,8 +11,12 @@ function Recipe({recipeData}) {
 
     */
     //print out: 
-    return <p>{recipeData.calories}
-    </p>
+    return (
+    <>
+        <p>{recipeData.calories}</p>
+        <div> </div>
+    </>
+    );
 }
 
 export default Recipe;
