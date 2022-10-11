@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -31,7 +32,14 @@ public class SecurityController {
 
     @GetMapping("/users")
     public ResponseEntity<List<AppUser>> getUsers(){
-        return new ResponseEntity(appUserService.findAll(),HttpStatus.OK);
+
+        List<AppUser> users = appUserService.findAll();
+
+        for (AppUser u : users) {
+            u.setPassHash("");
+        };
+
+        return new ResponseEntity(users,HttpStatus.OK);
     }
 
     @PostMapping("/authenticate")
@@ -45,7 +53,7 @@ public class SecurityController {
             tokenHolder.put("jwt_token", jwtToken);
             return ResponseEntity.ok( tokenHolder );
         }
-        return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        return new ResponseEntity<>("Credentials not found",HttpStatus.FORBIDDEN);
     }
 
     @PostMapping("/create_account")
@@ -54,7 +62,7 @@ public class SecurityController {
         Result<AppUser> appUser = appUserService.create(request.getEmail(), request.getPassword(), request.getName(), new ArrayList<>(), request.getHealthLabels());
 
         if (!appUser.isSuccess()) {
-            return new ResponseEntity<>(List.of(appUser.getMessages()), HttpStatus.BAD_REQUEST);
+            return ErrorResponse.build(appUser);
         }
         //"happy path":
         HashMap<String, String> map = new HashMap<>();
