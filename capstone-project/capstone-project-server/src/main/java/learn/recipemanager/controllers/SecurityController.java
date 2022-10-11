@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -31,6 +32,19 @@ public class SecurityController {
 
     @GetMapping("/users")
     public ResponseEntity<List<AppUser>> getUsers(){
+
+        AppUser currentUser = (AppUser) SecurityContextHolder
+                .getContext()
+                .getAuthentication()
+                .getPrincipal();
+
+        boolean isAdmin = currentUser.getUserRoles().stream().anyMatch( r -> r.getRoleName().equals("ADMIN") );
+
+        if (!isAdmin) {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
+
+
         return new ResponseEntity(appUserService.findAll(),HttpStatus.OK);
     }
 
