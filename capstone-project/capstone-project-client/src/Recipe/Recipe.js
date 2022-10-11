@@ -1,4 +1,7 @@
-function Recipe(props) {
+function Recipe({recipeData}) {
     //print out: 
-    return <p>under Recipe.js</p>
+    return <p>{recipeData.calories}
+    </p>
 }
+
+export default Recipe;
