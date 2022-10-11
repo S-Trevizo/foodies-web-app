@@ -18,7 +18,7 @@ import java.util.HashMap;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/security")//crossorigins is set up in appconfig file
+@RequestMapping("api/security")
 public class SecurityController {
     private final AuthenticationManager authManager;
     private final AppUserService appUserService;
