@@ -1,5 +1,5 @@
-import { Link } from 'react-router-dom';
-import React from 'react';
+import { Link, useHistory } from 'react-router-dom';
+import React, { useState } from 'react';
 import Select from 'react-select';
 import makeAnimated from 'react-select/animated';
 
@@ -45,6 +45,58 @@ function Register() {
                  ];
 
     const animated = makeAnimated();
+
+    const [name,setName] = useState("")
+    const [email , setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [healthLabels, setHealthlabels] = useState([]);
+
+    const history = useHistory();
+
+    const handleChange = (e) => {
+
+        let updatedLabels = [];
+
+        if (e.length > 0) {
+            updatedLabels = e.map(l => l.value);
+        } 
+
+        setHealthlabels(updatedLabels);
+
+    }
+
+    function registerHandler(event) {
+        event.preventDefault();
+    
+            fetch("http://localhost:8080/api/security/create_account", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    email,
+                    password,
+                    name,
+                    healthLabels
+                }),
+            })
+                .then( response => {
+                    if (response.status === 201) {
+                        console.log(response);
+                        return response.json();
+                    } else {
+                        console.log(response);
+                    }
+                })
+                .then(jwtContainer => {
+                    history.push("/login");
+                })
+                .catch(error => {
+                    console.log(error);
+                });
+        }
+
+
     
 
     return (
@@ -55,24 +107,24 @@ function Register() {
             <form>
                 <div className="form-group">
                     <label htmlFor="name">Name:</label>
-                    <input id="name" name="name" className="form-control" disabled/>
+                    <input id="name" name="name" className="form-control" onChange={e => setName(e.target.value)}/>
                 </div>
                 <div className="form-group">
                     <label htmlFor="email">Email (username):</label>
-                    <input id="email" name="email" className="form-control"/>
+                    <input id="email" name="email" className="form-control" onChange={e => setEmail(e.target.value)}/>
                 </div>
                 <div className="form-group">
                     <label htmlFor="password">Password:</label>
-                    <input id="password" name="password" type="password " className="form-control" />
+                    <input id="password" name="password" type="password " className="form-control" onChange={e => setPassword(e.target.value)}/>
                 </div>
 
                 <div className='form-group'>
                     <label>Health Labels: </label>
-                    <Select isMulti closeMenuOnSelect={false} components={animated} className='basic-multi-select' classNamePrefix="select" options={options}></Select>
+                    <Select isMulti closeMenuOnSelect={false} components={animated} className='basic-multi-select' classNamePrefix="select" options={options} onChange={handleChange}></Select>
                 </div>
                 
                 <div className="text-right">
-                    <button className="btn btn-primary ">Submit</button>
+                    <button className="btn btn-primary " onClick={registerHandler}>Submit</button>
                     <Link to="/" className="btn btn-danger">Cancel</Link>
                 </div>
             </form>

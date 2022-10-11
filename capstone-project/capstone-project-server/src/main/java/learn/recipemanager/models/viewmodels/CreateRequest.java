@@ -9,7 +9,6 @@ public class CreateRequest {
     private String email;
     private String password;
     private String name;
-    private  List<String> favorites;
     private  List<String> healthLabels;
 
 
@@ -35,14 +34,6 @@ public class CreateRequest {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public List<String> getFavorites() {
-        return favorites;
-    }
-
-    public void setFavorites(List<String> favorites) {
-        this.favorites = favorites;
     }
 
     public List<String> getHealthLabels() {

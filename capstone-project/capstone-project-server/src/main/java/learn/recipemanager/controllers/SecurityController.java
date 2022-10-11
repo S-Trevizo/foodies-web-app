@@ -12,6 +12,8 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -44,7 +46,7 @@ public class SecurityController {
     @PostMapping("/create_account")
     public ResponseEntity<?> createAccount(@RequestBody CreateRequest request) {
 
-        Result<AppUser> appUser = appUserService.create(request.getEmail(), request.getPassword(), request.getName(), request.getFavorites(), request.getHealthLabels());
+        Result<AppUser> appUser = appUserService.create(request.getEmail(), request.getPassword(), request.getName(), new ArrayList<>(), request.getHealthLabels());
 
         if (!appUser.isSuccess()) {
             return new ResponseEntity<>(List.of(appUser.getMessages()), HttpStatus.BAD_REQUEST);
