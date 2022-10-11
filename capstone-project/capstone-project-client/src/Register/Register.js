@@ -71,7 +71,6 @@ function Register() {
                     <Select isMulti closeMenuOnSelect={false} components={animated} className='basic-multi-select' classNamePrefix="select" options={options}></Select>
                 </div>
                 
-
                 <div className="text-right">
                     <button className="btn btn-primary ">Submit</button>
                     <Link to="/" className="btn btn-danger">Cancel</Link>
