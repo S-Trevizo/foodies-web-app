@@ -36,7 +36,7 @@ function NavBar(props) {
                     </li>
 
                     {auth.user ? auth.user.roles ? <li className="nav-item">
-                        <a className="nav-link" href="#">User Administration</a>
+                    <Link to="/admin" className="nav-link">User Administration</Link>
                     </li> : null : null }
                 
 
