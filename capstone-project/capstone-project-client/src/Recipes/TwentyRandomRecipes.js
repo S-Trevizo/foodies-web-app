@@ -85,21 +85,14 @@ function TwentyRandomRecipes() {
         <>
 
             <div>
-                {/* map: current value, current index, entire list */}
-                {/* need to give key to recipec omponents 
-I want to make the id/key the uri or whatever it was. string select.*/}
-                
-
-                {}
+{/* I want to make the id/key the uri or whatever it was. string select.*/} 
 
                 {errorsToAppend.map((r, index) => <ErrorMessages key={index} errorData={r} />)}
 
 
                 {recipes.map((r, index) => <Recipe key={index} recipeData={r.recipe} />)}
                 if the recipe array is not empty, then call recipe.js and print out the desired values.
-                if it is empty, then call the errors to display component
-
-                this return is under TwentyRandomRecipes.js
+                if it is empty, then display a message "no results found"
             </div>
 
         </>
