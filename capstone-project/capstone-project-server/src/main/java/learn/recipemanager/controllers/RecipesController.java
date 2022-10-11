@@ -17,7 +17,7 @@ import java.util.Map;
 public class RecipesController {
     @Autowired
     AppUserService service;
-    // todo where is a better place to initialize these variables?
+    // todo is there a better place to initialize these variables?
     private String app_id = "4357d5e9";
     private String app_key = "84496af29c091bb734dab8904e3d9df5";
 
