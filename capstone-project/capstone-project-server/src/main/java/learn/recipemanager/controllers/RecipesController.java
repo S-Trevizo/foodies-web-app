@@ -35,13 +35,12 @@ public class RecipesController {
         return ResponseEntity.ok(apiQueryInput);
     }
 
-    /*
-    recipe searchbar per role:
-    get recipes:
-    admin: can view filtered recipes
-    user: can view filtered recipes
-    guest: can view only random recipes
-     */
+    //search recipe as a user and admin:
+    //take CreateRequest in. verify permissions. then return inputs for external api for filtered recipe list.
+
+
+
+
 
 
 
