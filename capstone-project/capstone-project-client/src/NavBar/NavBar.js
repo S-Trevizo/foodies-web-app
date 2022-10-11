@@ -35,6 +35,11 @@ function NavBar(props) {
                         <a className="nav-link disabled" href="#">Account</a>
                     </li>
 
+                    {auth.user ? auth.user.roles ? <li className="nav-item">
+                        <a className="nav-link" href="#">User Administration</a>
+                    </li> : null : null }
+                
+
                 </ul>
                 {auth.user ? <Link className="btn btn-outline-success my-2 my-sm-0 mr-2" to="/" onClick={() => auth.logout()}>Log Out</Link> :
                     <div>
