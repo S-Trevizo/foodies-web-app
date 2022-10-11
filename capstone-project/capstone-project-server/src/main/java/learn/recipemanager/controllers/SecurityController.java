@@ -29,6 +29,11 @@ public class SecurityController {
         this.converter = converter;
     }
 
+    @GetMapping("/users")
+    public ResponseEntity<List<AppUser>> getUsers(){
+        return new ResponseEntity(appUserService.findAll(),HttpStatus.OK);
+    }
+
     @PostMapping("/authenticate")
     public ResponseEntity login(@RequestBody LoginRequest request){
         UsernamePasswordAuthenticationToken rawToken
@@ -55,6 +60,14 @@ public class SecurityController {
         HashMap<String, String> map = new HashMap<>();
         map.put("appUserId", appUser.getPayload().getUserId());
         return new ResponseEntity<>(map, HttpStatus.CREATED);
+    }
+
+    @DeleteMapping("/users/{id}")
+    public ResponseEntity deleteById(@PathVariable String id) {
+        if (appUserService.deleteById(id)) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
 }
