@@ -69,10 +69,44 @@ function Register(props) {
                     
                     <label htmlFor="healthLabel">Health Labels:</label>
                     <select title='Select your preferences' actionsbox="true" data-live-search="true" className='selectpicker col-12' id='healthLabel' multiple>
-                        <option>Dairy Free</option>
-                        <option>Vegan</option>
-                        <option>Vegetarian</option> 
-                        {/* Need more options but this should work */}
+                    
+                        <option value="alcohol-cocktail"> Alcohol-Cocktail  </option>
+                        <option value="alcohol-free"> Alcohol-Free  </option>
+                        <option value="celery-free"> Celery-Free  </option>
+                        <option value="crustacean-free"> Crustacean-Free  </option>
+                        <option value="dairy-free"> dairy-free  </option>
+                        <option value="DASH"> DASH  </option>
+                        <option value="egg-free"> egg-free  </option>
+                        <option value="fish-free"> fish-free  </option>
+                        <option value="fodmap-free"> fodmap-free  </option>
+                        <option value="gluten-free"> gluten-free  </option>
+                        <option value="immuno-supportive"> immuno-supportive  </option>
+                        <option value="keto-friendly"> keto-friendly  </option>
+                        <option value="kidney-friendly"> kidney-friendly  </option>
+                        <option value="kosher"> kosher  </option>
+                        <option value="low-fat-abs"> low-fat-abs  </option>
+                        <option value="low-potassium"> low-potassium  </option>
+                        <option value="low-sugar"> low-sugar  </option>
+                        <option value="lupine-free"> lupine-free  </option>
+                        <option value="Mediterranean"> Mediterranean  </option>
+                        <option value="mollusk-free"> mollusk-free  </option>
+                        <option value="mustard-free"> mustard-free  </option>
+                        <option value="no-oil-added"> no-oil-added  </option>
+                        <option value="paleo"> paleo  </option>
+                        <option value="peanut-free"> peanut-free  </option>
+                        <option value="pescatarian"> pescatarian  </option>
+                        <option value="pork-free"> pork-free  </option>
+                        <option value="red-meat-free"> red-meat-free  </option>
+                        <option value="sesame-free"> sesame-free  </option>
+                        <option value="shellfish-free"> shellfish-free  </option>
+                        <option value="soy-free"> soy-free  </option>
+                        <option value="sugar-conscious"> sugar-conscious  </option>
+                        <option value="sulfite-free"> sulfite-free  </option>
+                        <option value="tree-nut-free"> tree-nut-free  </option>
+                        <option value="vegan"> vegan  </option>
+                        <option value="vegetarian"> vegetarian  </option>
+                        <option value="wheat-free"> wheat-free  </option>
+                        
                     </select>
                 </div>
                 
