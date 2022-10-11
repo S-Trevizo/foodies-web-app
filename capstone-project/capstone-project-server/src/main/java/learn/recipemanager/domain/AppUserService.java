@@ -42,7 +42,7 @@ public class AppUserService implements UserDetailsService {
 
     }
 
-    public Result<AppUser> create(String email, String password) {
+    public Result<AppUser> create(String email, String password, String name, List<String> favorites, List<String> healthLabels) {
 
         Result<AppUser> result = validate(email);
 
@@ -52,14 +52,18 @@ public class AppUserService implements UserDetailsService {
             return result;
         }
 
-
         validatePass(password, result);
+
+        if (!result.isSuccess()) {
+            return result;
+        }
+
         AppRole appRole = new AppRole();
         appRole.setRoleName("User");
         password = encoder.encode(password);
 
 
-        AppUser appUser = new AppUser( email, password, false, List.of(appRole));
+        AppUser appUser = new AppUser( email, password, false, List.of(appRole), name, favorites,healthLabels);
 
         if (!result.isSuccess()) {
             return result;

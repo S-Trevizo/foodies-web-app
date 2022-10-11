@@ -13,6 +13,9 @@ import java.util.Date;
 @Component
 public class JwtConverter {
     private Key signingKey = Keys.secretKeyFor(SignatureAlgorithm.HS512);
+
+    private final int EXPIRATION_MINUTES = 15;
+    private final int EXPIRATION_MILLIS = EXPIRATION_MINUTES * 60 * 1000;
     public String buildJwt(AppUser user){
         String token = io.jsonwebtoken.Jwts.builder()
                 .setId( user.getUserId() + ""  )
@@ -21,7 +24,7 @@ public class JwtConverter {
                 .setIssuer("foodies")
                 .setSubject(user.getUsername())
                 .setIssuedAt( new Date())
-                .setExpiration( new Date( new Date().getTime() + 300000))
+                .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_MILLIS))
                 .signWith(signingKey)
                 .compact();
         return token;

@@ -18,15 +18,19 @@ public class AppUser implements UserDetails {
     private List<AppRole> userRoles;
     private String name;
 
-    private List<String> savedRecipes;
+    private List<String> favorites;
     private List<String> healthLabels;
-    private List<String> allergens;
 
-    public AppUser( String email, String passHash, boolean isDeleted, List<AppRole> userRoles) {
+
+    public AppUser( String email, String passHash, boolean isDeleted, List<AppRole> userRoles,
+                    String name, List<String> favorites, List<String> healthLabels) {
         this.email = email;
         this.passHash = passHash;
         this.isDeleted = isDeleted;
         this.userRoles = userRoles;
+        this.favorites = favorites;
+        this.healthLabels = healthLabels;
+        this.name = name;
     }
 
     public String getUserId() {
@@ -70,11 +74,11 @@ public class AppUser implements UserDetails {
     }
 
     public List<String> getSavedRecipes() {
-        return savedRecipes;
+        return favorites;
     }
 
     public void setSavedRecipes(List<String> savedRecipes) {
-        this.savedRecipes = savedRecipes;
+        this.favorites = savedRecipes;
     }
 
     public List<String> getHealthLabels() {
@@ -83,14 +87,6 @@ public class AppUser implements UserDetails {
 
     public void setHealthLabels(List<String> healthLabels) {
         this.healthLabels = healthLabels;
-    }
-
-    public List<String> getAllergens() {
-        return allergens;
-    }
-
-    public void setAllergens(List<String> allergens) {
-        this.allergens = allergens;
     }
 
     public String getName() {

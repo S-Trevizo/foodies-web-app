@@ -15,6 +15,10 @@ import java.util.Map;
 @RestController
 @RequestMapping("api/recipe")
 public class RecipesController {
+<<<<<<< HEAD
+=======
+
+>>>>>>> 094e7655df8c3d7d28e2359cb26217ca32700a50
     @Autowired
     AppUserService service;
     // todo where is a better place to initialize these variables?
@@ -42,7 +46,6 @@ public class RecipesController {
     user: can view filtered recipes
     guest: can view only random recipes
      */
-
 
 
 

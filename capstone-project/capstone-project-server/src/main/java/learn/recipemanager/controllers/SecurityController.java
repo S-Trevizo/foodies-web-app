@@ -3,15 +3,14 @@ package learn.recipemanager.controllers;
 import learn.recipemanager.domain.AppUserService;
 import learn.recipemanager.domain.Result;
 import learn.recipemanager.models.AppUser;
+import learn.recipemanager.models.viewmodels.CreateRequest;
 import learn.recipemanager.models.viewmodels.LoginRequest;
 import learn.recipemanager.security.JwtConverter;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
 import java.util.List;
@@ -31,7 +30,7 @@ public class SecurityController {
     @PostMapping("/authenticate")
     public ResponseEntity login(@RequestBody LoginRequest request){
         UsernamePasswordAuthenticationToken rawToken
-                = new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword());
+                = new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword());
         Authentication authentication = authManager.authenticate(rawToken);
         if (authentication.isAuthenticated()) {
             String jwtToken = converter.buildJwt((AppUser) authentication.getPrincipal());
@@ -43,12 +42,10 @@ public class SecurityController {
     }
 
     @PostMapping("/create_account")
-    public ResponseEntity<?> createAccount(@RequestBody LoginRequest request) {//Map<String, String> credentials
-        Result<AppUser> appUser = null;
-//removed try-catch: validationexception, duplicatekeyexception
-        String username = request.getUsername();//this is email
-        String password = request.getPassword();
-        appUser = appUserService.create(username, password);
+    public ResponseEntity<?> createAccount(@RequestBody CreateRequest request) {
+
+        Result<AppUser> appUser = appUserService.create(request.getEmail(), request.getPassword(), request.getName(), request.getFavorites(), request.getHealthLabels());
+
         if (!appUser.isSuccess()) {
             return new ResponseEntity<>(List.of(appUser.getMessages()), HttpStatus.BAD_REQUEST);
         }
