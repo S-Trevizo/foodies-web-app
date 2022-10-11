@@ -8,13 +8,13 @@ import ErrorMessages from "../ErrorMessages/ErrorMessages";
 function TwentyRandomRecipes() {
     const [recipes, setRecipes] = useState([]);
     const [errorsToAppend, setErrorsToAppend] = useState([]);
+    const [fetchInfo, setFetchInfo] = useState(null);
     // first, make an api request. ignore login status for now. 
     // const userData = useContext(AuthContext);
 
     function apiFetch(input) {
-        //what if q is missing? no output. How should I display that error to user?
-        // fetch("https://api.edamam.com/api/recipes/v2?type=public&q=" + input.searchCriteria + "&app_id=4357d5e9&app_key=84496af29c091bb734dab8904e3d9df5", {
-        fetch("https://api.edamam.com/api/recipes/v2?type=public&q=searchCriteria&app_id=4357d5e9&app_key=84496af29c091bb734dab8904e3d9df5&health=alcohol-cocktail&health=alcohol-free&health=celery-free&health=crustacean-free&health=dairy-free&health=DASH&health=egg-free&health=fish-free&health=fodmap-free&health=gluten-free&health=immuno-supportive&health=keto-friendly&health=kidney-friendly&health=kosher&health=low-fat-abs&health=low-potassium&health=low-sugar&health=lupine-free&health=Mediterranean&health=mollusk-free&health=mustard-free&health=no-oil-added&health=paleo&health=peanut-free&health=pescatarian&health=pork-free&health=red-meat-free&health=sesame-free&health=shellfish-free&health=soy-free&health=sugar-conscious&health=sulfite-free&health=tree-nut-free&health=vegan&health=vegetarian&health=wheat-free", {
+        //how do I not hard-code the api key and stuff?
+        fetch("https://api.edamam.com/api/recipes/v2?type=public&q=" + input.searchCriteria + "&app_id=4357d5e9&app_key=84496af29c091bb734dab8904e3d9df5", {
             method: "GET",
             headers: {
                 "Content-Type": "application/json"
@@ -54,6 +54,9 @@ function TwentyRandomRecipes() {
             }
         }).then(async response => {
             if (response.status === 200) {
+                const toReturn = response.json();
+                console.log(toReturn);
+
                 apiFetch(input);
                 return response.json();
             } else {
@@ -62,7 +65,6 @@ function TwentyRandomRecipes() {
         }).catch(error => {
             if (error instanceof TypeError) {
                 const copyArray = [];
-                console.log("under TypeError");
                 copyArray.push("Could not connect to api.");
                 setErrorsToAppend(copyArray);
             } else {
@@ -75,6 +77,7 @@ function TwentyRandomRecipes() {
 
     useEffect(
         () => {
+            //I need to find a way to optionally let user input search criteria
             const input = { searchCriteria: "salt" };
             makeRecipeQuery(input);
         },
