@@ -16,6 +16,11 @@ public class AppUser implements UserDetails {
     private String passHash;
     private boolean isDeleted;
     private List<AppRole> userRoles;
+    private String name;
+
+    private List<String> savedRecipes;
+    private List<String> healthLabels;
+    private List<String> allergens;
 
     public AppUser( String email, String passHash, boolean isDeleted, List<AppRole> userRoles) {
         this.email = email;
@@ -62,6 +67,38 @@ public class AppUser implements UserDetails {
 
     public void setUserRoles(List<AppRole> userRoles) {
         this.userRoles = userRoles;
+    }
+
+    public List<String> getSavedRecipes() {
+        return savedRecipes;
+    }
+
+    public void setSavedRecipes(List<String> savedRecipes) {
+        this.savedRecipes = savedRecipes;
+    }
+
+    public List<String> getHealthLabels() {
+        return healthLabels;
+    }
+
+    public void setHealthLabels(List<String> healthLabels) {
+        this.healthLabels = healthLabels;
+    }
+
+    public List<String> getAllergens() {
+        return allergens;
+    }
+
+    public void setAllergens(List<String> allergens) {
+        this.allergens = allergens;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     @Override

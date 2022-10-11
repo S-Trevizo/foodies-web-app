@@ -35,12 +35,8 @@ function Login(props) {
             .then(jwtContainer => {
 
                 const jwt = jwtContainer.jwt_token;
-                
-                console.log(jwt);
-
                 auth.login(jwt);
                 history.push("/");
-
             })
             .catch(error => {
                 console.log(error);
