@@ -1,9 +1,50 @@
 import { Link } from 'react-router-dom';
+import React from 'react';
+import Select from 'react-select';
+import makeAnimated from 'react-select/animated';
 
 
 
 function Register() {
 
+    const options = [{value: "alcohol-cocktail", label: "Alcohol-Cocktail" },
+                    {value: "alcohol-free", label: "Alcohol-Free" }, 
+                    {value: "celery-free", label: "Celery-Free" }, 
+                    {value: "dairy-free", label: "Dairy-Free" },
+                    {value: "DASH", label: "DASH" },
+                    {value: "egg-free", label: "Egg-Free" },
+                    {value: "fish-free", label: "Fish-Free" },
+                    {value: "fodmap-free", label: "Fodmap-Free" },
+                    {value: "gluten-free", label: "Gluten-Free" },
+                    {value: "immuno-supportive", label: "Immuno-Supportive" },
+                    {value: "keto-friendly", label: "Keto-Friendly" },
+                    {value: "kidney-friendly", label: "Kidney-Friendly" },
+                    {value: "kosher", label: "Kosher" },
+                    {value: "low-fat-abs", label: "Low-Fat-Abs" },
+                    {value: "low-potassium", label: "Low-Potassium" },
+                    {value: "low-sugar", label: "Low-Sugar" },
+                    {value: "lupine-free", label: "Lupine-Free" },
+                    {value: "mediterranean", label: "Mediterranean" },
+                    {value: "mollusk-free", label: "Mollusk-Free" },
+                    {value: "mustard-free", label: "Mustard-Free" },
+                    {value: "no-oil-added", label: "No-Oil-Added" },
+                    {value: "paleo", label: "Paleo" },
+                    {value: "peanut-free", label: "Peanut-Free" },
+                    {value: "pescatarian", label: "Pescatarian" },
+                    {value: "pork-free", label: "Pork-Free" },
+                    {value: "red-meat-free", label: "Red-Meat-Free" },
+                    {value: "sesame-free", label: "Sesame-Free" },
+                    {value: "shellfish-free", label: "Shellfish-Free" },
+                    {value: "soy-free", label: "Soy-Free" },
+                    {value: "sugar-conscious", label: "Sugar-Concious" },
+                    {value: "sulfite-free", label: "Sulfite-Free" },
+                    {value: "tree-nut-free", label: "Tree-Nut-Free" },
+                    {value: "vegan", label: "Vegan" },
+                    {value: "vegetarian", label: "vegetarian" },
+                    {value: "wheat-free", label: "Wheat-Free" },
+                 ];
+
+    const animated = makeAnimated();
     
 
     return (
@@ -24,48 +65,10 @@ function Register() {
                     <label htmlFor="password">Password:</label>
                     <input id="password" name="password" type="password " className="form-control" />
                 </div>
-                <div>
-                    
-                    <label htmlFor="healthLabel">Health Labels:</label>
-                    <select title='Select your preferences' data-live-search="true" className='selectpicker col-12' id='healthLabel' multiple>
-                         <option value="alcohol-cocktail"> Alcohol-Cocktail  </option>
-                        <option value="alcohol-free"> Alcohol-Free  </option>
-                        <option value="celery-free"> Celery-Free  </option>
-                        <option value="crustacean-free"> Crustacean-Free  </option>
-                        <option value="dairy-free"> Dairy-Free  </option>
-                        <option value="DASH"> DASH  </option>
-                        <option value="egg-free"> Egg-Free  </option>
-                        <option value="fish-free"> Fish-Free  </option>
-                        <option value="fodmap-free"> Fodmap-Free  </option>
-                        <option value="gluten-free"> Gluten-Free  </option>
-                        <option value="immuno-supportive"> Immuno-Supportive  </option>
-                        <option value="keto-friendly"> Keto-Friendly  </option>
-                        <option value="kidney-friendly"> Kidney-Friendly  </option>
-                        <option value="kosher"> Kosher  </option>
-                        <option value="low-fat-abs"> Low-Fat-Abs  </option>
-                        <option value="low-potassium"> Low-Potassium  </option>
-                        <option value="low-sugar"> Low-Sugar  </option>
-                        <option value="lupine-free"> Lupine-Free  </option>
-                        <option value="Mediterranean"> Mediterranean  </option>
-                        <option value="mollusk-free"> Mollusk-Free  </option>
-                        <option value="mustard-free"> Mustard-Free  </option>
-                        <option value="no-oil-added"> No-Oil-Added  </option>
-                        <option value="paleo"> Paleo  </option>
-                        <option value="peanut-free"> Peanut-Free  </option>
-                        <option value="pescatarian"> Pescatarian  </option>
-                        <option value="pork-free"> Pork-Free  </option>
-                        <option value="red-meat-free"> Red-Meat-Free  </option>
-                        <option value="sesame-free"> Sesame-Free  </option>
-                        <option value="shellfish-free"> Shellfish-Free  </option>
-                        <option value="soy-free"> Soy-Free  </option>
-                        <option value="sugar-conscious"> Sugar-Conscious  </option>
-                        <option value="sulfite-free"> Sulfite-Free  </option>
-                        <option value="tree-nut-free"> Tree-Nut-Free  </option>
-                        <option value="vegan"> Vegan  </option>
-                        <option value="vegetarian"> Vegetarian  </option>
-                        <option value="wheat-free"> Wheat-Free  </option>
-                        
-                    </select>
+
+                <div className='form-group'>
+                    <label>Health Labels: </label>
+                    <Select isMulti closeMenuOnSelect={false} components={animated} className='basic-multi-select' classNamePrefix="select" options={options}></Select>
                 </div>
                 
 
