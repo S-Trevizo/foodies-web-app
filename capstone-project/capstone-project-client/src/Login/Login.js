@@ -56,7 +56,7 @@ function Login(props) {
         <div className="container-fluid">
             <h2>Login</h2>
             {errors ?
-                <div className="container bg-secondary rounded">
+                <div className="container">
                     {errors.map((e, index) => 
                     <ErrorMessages key={index} errorData={e} />)}
                 </div>

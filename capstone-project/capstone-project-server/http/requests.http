@@ -1,6 +1,6 @@
-@url = http://localhost:8080/api/security
+@url = http://localhost:8080/api
 
-POST {{url}}/create_account HTTP/1.1
+POST {{url}}/security/create_account HTTP/1.1
 Content-Type: application/json
 
 {
@@ -12,10 +12,26 @@ Content-Type: application/json
 
 ###
 
-POST {{url}}/authenticate HTTP/1.1
+POST {{url}}/security/authenticate HTTP/1.1
 Content-Type: application/json
 
 {
     "email": "bob@gmail.com",
     "password": "password#1"
 }
+
+###
+
+POST {{url}}/security/create_account HTTP/1.1
+Content-Type: application/json
+
+{
+    "name": "Testing for Account Details",
+    "username": "test@test.com",
+    "password": "password#3"
+}
+
+###
+
+GET {{url}}/users/account/63470cc3861cc42f1f79cbe9 HTTP/1.1
+
