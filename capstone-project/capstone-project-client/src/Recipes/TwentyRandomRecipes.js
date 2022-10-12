@@ -87,8 +87,10 @@ function TwentyRandomRecipes() {//search bar component will call this class with
             //I need to find a way to optionally let user input search criteria
             const input = { searchCriteria: "salt" };
             makeRecipeQuery(input);
+            apiFetch(fetchInfo);
         },
         []);
+
 
     return (
         <>
@@ -106,5 +108,6 @@ function TwentyRandomRecipes() {//search bar component will call this class with
         </>
     );
 }
+console.log("the request made it here, but the external api needs rest maybe?");
 
 export default TwentyRandomRecipes;
