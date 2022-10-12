@@ -11,7 +11,7 @@ function AdminPage() {
 
     useEffect(() => {
 
-    fetch("http://localhost:8080/api/security/users", {
+    fetch("http://localhost:8080/api/users", {
         method: "GET",
             headers: {
                 "Content-Type": "application/json",

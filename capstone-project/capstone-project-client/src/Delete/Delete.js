@@ -9,7 +9,7 @@ function Delete() {
 
     const handleDelete = function () {
 
-            fetch(`http://localhost:8080/api/security/users/delete/${user.userId}`, {method: "DELETE", headers: {"Authorization": "Bearer " + localStorage.getItem("foodiesToken")
+            fetch(`http://localhost:8080/api/users/delete/${user.userId}`, {method: "DELETE", headers: {"Authorization": "Bearer " + localStorage.getItem("foodiesToken")
             }})
                 .then (response => {
                     if (response.status === 204) {

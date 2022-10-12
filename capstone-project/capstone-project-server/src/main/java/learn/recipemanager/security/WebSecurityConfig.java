@@ -32,6 +32,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.POST, "/api/security/create_account").permitAll()
                 .antMatchers(HttpMethod.GET, "/api/security/*").hasAnyRole("ADMIN")
                 .antMatchers(HttpMethod.DELETE, "/api/security/**").hasAnyRole("ADMIN")
+                .antMatchers(HttpMethod.GET, "/api/users").hasAnyRole("ADMIN")
+                .antMatchers(HttpMethod.DELETE, "/api/users/**").hasAnyRole("ADMIN")
                 .antMatchers("/**").denyAll()
                 .and()
                 .sessionManagement()

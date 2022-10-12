@@ -30,18 +30,6 @@ public class SecurityController {
         this.converter = converter;
     }
 
-    @GetMapping("/users")
-    public ResponseEntity<List<AppUser>> getUsers(){
-
-        List<AppUser> users = appUserService.findAll();
-
-        for (AppUser u : users) {
-            u.setPassHash("");
-        };
-
-        return new ResponseEntity(users,HttpStatus.OK);
-    }
-
     @PostMapping("/authenticate")
     public ResponseEntity login(@RequestBody LoginRequest request){
         UsernamePasswordAuthenticationToken rawToken
@@ -71,12 +59,5 @@ public class SecurityController {
         return new ResponseEntity<>(map, HttpStatus.CREATED);
     }
 
-    @DeleteMapping("/users/delete/{id}")
-    public ResponseEntity deleteById(@PathVariable String id) {
-        if (appUserService.deleteById(id)) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-    }
 
 }
