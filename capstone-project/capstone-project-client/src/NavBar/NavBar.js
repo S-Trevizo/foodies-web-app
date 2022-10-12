@@ -1,10 +1,28 @@
-import { useContext } from 'react';
+import { useContext, useState, useEffect } from "react";
 import { Link } from 'react-router-dom';
+import { useHistory } from "react-router-dom";
 import AuthContext from '../AuthContext';
+
 
 function NavBar(props) {
 
     const auth = useContext(AuthContext);
+    const history = useHistory();
+    const [searchCriteria, setSearchCriteria] = useState("");
+
+
+    function handleSubmit(event) {
+        event.preventDefault();
+        console.log(searchCriteria);
+
+        //perform a search
+        //history.push page to searchresults page.
+        //how could I involve user input?
+
+    }
+
+    //if history.location.pathname === "/" then do the front page search bar. else, do navbar searchbar.
+    //also: check widget to see how to send in search items to searchbar from user allergens list.
 
     return (
 
@@ -36,11 +54,35 @@ function NavBar(props) {
                     </li>
 
                     {auth.user ? auth.user.roles ? <li className="nav-item">
-                    <Link to="/admin" className="nav-link">User Administration</Link>
-                    </li> : null : null }
-                
+                        <Link to="/admin" className="nav-link">User Administration</Link>
+                    </li> : null : null}
+
 
                 </ul>
+
+
+
+
+
+
+                <div>
+
+                    <form>
+                        <div className={"form-group"}>
+                            <input onChange={(e) =>setSearchCriteria(e.target.value)} className={"form-control form-control-sm"} type={"text"} placeholder={"Search for recipes"}/>
+                        </div>
+                        <div>
+                        <button className={"btn btn-primary"} onClick={handleSubmit} id="searchBarText">Submit</button>
+                        </div>
+                    </form>
+
+                </div>
+
+
+
+
+
+
                 {auth.user ? <Link className="btn btn-outline-success my-2 my-sm-0 mr-2" to="/" onClick={() => auth.logout()}>Log Out</Link> :
                     <div>
                         <Link className="btn btn-outline-success my-2 my-sm-0 mr-2" to="/login"  >Log In</Link>
