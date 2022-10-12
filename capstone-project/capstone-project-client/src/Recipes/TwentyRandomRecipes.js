@@ -20,35 +20,35 @@ function TwentyRandomRecipes() {
         }
 
         //how do I not hard-code the api key?
-        fetch("https://api.edamam.com/api/recipes/v2?type=public&q=" + input.searchCriteria + "&app_id="+input.app_id+"&app_key="+input.app_key, {
-        method: "GET",
-            headers: {
-                "Content-Type": "application/json"
-            }
-        }).then(async response => {
-            if (response.status === 200) {
-                const toReturn = response.json();
-                return toReturn;
-            } else if (response.status === 400) {
-                return Promise.reject(await response.json());
-            } else if (response.status === 403) {
-                return Promise.reject(await response.json());
-            } else {
-                return Promise.reject(await response.json());
-            }
-        }).then(recipesOutput => {
-            setRecipes(recipesOutput.hits);
-        }).catch(error => {
-            if (error instanceof TypeError) {//is this error even possible here?
-                const copyArray = [];
-                copyArray.push("Could not connect to api.");
-                setErrorsToAppend(copyArray);
-            } else {
-                const copyArray = [];
-                copyArray.push(...error);
-                setErrorsToAppend(copyArray);
-            }
-        });
+        // fetch("https://api.edamam.com/api/recipes/v2?type=public&q=" + input.searchCriteria + "&app_id="+input.app_id+"&app_key="+input.app_key, {
+        // method: "GET",
+        //     headers: {
+        //         "Content-Type": "application/json"
+        //     }
+        // }).then(async response => {
+        //     if (response.status === 200) {
+        //         const toReturn = response.json();
+        //         return toReturn;
+        //     } else if (response.status === 400) {
+        //         return Promise.reject(await response.json());
+        //     } else if (response.status === 403) {
+        //         return Promise.reject(await response.json());
+        //     } else {
+        //         return Promise.reject(await response.json());
+        //     }
+        // }).then(recipesOutput => {
+        //     setRecipes(recipesOutput.hits);
+        // }).catch(error => {
+        //     if (error instanceof TypeError) {//is this error even possible here?
+        //         const copyArray = [];
+        //         copyArray.push("Could not connect to api.");
+        //         setErrorsToAppend(copyArray);
+        //     } else {
+        //         const copyArray = [];
+        //         copyArray.push(...error);
+        //         setErrorsToAppend(copyArray);
+        //     }
+        // });
     }
 
     function makeRecipeQuery(input) {

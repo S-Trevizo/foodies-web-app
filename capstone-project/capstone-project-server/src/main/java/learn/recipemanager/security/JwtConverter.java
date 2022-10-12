@@ -14,7 +14,7 @@ import java.util.Date;
 public class JwtConverter {
     private Key signingKey = Keys.secretKeyFor(SignatureAlgorithm.HS512);
 
-    private final int EXPIRATION_MINUTES = 15;
+    private final int EXPIRATION_MINUTES = 120;
     private final int EXPIRATION_MILLIS = EXPIRATION_MINUTES * 60 * 1000;
     public String buildJwt(AppUser user){
         String token = io.jsonwebtoken.Jwts.builder()
