@@ -5,14 +5,15 @@ import HealthLabel from "../HealthLabel/HealthLabel";
 function Recipe({ recipeData }) {
     /*
     --> move into bootstrap carousel
-    
     */
-    //print out: 
-    console.log(recipeData);
-    //what if I don't want to always display it as a carousel?
+    //what if I don't want to always display recipes in a carousel?
     return (
     <>
-        <h5> recipe name: {recipeData.Recipe}</h5>
+
+
+
+
+        <h5> recipe name: {recipeData.label}</h5>
         <div> recipe id: {recipeData.uri.substr(recipeData.uri.length - 32)}</div>
         <div> directions: {recipeData.shareAs}</div>
         <div> allergens: need to map healthLabels too. (trigger the line below with a button. this code snippet below works)</div>
