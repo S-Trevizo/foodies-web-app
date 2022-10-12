@@ -135,8 +135,5 @@ function TwentyRandomRecipes() {
             </div>
     );
 }
-<<<<<<< HEAD
-=======
 
->>>>>>> 1e759207c7536f379c3ab73efbca2fe2e62362bf
 export default TwentyRandomRecipes;
