@@ -24,7 +24,7 @@ export default Recipe;
 //how to call the chunk above from a different component:
 /*
             <div>
-                {recipes ?
+                {(recipes.length > 0) ?
                     recipes.map((r, index) => <Recipe key={index} recipeData={r.recipe} />) :
                     null}
             </div>
