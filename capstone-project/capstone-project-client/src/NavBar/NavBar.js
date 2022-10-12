@@ -32,13 +32,13 @@ function NavBar(props) {
                     </li>
 
                     <li className="nav-item">
-                        <a className="nav-link disabled" href="#">Account</a>
+                            <a className="nav-link" href={auth.user ? `/user/${auth.userId}` : "/login"}>Account</a>
                     </li>
 
                     {auth.user ? auth.user.roles ? <li className="nav-item">
-                    <Link to="/admin" className="nav-link">User Administration</Link>
-                    </li> : null : null }
-                
+                        <Link to="/admin" className="nav-link">User Administration</Link>
+                    </li> : null : null}
+
 
                 </ul>
                 {auth.user ? <Link className="btn btn-outline-success my-2 my-sm-0 mr-2" to="/" onClick={() => auth.logout()}>Log Out</Link> :
