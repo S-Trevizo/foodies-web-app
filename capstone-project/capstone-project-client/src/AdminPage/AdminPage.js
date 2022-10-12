@@ -1,5 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import AuthContext from "../AuthContext";
+import ErrorMessages from "../ErrorMessages/ErrorMessages";
 import UserCard from "../User/UserCard";
 
 function AdminPage() {
@@ -42,7 +43,14 @@ function AdminPage() {
         })}, []);
 
         return (
-            <div className="container">
+            <div className="container-fluid">
+            <h2>User Administration</h2>
+            {errorsToAppend ?
+                <div className="container bg-secondary rounded">
+                    {errorsToAppend.map((e, index) => 
+                    <ErrorMessages key={index} errorData={e} />)}
+                </div>
+                : null}
                 {users.map(u => <UserCard key={u.userId} user={u}/>)}
             </div>
         );
