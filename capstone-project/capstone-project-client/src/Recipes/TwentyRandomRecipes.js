@@ -19,8 +19,10 @@ function TwentyRandomRecipes() {
             return;
         }
         //how do I not hard-code the api key?
+        //also: the other fetch here tests how error message from external api are displayed
         fetch("https://api.edamam.com/api/recipes/v2?type=public&q=" + input.q + "&app_id=" + input.app_id + "&app_key=" + input.app_key, {
-            method: "GET",
+            // fetch("https://api.edamam.com/api/recipes/v2?type=public&q=critera&app_id=4357d5e9&app_key=84496af29c091bb734dab8904e3d9df5&health=alcohol-cocktail&health=alcohol-free&health=celery-free&health=crustacean-free&health=dairy-free&health=DASH&health=egg-free&health=fish-free&health=fodmap-free&health=gluten-free&health=immuno-supportive&health=keto-friendly&health=kidney-friendly&health=kosher&health=low-fat-abs&health=low-potassium&health=low-sugar&health=lupine-free&health=Mediterranean&health=mollusk-free&health=mustard-free&health=no-oil-added&health=paleo&health=peanut-free&health=pescatarian&health=pork-free&health=red-meat-free&health=sesame-free&health=shellfish-free&health=soy-free&health=sugar-conscious&health=sulfite-free&health=tree-nut-free&health=vegan&health=vegetarian&health=wheat-free", {
+        method: "GET",
             headers: {
                 "Content-Type": "application/json"
             }
@@ -88,51 +90,36 @@ function TwentyRandomRecipes() {
         []);
 
     return (
-        <div >
-            <div id="carouselExampleIndicators" className="carousel slide w-25" data-ride="carousel">
-                <ol className="carousel-indicators">
-                    {/* <li data-target="#carouselExampleIndicators" data-slide-to="0" className="active"></li>
-                    <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
-                    <li data-target="#carouselExampleIndicators" data-slide-to="2"></li> */}
-                    {recipes &&
-                    recipes.map((r, index) => <li data-target="#carouselExampleIndicators" key={index} data-slide-to={""+index+""} className={index === 0 ? "active" : ""}/>)}
-                    
-                </ol>
-                <div className="carousel-inner">
-                {recipes &&
-                    recipes.map((r, index) => <RecipeCarouseItem key={index} recipeData={r.recipe} isActive={index === 0}/>)}
+        //conditionally print "no results found" if recipes is empty
+        <div>
+            {errorsToAppend.map((r, index) => <ErrorMessages key={index} errorData={r} />)}
+
+            {(recipes.length > 0) ?
+                <div id="carouselExampleIndicators" className="carousel slide w-25" data-ride="carousel">
+                    <ol className="carousel-indicators">
+                        {recipes &&
+                            recipes.map((r, index) => <li data-target="#carouselExampleIndicators" key={index} data-slide-to={"" + index + ""} className={index === 0 ? "active" : ""} />)}
+
+                    </ol>
+                    <div className="carousel-inner">
+                        {recipes ?
+                            recipes.map((r, index) => <RecipeCarouseItem key={index} recipeData={r.recipe} isActive={index === 0} />) :
+                            <div>No recipes could be found.</div>
+                        }
+                    </div>
+                    <a className="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+                        <span className="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span className="sr-only">Previous</span>
+                    </a>
+                    <a className="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+                        <span className="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span className="sr-only">Next</span>
+                    </a>
                 </div>
-                <a className="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
-                    <span className="carousel-control-prev-icon" aria-hidden="true"></span>
-                    <span className="sr-only">Previous</span>
-                </a>
-                <a className="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
-                    <span className="carousel-control-next-icon" aria-hidden="true"></span>
-                    <span className="sr-only">Next</span>
-                </a>
-            </div>
 
+                : <div>no recipes found</div>}
 
-
-
-
-
-
-
-
-
-            <div>
-                {/* todo: include link to recipe image. load it in carousel. 
-                then use the name of the recipe and input a link from the external api to the directions */}
-                {/* todo also: if no recipes are found, nothing prints out to let the user know. */}
-
-                {errorsToAppend.map((r, index) => <ErrorMessages key={index} errorData={r} />)}
-                {recipes ?
-                    recipes.map((r, index) => <Recipe key={index} recipeData={r.recipe} />) :
-                    null}
-            </div>
-
-            </div>
+        </div>
     );
 }
 
