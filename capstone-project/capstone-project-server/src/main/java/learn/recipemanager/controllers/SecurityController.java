@@ -63,7 +63,8 @@ public class SecurityController {
 
         if (!appUser.isSuccess()) {
             return ErrorResponse.build(appUser);
-        }
+        }  //TODO this return ^^^ is breaking.
+
         //"happy path":
         HashMap<String, String> map = new HashMap<>();
         map.put("appUserId", appUser.getPayload().getUserId());
