@@ -6,7 +6,7 @@ import ErrorMessages from "../ErrorMessages/ErrorMessages";
 import RecipeCarouseItem from "../RecipeCarouseItem/RecipeCarouseItem";
 
 
-function TwentyRandomRecipes() {
+function TwentyRandomRecipes(props) {
     // todo: search bar component will call this class with searchCriteria as argument.
     // todo continued: maybe also take in an argument with information on what to filter? not sure. needs security at that point. or do separate component for that. will see.
     const [recipes, setRecipes] = useState([]);
@@ -34,7 +34,10 @@ function TwentyRandomRecipes() {
                 return Promise.reject(await response.json());
             } else if (response.status === 403) {
                 return Promise.reject(await response.json());
-            } else {
+            } else if (response.status === 429) {
+                return Promise.reject( ["Too many requests sent to the api."] );
+            }
+            else {
                 return Promise.reject(await response.json());
             }
         }).then(recipesOutput => {
@@ -85,6 +88,9 @@ function TwentyRandomRecipes() {
         () => {
             //todo: I need to find a way to optionally let user input search criteria
             const input = { searchCriteria: "raspberry" };
+            if(props.props !== undefined) {
+                input.searchCriteria = props.props;
+            }
             loadRandomRecipes(input);//loads twice. "double tap" due to strict mode
         },
         []);
@@ -93,7 +99,6 @@ function TwentyRandomRecipes() {
 
     
     return (
-        //conditionally print "no results found" if recipes is empty
         <div>
             {errorsToAppend.map((r, index) => <ErrorMessages key={index} errorData={r} />)}
 
