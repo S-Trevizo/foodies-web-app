@@ -14,7 +14,7 @@ function TwentyRandomRecipes() {
     // todo: first, make an api request. ignore login status for now. 
     // const userData = useContext(AuthContext);
 
-    // function getRecipesFromRemoteApi(input) {
+     function getRecipesFromRemoteApi(input) {
     //     if (input === null) {
     //         return;
     //     }
@@ -50,7 +50,7 @@ function TwentyRandomRecipes() {
     //             setErrorsToAppend(copyArray);
     //         }
     //     });
-    // }
+     }
 
     function loadRandomRecipes(input) {
         fetch("http://localhost:8080/api/recipe/public", {
