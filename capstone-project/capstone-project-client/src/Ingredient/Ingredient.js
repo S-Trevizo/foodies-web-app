@@ -1,7 +1,6 @@
 
 function Ingredient(ingredientData ) {
 
-console.log(ingredientData.ingredientData);
 
     return (
         <>
