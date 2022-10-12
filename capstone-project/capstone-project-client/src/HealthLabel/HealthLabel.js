@@ -2,10 +2,9 @@
 
 function HealthLabel(props) {
 
-console.log(props);
     return (//this is the name of the healthLabel. I think it'd be good to make healthlabels and user roles enums in backend.
         <>
-    <div>{props.healthLabelData}</div>
+            <div>{props.healthLabelData}</div>
         </>
     );
 }
