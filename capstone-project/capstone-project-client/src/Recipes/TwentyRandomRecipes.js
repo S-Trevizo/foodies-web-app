@@ -5,7 +5,7 @@ import Recipe from "../Recipe/Recipe";
 import ErrorMessages from "../ErrorMessages/ErrorMessages";
 
 
-function TwentyRandomRecipes() {
+function TwentyRandomRecipes() {//search bar component will call this class with searchCriteria as argument
     const [recipes, setRecipes] = useState([]);
     const [errorsToAppend, setErrorsToAppend] = useState([]);
     const [fetchInfo, setFetchInfo] = useState(null);
@@ -17,7 +17,7 @@ function TwentyRandomRecipes() {
             return;
         }
 
-        //how do I not hard-code the api key and stuff?
+        //how do I not hard-code the api key?
         fetch("https://api.edamam.com/api/recipes/v2?type=public&q=" + input.searchCriteria + "&app_id="+input.app_id+"&app_key="+input.app_key, {
         method: "GET",
             headers: {
@@ -34,10 +34,10 @@ function TwentyRandomRecipes() {
             } else {
                 return Promise.reject(await response.json());
             }
-        }).then(recipesOutput => {//not working. recent change. 
+        }).then(recipesOutput => {
             setRecipes(recipesOutput.hits);
         }).catch(error => {
-            if (error instanceof TypeError) {//is this even possible? 
+            if (error instanceof TypeError) {//is this error even possible here?
                 const copyArray = [];
                 copyArray.push("Could not connect to api.");
                 setErrorsToAppend(copyArray);
@@ -96,7 +96,7 @@ function TwentyRandomRecipes() {
             <div>
                 {/* I want to make the id/key the uri or whatever it was. string select.*/}
                 {/* also: if no recipes are found, nothing prints out to let the user know. */}
-                
+
                 {errorsToAppend.map((r, index) => <ErrorMessages key={index} errorData={r} />)}
                 {recipes ? 
                 recipes.map((r, index) => <Recipe key={index} recipeData={r.recipe} />) :

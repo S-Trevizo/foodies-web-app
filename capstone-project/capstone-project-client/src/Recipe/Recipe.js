@@ -1,3 +1,6 @@
+import Ingredient from "../Ingredient/Ingredient";
+
+
 function Recipe({ recipeData }) {
     /*
     what information do I want to print out? 
@@ -12,13 +15,21 @@ function Recipe({ recipeData }) {
     */
     //print out: 
     
-    console.log(recipeData);
     return (
     <>
-        <p>{recipeData.calories}</p>
-        <div> </div>
+        <div> recipe id: {recipeData.uri.substr(recipeData.uri.length - 32)}</div>
+        <div> recipe ingredients list:</div>
+        {recipeData.ingredients.map((i, index) => <Ingredient key={index} ingredientData={i} />)}
+
     </>
     );
 }
 
 export default Recipe;
+
+/*
+        {/* <div> recipe ingredients list:        </div>
+        {recipeData.ingredients.map((i) => <Ingredient key={i.foodId} ingredientData={i} />)}
+        <div> */
+
+        /* </div> */
