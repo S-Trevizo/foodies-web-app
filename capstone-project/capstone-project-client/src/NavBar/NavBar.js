@@ -15,7 +15,12 @@ function NavBar(props) {
         event.preventDefault();
         console.log(searchCriteria);
 
-        //perform a search
+
+
+
+        //perform a search (for now, use just public search. then implement private search)
+
+
         //history.push page to searchresults page.
         //how could I involve user input?
 
@@ -98,3 +103,5 @@ function NavBar(props) {
 }
 
 export default NavBar;
+
+//reformat searchbar: https://getbootstrap.com/docs/4.0/components/input-group/
