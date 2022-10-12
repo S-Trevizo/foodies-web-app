@@ -44,7 +44,6 @@ function Login(props) {
             })
             .catch(error => {
                 if (error instanceof TypeError) {
-                    console.log(error);
                     setErrors(["Could not connect to API."]);
                 } else {
                     setErrors(error);

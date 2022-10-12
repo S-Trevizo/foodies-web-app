@@ -63,14 +63,15 @@ public class SecurityController {
 
         if (!appUser.isSuccess()) {
             return ErrorResponse.build(appUser);
-        }
+        }  //TODO this return ^^^ is breaking.
+
         //"happy path":
         HashMap<String, String> map = new HashMap<>();
         map.put("appUserId", appUser.getPayload().getUserId());
         return new ResponseEntity<>(map, HttpStatus.CREATED);
     }
 
-    @DeleteMapping("/users/{id}")
+    @DeleteMapping("/users/delete/{id}")
     public ResponseEntity deleteById(@PathVariable String id) {
         if (appUserService.deleteById(id)) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);

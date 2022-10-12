@@ -9,6 +9,7 @@ import jwtDecode from "jwt-decode";
 import Register from './Register/Register';
 import TwentyRandomRecipes from './Recipes/TwentyRandomRecipes';
 import AdminPage from './AdminPage/AdminPage';
+import Delete from './Delete/Delete';
 
 const LOCAL_STORAGE_TOKEN_KEY = "foodiesToken";
 
@@ -45,7 +46,7 @@ function App() {
       }
     };
 
-    console.log(user);
+  
     setUser(user);
     return user;
 
@@ -85,6 +86,9 @@ function App() {
             </Route>
             <Route path="/admin">
               <AdminPage/>
+            </Route>
+            <Route path="/delete">
+              <Delete/>
             </Route>
           </Switch>
         </BrowserRouter>

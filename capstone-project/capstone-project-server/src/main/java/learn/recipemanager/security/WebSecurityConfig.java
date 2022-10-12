@@ -30,7 +30,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.POST, "/api/recipe/public").permitAll()
                 .antMatchers(HttpMethod.POST,  "/api/security/authenticate").permitAll()//HttpMethod.POST,
                 .antMatchers(HttpMethod.POST, "/api/security/create_account").permitAll()
-                .antMatchers(HttpMethod.GET, "/api/security/users").hasAnyRole("ADMIN")
+                .antMatchers(HttpMethod.GET, "/api/security/*").hasAnyRole("ADMIN")
+                .antMatchers(HttpMethod.DELETE, "/api/security/**").hasAnyRole("ADMIN")
                 .antMatchers("/**").denyAll()
                 .and()
                 .sessionManagement()
