@@ -4,8 +4,11 @@ POST {{url}}/create_account HTTP/1.1
 Content-Type: application/json
 
 {
-    "username": "bob@gmail.com",
-    "password": "password#1"
+    "username": "bob2@gmail.com",
+    "password": "password#1",
+    "name": "Bob Smith",
+    "favorites": [],
+    "healthLabels": []
 }
 
 ###
@@ -14,21 +17,14 @@ POST {{url}}/authenticate HTTP/1.1
 Content-Type: application/json
 
 {
-    "username": "bob@gmail.com",
-    "password": "password#1"
+    "email": "admin@admin.com",
+    "password": "Password1!"
 }
 
 ###
-
-POST http://localhost:8080/api/recipe/public HTTP/1.1
-Content-Type: application/json
-
-{
-    "searchCriteria": "salt"
-}
-
+GET http://localhost:8080/api/security/users HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJqdGkiOiI2MzQ1YjNjZGMxOGQwZjJjODdjODNiOTQiLCJlbWFpbCI6ImFkbWluQGFkbWluLmNvbSIsInJvbGVzIjpbeyJyb2xlTmFtZSI6IkFETUlOIiwiYXV0aG9yaXR5Ijp7ImF1dGhvcml0eSI6IkFETUlOIn19XSwiaXNzIjoiZm9vZGllcyIsInN1YiI6ImFkbWluQGFkbWluLmNvbSIsImlhdCI6MTY2NTUxOTU4NywiZXhwIjoxNjY1NTIwNDg3fQ.NUHti1RqaMcvPEHegRXEKjpQabo_9bUaAX76SZrLdbpSvplA-HPatyjWxXM8am5nc1N7zpTsDBPZC-o4sV8KZA
 ###
 
-GET https://api.edamam.com/api/recipes/v2?type=public&q=salt&app_id=4357d5e9&app_key=84496af29c091bb734dab8904e3d9df5 HTTP/1.1
+GET http://localhost:8080/api/recipe/public/salt HTTP/1.1
 Content-Type: application/json
-
