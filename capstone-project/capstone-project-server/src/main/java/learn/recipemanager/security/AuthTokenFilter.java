@@ -46,7 +46,7 @@ public class AuthTokenFilter extends OncePerRequestFilter {
 
             SecurityContextHolder.getContext().setAuthentication(rawToken);
         }
-        filterChain.doFilter(request, response);
+            filterChain.doFilter(request, response);
     }
     private String readToken(String authorization) {//null if there is no Authorization header
         if( authorization != null ){

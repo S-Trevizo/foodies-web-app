@@ -42,6 +42,11 @@ public class AppUserService implements UserDetailsService {
 
     }
 
+
+    public List<AppUser> findAll() {
+        return repo.findAll();
+    }
+
     public Result<AppUser> create(String email, String password, String name, List<String> favorites, List<String> healthLabels) {
 
         Result<AppUser> result = validate(email);
@@ -59,7 +64,7 @@ public class AppUserService implements UserDetailsService {
         }
 
         AppRole appRole = new AppRole();
-        appRole.setRoleName("User");
+        appRole.setRoleName("USER");
         password = encoder.encode(password);
 
 
@@ -128,5 +133,11 @@ public class AppUserService implements UserDetailsService {
 
     }
 
-
+    public boolean deleteById(String id) {
+        if (repo.findById(id).isPresent()) {
+            repo.deleteById(id);
+            return true;
+        }
+        return false;
+    }
 }

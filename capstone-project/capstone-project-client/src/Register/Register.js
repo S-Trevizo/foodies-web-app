@@ -115,7 +115,7 @@ function Register() {
                 </div>
                 <div className="form-group">
                     <label htmlFor="password">Password:</label>
-                    <input id="password" name="password" type="password " className="form-control" onChange={e => setPassword(e.target.value)}/>
+                    <input id="password" name="password" type="password" className="form-control" onChange={e => setPassword(e.target.value)}/>
                 </div>
 
                 <div className='form-group'>

@@ -7,6 +7,8 @@ import NavBar from './NavBar/NavBar';
 import AuthContext from './AuthContext';
 import jwtDecode from "jwt-decode";
 import Register from './Register/Register';
+import TwentyRandomRecipes from './Recipes/TwentyRandomRecipes';
+import AdminPage from './AdminPage/AdminPage';
 
 const LOCAL_STORAGE_TOKEN_KEY = "foodiesToken";
 
@@ -73,12 +75,16 @@ function App() {
           <Switch>
             <Route exact path="/">
               <HomePage />
+              <TwentyRandomRecipes />
             </Route>
             <Route path="/login">
               <Login setLoginInfo={setLoginInfo} />
             </Route>
             <Route path="/register">
               <Register setLoginInfo={setLoginInfo}/>
+            </Route>
+            <Route path="/admin">
+              <AdminPage/>
             </Route>
           </Switch>
         </BrowserRouter>

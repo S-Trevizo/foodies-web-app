@@ -1,7 +1,8 @@
 import { useContext, useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import AuthContext from '../AuthContext';
-import Error from '../Error';
+import ErrorMessages from '../ErrorMessages/ErrorMessages';
+
 
 
 function Login(props) {
@@ -30,9 +31,10 @@ function Login(props) {
             .then(async response => {
                 if (response.status === 200) {
                     return response.json();
+                } else if (response.status === 403){
+                    return Promise.reject(["The username or password is Incorrect."]);
                 } else {
-                    console.log(response);
-                    return Promise.reject(await response.json());
+                    return Promise.reject(["Failed to Login."]);
                 }
             })
             .then(jwtContainer => {
@@ -42,6 +44,7 @@ function Login(props) {
             })
             .catch(error => {
                 if (error instanceof TypeError) {
+                    console.log(error);
                     setErrors(["Could not connect to API."]);
                 } else {
                     setErrors(error);
@@ -51,8 +54,14 @@ function Login(props) {
 
 
     return (
-        <div className="container">
+        <div className="container-fluid">
             <h2>Login</h2>
+            {errors ?
+                <div className="container bg-secondary rounded">
+                    {errors.map((e, index) => 
+                    <ErrorMessages key={index} errorData={e} />)}
+                </div>
+                : null}
             <form onSubmit={loginHandler} >
                 <div className="form-group">
                     <label htmlFor="username">User Name (email)</label>
@@ -69,14 +78,10 @@ function Login(props) {
                 </div>
 
                 <div className="text-right">
-                    <button className="btn btn-primary ">Log In</button>
+                    <button className="btn btn-primary mr-2">Log In</button>
                     <Link to="/" className="btn btn-danger">Cancel</Link>
                 </div>
-                <div className="container">
-                    {errors.map((error, index) => (
-                        <Error key={index} msg={error} />
-                    ))}
-                </div>
+     
             </form>
         </div>
     );
