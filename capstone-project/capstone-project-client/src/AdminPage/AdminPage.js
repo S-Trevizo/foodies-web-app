@@ -1,5 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import AuthContext from "../AuthContext";
+import UserCard from "../User/UserCard";
 
 function AdminPage() {
 
@@ -7,7 +8,7 @@ function AdminPage() {
     const [errorsToAppend, setErrorsToAppend] = useState([]);
     const [users, setUsers] = useState([]);
 
-    useEffect(
+    useEffect(() => {
 
     fetch("http://localhost:8080/api/security/users", {
         method: "GET",
@@ -27,8 +28,7 @@ function AdminPage() {
                 return Promise.reject(await response.json());
             }
         }).then(response => {
-            console.log(response);
-            setUsers([]);
+            setUsers(response);
         }).catch(error => {
             if (error instanceof TypeError) {
                 const errors = [];
@@ -39,9 +39,12 @@ function AdminPage() {
                 errors.push(...error);
                 setErrorsToAppend(errors);
             }
-        }), []);
+        })}, []);
+
         return (
-            <div className="container"></div>
+            <div className="container">
+                {users.map(u => <UserCard key={u.userId} user={u}/>)}
+            </div>
         );
     }
     
