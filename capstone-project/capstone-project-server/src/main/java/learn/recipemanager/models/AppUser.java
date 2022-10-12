@@ -1,5 +1,7 @@
 package learn.recipemanager.models;
 
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.security.core.GrantedAuthority;
@@ -8,8 +10,11 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 @Document
+@AllArgsConstructor
+@NoArgsConstructor
 public class AppUser implements UserDetails {
     @Id
     private String userId;
@@ -135,5 +140,21 @@ public class AppUser implements UserDetails {
     @Override
     public boolean isEnabled() {
         return !isDeleted;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        AppUser appUser = (AppUser) o;
+        return isDeleted == appUser.isDeleted && Objects.equals(userId, appUser.userId)
+                && Objects.equals(email, appUser.email) && Objects.equals(passHash, appUser.passHash)
+                && Objects.equals(userRoles, appUser.userRoles) && Objects.equals(name, appUser.name)
+                && Objects.equals(favorites, appUser.favorites) && Objects.equals(healthLabels, appUser.healthLabels);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(userId, email, passHash, isDeleted, userRoles, name, favorites, healthLabels);
     }
 }
