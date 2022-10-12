@@ -10,6 +10,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -21,14 +22,14 @@ public class AppUserService implements UserDetailsService {
     @Autowired
     private PasswordEncoder encoder;
 
-    public AppUserService (AppUserRepo repo) {
+    public AppUserService(AppUserRepo repo) {
         this.repo = repo;
     }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
-        var matchingUsers=  repo.findByUsername(username);
+        var matchingUsers = repo.findByUsername(username);
         if (matchingUsers.size() > 0) {
             AppUser appUser = matchingUsers.get(0);
             if (!appUser.isEnabled()) {
@@ -47,10 +48,25 @@ public class AppUserService implements UserDetailsService {
         return repo.findAll().stream().filter(u -> !u.isDeleted()).collect(Collectors.toList());
     }
 
+    public Result<AppUser> findById(String userId) {
+        Result<AppUser> result = new Result<>();
+        if (userId == null){
+            result.addMessage("No User Id found.", ResultType.INVALID);
+        }
+
+        for (AppUser user : findAll()) {
+            if (user.getUserId().equals(userId)) {
+                result.setPayload(user);
+            } else {
+                result.addMessage("User does not exist.", ResultType.INVALID);
+            }
+        }
+        return result;
+    }
+
     public Result<AppUser> create(String email, String password, String name, List<String> favorites, List<String> healthLabels) {
 
         Result<AppUser> result = validate(email);
-
 
 
         if (!result.isSuccess()) {
@@ -68,14 +84,14 @@ public class AppUserService implements UserDetailsService {
         password = encoder.encode(password);
 
 
-        AppUser appUser = new AppUser( email, password, false, List.of(appRole), name, favorites,healthLabels);
+        AppUser appUser = new AppUser(email, password, false, List.of(appRole), name, favorites, healthLabels);
 
         if (!result.isSuccess()) {
             return result;
         }
 
         result.setPayload(repo.save(appUser));
-        
+
         return result;
     }
 
@@ -85,8 +101,6 @@ public class AppUserService implements UserDetailsService {
             result.addMessage("Password is required and should be more than 8 characters", ResultType.INVALID);
             return result;
         }
-
-
 
 
         int digits = 0;
@@ -125,7 +139,7 @@ public class AppUserService implements UserDetailsService {
             return result;
         }
 
-        if (repo.findByUsername(email).size() > 0 ) {
+        if (repo.findByUsername(email).size() > 0) {
             result.addMessage("Email already registered", ResultType.INVALID);
         }
 

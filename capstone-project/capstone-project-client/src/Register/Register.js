@@ -110,7 +110,7 @@ function Register() {
         <div className="container">
             <h2>Register</h2>
             {errors ?
-                <div className="container bg-secondary rounded">
+                <div className="container">
                     {/* {errors.map((e, index) =>
                         <ErrorMessages key={index} errorData={e} />)} */}
                 </div>
