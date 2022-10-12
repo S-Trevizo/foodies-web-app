@@ -5,11 +5,13 @@ import Recipe from "../Recipe/Recipe";
 import ErrorMessages from "../ErrorMessages/ErrorMessages";
 
 
-function TwentyRandomRecipes() {//search bar component will call this class with searchCriteria as argument
+function TwentyRandomRecipes() {
+    // todo: search bar component will call this class with searchCriteria as argument.
+    // todo continued: maybe also take in an argument with information on what to filter? not sure. needs security at that point. or do separate component for that. will see.
     const [recipes, setRecipes] = useState([]);
     const [errorsToAppend, setErrorsToAppend] = useState([]);
     const [fetchInfo, setFetchInfo] = useState(null);
-    // first, make an api request. ignore login status for now. 
+    // todo: first, make an api request. ignore login status for now. 
     // const userData = useContext(AuthContext);
 
     function apiFetch(input) {
@@ -77,25 +79,27 @@ function TwentyRandomRecipes() {//search bar component will call this class with
             });
 
         apiFetch(fetchInfo);
-
+        
         }
-
     
-
     useEffect(
         () => {
-            //I need to find a way to optionally let user input search criteria
+            //todo: I need to find a way to optionally let user input search criteria
             const input = { searchCriteria: "salt" };
             makeRecipeQuery(input);
+            apiFetch(fetchInfo);//this is my attempt to run this page only once. It still runs more than once even if this is commented out.
         },
         []);
 
+
+        console.log("for some reason, having a print here makes it load recipes more consistently...");
     return (
         <>
 
             <div>
-                {/* I want to make the id/key the uri or whatever it was. string select.*/}
-                {/* also: if no recipes are found, nothing prints out to let the user know. */}
+                {/* todo: include link to recipe image. load it in carousel. 
+                then use the name of the recipe and input a link from the external api to the directions */}
+                {/* todo also: if no recipes are found, nothing prints out to let the user know. */}
 
                 {errorsToAppend.map((r, index) => <ErrorMessages key={index} errorData={r} />)}
                 {recipes ? 
