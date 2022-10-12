@@ -4,15 +4,15 @@ import learn.recipemanager.data.AppUserRepo;
 import learn.recipemanager.models.AppRole;
 import learn.recipemanager.models.AppUser;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class AppUserService implements UserDetailsService {
@@ -44,7 +44,7 @@ public class AppUserService implements UserDetailsService {
 
 
     public List<AppUser> findAll() {
-        return repo.findAll();
+        return repo.findAll().stream().filter(u -> !u.isDeleted()).collect(Collectors.toList());
     }
 
     public Result<AppUser> create(String email, String password, String name, List<String> favorites, List<String> healthLabels) {
@@ -134,8 +134,14 @@ public class AppUserService implements UserDetailsService {
     }
 
     public boolean deleteById(String id) {
-        if (repo.findById(id).isPresent()) {
-            repo.deleteById(id);
+        Optional<AppUser> userOptional = repo.findById(id);
+        if (userOptional.isPresent()) {
+            AppUser user = userOptional.get();
+
+            user.setDeleted(true);
+
+            repo.save(user);
+
             return true;
         }
         return false;

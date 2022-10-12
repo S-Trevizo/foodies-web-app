@@ -23,7 +23,7 @@ function UserCard({user}) {
                 <p className="card-text">
                     <b>Roles:</b> {user.authorities[0].authority}
                 </p>
-                {/* <button className="btn btn-sm btn-danger" onClick={()=> history.push("/delete",user)}>Delete</button> */}
+                <button className="btn btn-sm btn-danger" onClick={()=> history.push("/delete",user)}>Delete</button>
             </div>
         </div>
     )

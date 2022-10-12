@@ -71,7 +71,7 @@ public class SecurityController {
         return new ResponseEntity<>(map, HttpStatus.CREATED);
     }
 
-    @DeleteMapping("/users/{id}")
+    @DeleteMapping("/users/delete/{id}")
     public ResponseEntity deleteById(@PathVariable String id) {
         if (appUserService.deleteById(id)) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
