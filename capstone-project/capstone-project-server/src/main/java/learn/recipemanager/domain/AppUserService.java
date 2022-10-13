@@ -117,6 +117,20 @@ public class AppUserService implements UserDetailsService {
         return result;
     }
 
+    public boolean deleteById(String id) {
+        Optional<AppUser> userOptional = repo.findById(id);
+        if (userOptional.isPresent()) {
+            AppUser user = userOptional.get();
+
+            user.setDeleted(true);
+
+            repo.save(user);
+
+            return true;
+        }
+        return false;
+    }
+
     private Result<AppUser> validatePass(String password, Result<AppUser> result) {
 
         if (password == null || password.length() < 8) {
@@ -169,18 +183,6 @@ public class AppUserService implements UserDetailsService {
 
     }
 
-    public boolean deleteById(String id) {
-        Optional<AppUser> userOptional = repo.findById(id);
-        if (userOptional.isPresent()) {
-            AppUser user = userOptional.get();
 
-            user.setDeleted(true);
-
-            repo.save(user);
-
-            return true;
-        }
-        return false;
-    }
 
 }
