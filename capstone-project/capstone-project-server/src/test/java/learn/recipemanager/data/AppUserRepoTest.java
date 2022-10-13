@@ -68,7 +68,7 @@ class AppUserRepoTest {
 
         AppUser toUpdate = new AppUser(existingUser.getUserId(), existingUser.getEmail(), existingUser.getPassHash(),
                 existingUser.isDeleted(),existingUser.getUserRoles(),
-                "Bob Bob Updated Name", existingUser.getSavedRecipes(), existingUser.getHealthLabels(), new ArrayList<>() );
+                "Bob Bob Updated Name", existingUser.getFavorites(), existingUser.getHealthLabels(), new ArrayList<>() );
 
         repo.save(toUpdate);
 
@@ -86,7 +86,7 @@ class AppUserRepoTest {
 
         AppUser toDelete = new AppUser(existingUser.getUserId(), existingUser.getEmail(), existingUser.getPassHash(),
                 true,existingUser.getUserRoles(),
-                "Bob Bob Updated Name", existingUser.getSavedRecipes(), existingUser.getHealthLabels(), new ArrayList<>() );
+                "Bob Bob Updated Name", existingUser.getFavorites(), existingUser.getHealthLabels(), new ArrayList<>() );
 
         repo.save(toDelete);
 

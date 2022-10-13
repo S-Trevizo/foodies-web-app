@@ -80,8 +80,8 @@ function NavBar({searchData, setSearchData}) {//if there is search data, website
 
                 {auth.user ? <Link className="btn btn-outline-success my-2 my-sm-0 mr-2" to="/" onClick={() => auth.logout()}>Log Out</Link> :
                     <div>
-                        <Link className="btn btn-outline-success my-2 my-sm-0 mr-2 text-dark" to="/login"  >Log In</Link>
-                        <Link className="btn btn-outline-info my-2 my-sm-0 text-dark" to="/register"  >Register</Link>
+                        <Link className="btn btn-outline-success my-2 my-sm-0 mr-2 " to="/login"  >Log In</Link>
+                        <Link className="btn btn-outline-info my-2 my-sm-0 " to="/register"  >Register</Link>
                     </div>
                 }
 

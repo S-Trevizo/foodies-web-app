@@ -18,8 +18,8 @@ public class RecipesController {
     @Autowired
     AppUserService service;
     // todo is there a better place to initialize these variables?
-    private String app_id = "4357d5e9";
-    private String app_key = "84496af29c091bb734dab8904e3d9df5";
+    private String app_id = "6cb09ed9";
+    private String app_key = "d6a13e436430e1c7060acb41373f73cf";
 
     @PostMapping("/public")
     public ResponseEntity<?> getRecipes(@RequestBody SearchCriteria searchCriteria) {//find random 20 recipes with search criteria as input
