@@ -1,7 +1,6 @@
 package learn.recipemanager.data;
 
-import learn.recipemanager.models.AppRole;
-import learn.recipemanager.models.AppUser;
+import learn.recipemanager.models.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -102,6 +101,7 @@ class AppUserRepoTest {
     public AppUser createUser() {
         String password =  "Password1!";
         String passHash = encoder.encode(password);
-        return new AppUser("bob@bob.com", passHash,  false , List.of(new AppRole("USER")), "Bob Bob" ,new ArrayList<String>(), new ArrayList<String>());
+        return new AppUser("bob@bob.com", passHash,  false , List.of(new AppRole("USER")),
+                "Bob Bob" ,new ArrayList<Recipe>(), new ArrayList<HealthLabel>(), new ArrayList<Ingredient>());
     }
 }

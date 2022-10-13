@@ -3,6 +3,7 @@ package learn.recipemanager.controllers;
 import learn.recipemanager.domain.AppUserService;
 import learn.recipemanager.domain.Result;
 import learn.recipemanager.models.AppUser;
+import learn.recipemanager.models.HealthLabel;
 import learn.recipemanager.models.viewmodels.CreateRequest;
 import learn.recipemanager.models.viewmodels.LoginRequest;
 import learn.recipemanager.security.JwtConverter;
@@ -46,8 +47,13 @@ public class SecurityController {
 
     @PostMapping("/create_account")
     public ResponseEntity<?> createAccount(@RequestBody CreateRequest request) {
+        List<HealthLabel> labels= new ArrayList<>();
 
-        Result<AppUser> appUser = appUserService.create(request.getEmail(), request.getPassword(), request.getName(), new ArrayList<>(), request.getHealthLabels());
+        for (int i = 0; i < request.getHealthLabels().size(); i++) {
+            labels.add(new HealthLabel(request.getHealthLabels().get(i)));
+        }
+
+        Result<AppUser> appUser = appUserService.create(request.getEmail(), request.getPassword(), request.getName(), new ArrayList<>(), labels, new ArrayList<>());
 
         if (!appUser.isSuccess()) {
             return ErrorResponse.build(appUser);

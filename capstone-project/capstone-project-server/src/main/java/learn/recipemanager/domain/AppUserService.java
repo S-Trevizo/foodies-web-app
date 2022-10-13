@@ -1,8 +1,7 @@
 package learn.recipemanager.domain;
 
 import learn.recipemanager.data.AppUserRepo;
-import learn.recipemanager.models.AppRole;
-import learn.recipemanager.models.AppUser;
+import learn.recipemanager.models.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -64,7 +63,7 @@ public class AppUserService implements UserDetailsService {
         return result;
     }
 
-    public Result<AppUser> create(String email, String password, String name, List<String> favorites, List<String> healthLabels) {
+    public Result<AppUser> create(String email, String password, String name, List<Recipe> favorites, List<HealthLabel> healthLabels, List<Ingredient> ingredients) {
 
         Result<AppUser> result = validate(email);
 
@@ -84,7 +83,7 @@ public class AppUserService implements UserDetailsService {
         password = encoder.encode(password);
 
 
-        AppUser appUser = new AppUser(email, password, false, List.of(appRole), name, favorites, healthLabels);
+        AppUser appUser = new AppUser(email, password, false, List.of(appRole), name, favorites, healthLabels,ingredients );
 
         if (!result.isSuccess()) {
             return result;

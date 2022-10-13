@@ -24,19 +24,20 @@ public class AppUser implements UserDetails {
     private List<AppRole> userRoles;
     private String name;
 
-    private List<String> favorites;
-    private List<String> healthLabels;
-    private List<String> ingredients;
+    private List<Recipe> favorites;
+    private List<HealthLabel> healthLabels;
+    private List<Ingredient> ingredients;
 
 
     public AppUser( String email, String passHash, boolean isDeleted, List<AppRole> userRoles,
-                    String name, List<String> favorites, List<String> healthLabels) {
+                    String name, List<Recipe> favorites, List<HealthLabel> healthLabels, List<Ingredient> ingredients) {
         this.email = email;
         this.passHash = passHash;
         this.isDeleted = isDeleted;
         this.userRoles = userRoles;
         this.favorites = favorites;
         this.healthLabels = healthLabels;
+        this.ingredients = ingredients;
         this.name = name;
     }
 
@@ -80,19 +81,19 @@ public class AppUser implements UserDetails {
         this.userRoles = userRoles;
     }
 
-    public List<String> getSavedRecipes() {
+    public List<Recipe> getSavedRecipes() {
         return favorites;
     }
 
-    public void setSavedRecipes(List<String> savedRecipes) {
+    public void setSavedRecipes(List<Recipe> savedRecipes) {
         this.favorites = savedRecipes;
     }
 
-    public List<String> getHealthLabels() {
+    public List<HealthLabel> getHealthLabels() {
         return healthLabels;
     }
 
-    public void setHealthLabels(List<String> healthLabels) {
+    public void setHealthLabels(List<HealthLabel> healthLabels) {
         this.healthLabels = healthLabels;
     }
 

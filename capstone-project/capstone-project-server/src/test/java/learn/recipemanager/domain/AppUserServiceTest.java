@@ -2,8 +2,7 @@ package learn.recipemanager.domain;
 
 import learn.recipemanager.App;
 import learn.recipemanager.data.AppUserRepo;
-import learn.recipemanager.models.AppRole;
-import learn.recipemanager.models.AppUser;
+import learn.recipemanager.models.*;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -33,12 +32,13 @@ class AppUserServiceTest {
         String email = "";
         String password = "ValidPass1!";
         String name = "Name";
-        List<String> favorites = new ArrayList<>();
-        List<String> healthLabels = new ArrayList<>();
+        List<Recipe> favorites = new ArrayList<>();
+        List<HealthLabel> healthLabels = new ArrayList<>();
+        List<Ingredient> ingredients = new ArrayList<>();
 
 
 
-        Result<AppUser> result = service.create(email,password, name, favorites, healthLabels);
+        Result<AppUser> result = service.create(email,password, name, favorites, healthLabels, ingredients);
 
         assertFalse(result.isSuccess());
         assertEquals("Email is required", result.getMessages().get(0));
@@ -51,12 +51,13 @@ class AppUserServiceTest {
         String email = "Not an email";
         String password = "ValidPass1!";
         String name = "Name";
-        List<String> favorites = new ArrayList<>();
-        List<String> healthLabels = new ArrayList<>();
+        List<Recipe> favorites = new ArrayList<>();
+        List<HealthLabel> healthLabels = new ArrayList<>();
+        List<Ingredient> ingredients = new ArrayList<>();
 
 
 
-        Result<AppUser> result = service.create(email,password, name, favorites, healthLabels);
+        Result<AppUser> result = service.create(email,password, name, favorites, healthLabels, ingredients);
 
         assertFalse(result.isSuccess());
         assertEquals("Entry should be a proper email", result.getMessages().get(0));
@@ -69,12 +70,13 @@ class AppUserServiceTest {
         String email = "bob@bob.com";
         String password = "ValidPass1!";
         String name = "Name";
-        List<String> favorites = new ArrayList<>();
-        List<String> healthLabels = new ArrayList<>();
+        List<Recipe> favorites = new ArrayList<>();
+        List<HealthLabel> healthLabels = new ArrayList<>();
+        List<Ingredient> ingredients = new ArrayList<>();
 
         when(repo.findByUsername("bob@bob.com")).thenReturn(List.of(createUser()));
 
-        Result<AppUser> result = service.create(email,password, name, favorites, healthLabels);
+        Result<AppUser> result = service.create(email,password, name, favorites, healthLabels, ingredients);
 
         assertFalse(result.isSuccess());
         assertEquals("Email already registered", result.getMessages().get(0));
@@ -87,12 +89,13 @@ class AppUserServiceTest {
         String email = "email@email.com";
         String password = "InvalidPass!";
         String name = "Name";
-        List<String> favorites = new ArrayList<>();
-        List<String> healthLabels = new ArrayList<>();
+        List<Recipe> favorites = new ArrayList<>();
+        List<HealthLabel> healthLabels = new ArrayList<>();
+        List<Ingredient> ingredients = new ArrayList<>();
 
 
 
-        Result<AppUser> result = service.create(email,password, name, favorites, healthLabels);
+        Result<AppUser> result = service.create(email,password, name, favorites, healthLabels, ingredients);
 
         assertFalse(result.isSuccess());
         assertEquals("password must contain a digit, a letter, and a non-digit/non-letter", result.getMessages().get(0));
@@ -105,12 +108,13 @@ class AppUserServiceTest {
         String email = "email@email.com";
         String password = "InvalidPass1";
         String name = "Name";
-        List<String> favorites = new ArrayList<>();
-        List<String> healthLabels = new ArrayList<>();
+        List<Recipe> favorites = new ArrayList<>();
+        List<HealthLabel> healthLabels = new ArrayList<>();
+        List<Ingredient> ingredients = new ArrayList<>();
 
 
 
-        Result<AppUser> result = service.create(email,password, name, favorites, healthLabels);
+        Result<AppUser> result = service.create(email,password, name, favorites, healthLabels, ingredients);
 
         assertFalse(result.isSuccess());
         assertEquals("password must contain a digit, a letter, and a non-digit/non-letter", result.getMessages().get(0));
@@ -123,12 +127,13 @@ class AppUserServiceTest {
         String email = "email@email.com";
         String password = "!!!!!33333!";
         String name = "Name";
-        List<String> favorites = new ArrayList<>();
-        List<String> healthLabels = new ArrayList<>();
+        List<Recipe> favorites = new ArrayList<>();
+        List<HealthLabel> healthLabels = new ArrayList<>();
+        List<Ingredient> ingredients = new ArrayList<>();
 
 
 
-        Result<AppUser> result = service.create(email,password, name, favorites, healthLabels);
+        Result<AppUser> result = service.create(email,password, name, favorites, healthLabels, ingredients);
 
         assertFalse(result.isSuccess());
         assertEquals("password must contain a digit, a letter, and a non-digit/non-letter", result.getMessages().get(0));
@@ -140,10 +145,11 @@ class AppUserServiceTest {
         String email = "email@email.com";
         String password = "ValidPassword1!";
         String name = "Name";
-        List<String> favorites = new ArrayList<>();
-        List<String> healthLabels = new ArrayList<>();
+        List<Recipe> favorites = new ArrayList<>();
+        List<HealthLabel> healthLabels = new ArrayList<>();
+        List<Ingredient> ingredients = new ArrayList<>();
 
-        Result<AppUser> result = service.create(email,password, name, favorites, healthLabels);
+        Result<AppUser> result = service.create(email,password, name, favorites, healthLabels, ingredients);
 
         assertTrue(result.isSuccess());
 
@@ -170,6 +176,6 @@ class AppUserServiceTest {
     public AppUser createUser() {
         String password =  "Password1!";
         String passHash = encoder.encode(password);
-        return new AppUser("bob@bob.com", passHash,  false , List.of(new AppRole("USER")), "Bob Bob" ,new ArrayList<String>(), new ArrayList<String>());
+        return new AppUser("bob@bob.com", passHash,  false , List.of(new AppRole("USER")), "Bob Bob" ,new ArrayList<Recipe>(), new ArrayList<HealthLabel>(), new ArrayList<Ingredient>());
     }
 }
