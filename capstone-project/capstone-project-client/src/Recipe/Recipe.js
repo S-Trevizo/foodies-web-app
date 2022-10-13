@@ -3,6 +3,7 @@ import HealthLabel from "../HealthLabel/HealthLabel";
 
 
 function Recipe({ recipeData }) {
+    console.log(recipeData);
     return (
         <>
             <h5> recipe name: {recipeData.label}</h5>

@@ -47,19 +47,18 @@ public class AppUserService implements UserDetailsService {
         return repo.findAll().stream().filter(u -> !u.isDeleted()).collect(Collectors.toList());
     }
 
-    public Result<AppUser> findById(String userId) {
+    public Result<AppUser> findById(String userId) {//method verified by instructor
         Result<AppUser> result = new Result<>();
-        if (userId == null){
+        if (userId == null || userId.isBlank()){
             result.addMessage("No User Id found.", ResultType.INVALID);
+            return result;
         }
-
-        for (AppUser user : findAll()) {
-            if (user.getUserId().equals(userId)) {
-                result.setPayload(user);
-            } else {
-                result.addMessage("User does not exist.", ResultType.INVALID);
-            }
+        Optional<AppUser> userContainer = repo.findById(userId);
+        if (userContainer.isPresent()) {
+            result.setPayload(userContainer.get());
+            return result;
         }
+        result.addMessage("User does not exist.", ResultType.NOT_FOUND);
         return result;
     }
 

@@ -23,7 +23,6 @@ public class AppUser implements UserDetails {
     private boolean isDeleted;
     private List<AppRole> userRoles;
     private String name;
-
     private List<Recipe> favorites;
     private List<HealthLabel> healthLabels;
     private List<Ingredient> ingredients;
