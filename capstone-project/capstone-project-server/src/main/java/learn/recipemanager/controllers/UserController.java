@@ -39,7 +39,7 @@ public class UserController {
                 .getAuthentication()
                 .getPrincipal();
         boolean isAdmin = currentUser.getUserRoles().stream().anyMatch(r -> r.getRoleName().equalsIgnoreCase("admin"));//I wish admin were an enum
-        if (isAdmin || (Objects.equals(id, currentUser.getUserId()))) {
+        if (isAdmin || (Objects.equals(id, currentUser.getUserId()))) {//reformat objects.equals
             Result<AppUser> user = appUserService.findById(id);
             if (!user.isSuccess()) {//user was not found or user id is missing
                 return new ResponseEntity<>(user.getMessages(),
