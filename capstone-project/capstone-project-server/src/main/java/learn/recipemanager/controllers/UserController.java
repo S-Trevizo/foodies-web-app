@@ -11,6 +11,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Objects;
 
 @RestController
 @RequestMapping("/api/users")
@@ -38,7 +39,7 @@ public class UserController {
                 .getAuthentication()
                 .getPrincipal();
         boolean isAdmin = currentUser.getUserRoles().stream().anyMatch(r -> r.getRoleName().equalsIgnoreCase("admin"));//I wish admin were an enum
-        if (isAdmin || (id == currentUser.getUserId())) {
+        if (isAdmin || (Objects.equals(id, currentUser.getUserId()))) {
             Result<AppUser> user = appUserService.findById(id);
             if (!user.isSuccess()) {//user was not found or user id is missing
                 return new ResponseEntity<>(user.getMessages(),
