@@ -15,22 +15,18 @@ function Account() {
     const [user, setUser] = useState([]);
 
     useEffect(() => {
-        console.log(auth.user);
-
-
-    // This is still rejecting my fetch for some reason.
-    // will have David take a look at it.
-
+        console.log(auth.user)
         fetch(`http://localhost:8080/api/users/account/${auth.user.userId}`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
                 Accept: "application/json",
-                Authorization: `Bearer ${auth.user.token}`
-            }
+                Authorization: `Bearer ${auth.user.token}`,
+            },
         })
             .then( async response => {
                 if (response.status === 200) {
+                    console.log(user);
                     return response.json();
                 } else {
                     return Promise.reject(await response.json());
@@ -39,25 +35,25 @@ function Account() {
             })
             .then(userToEdit => {
                 setUser(userToEdit);
-                console.log(user);
+                
             });
-
+            
             // need to include a catch statement here
-        },[auth.user]);
-
+        },[]);
         function submitHandler(event) {
             event.preventDefault();
-
-            fetch(`http://localhost:8080/api/users/account/${auth.user.userID}`,{
+            
+            fetch(`http://localhost:8080/api/users/account/${auth.user.userId}`,{
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
+                    Accept: "application/json",
                     Authorization: `Bearer ${auth.user.token}`
-                }
+                },
+                body: JSON.stringify(user),
             })
             .then(async response => {
                 if (response.status === 204) {
-                
                     return response.json();
                 } else if(response.status === 400){
                     return Promise.reject(await response.json());
@@ -73,11 +69,8 @@ function Account() {
                 }
             })    
         }
-        
-        return (
-
-            // This will probably be refactored to only show info in a card with a button 
-            //  link that brings you to a form page for editing, but this will do for now.
+    
+      return (
 
             <div className="container">
                 <h2>Account Info</h2>
@@ -86,10 +79,10 @@ function Account() {
                     <input className="form-control" id={user.name} defaultValue={user.name} />
 
                     <label className="form-label">Username</label>
-                    <input className="form-control id" id={user.username} defaultValue={user.username} />
+                    <input className="form-control id" id={user.username} defaultValue={user.username}  />
 
                     <label className="form-label">Password</label>
-                    <input className="form-control" type="password" id={user.password}/>
+                    <input className="form-control" type="password" id={user.password} />
 
                     <div className="text-right">
                         <button className="btn btn-primary mr-2 mt-2">Submit</button>
