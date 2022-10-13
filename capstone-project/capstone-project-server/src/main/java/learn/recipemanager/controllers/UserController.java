@@ -37,11 +37,11 @@ public class UserController {
         if (user == null) {
             return new ResponseEntity<>("Account was not found.", HttpStatus.BAD_REQUEST);
         }
-
+        user.setPassHash("");
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
-    @PutMapping("account/{id}")
+    @PutMapping("/account/{id}")
     public ResponseEntity<?> update(@PathVariable String id, @RequestBody AppUser user)  {
 
         if (!id.equals( user.getUserId())) {
