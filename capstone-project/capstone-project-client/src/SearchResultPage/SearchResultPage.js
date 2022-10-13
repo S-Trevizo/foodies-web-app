@@ -19,6 +19,7 @@ function getRecipesFromRemoteApi(input) {
     if (input === null) {
         return;
     }
+    console.log(input.fetchString);
     //how do I not hard-code the api key?
     fetch("https://api.edamam.com/api/recipes/v2?type=public&q=" + input.q + "&app_id=" + input.app_id + "&app_key=" + input.app_key, {
     method: "GET",
@@ -84,15 +85,45 @@ function loadRandomRecipes(input) {
 }
 
 function loadFilteredRecipes(externalFetchString) {
+    const input = { searchCriteria: searchTerm,
+                    fetchString: externalFetchString,
+                 };
+
+    fetch("http://localhost:8080/api/recipe/personal", {
+                        method: "POST",
+                        body: JSON.stringify(input),
+                        headers: {
+                            "Content-Type": "application/json",
+                            "Authorization": "Bearer " + localStorage.getItem("foodiesToken")
+                        }
+                    }).then(async response => {
+                        if (response.status === 200) {
+                            return response.json();
+                        } else {
+                            return Promise.reject(await response.json());
+                        }
+                    }).then(searchObject => {//can be null
+                        getRecipesFromRemoteApi(searchObject);
+                    }).catch(error => {
+                        if (error instanceof TypeError) {
+                            const copyArray = [];
+                            copyArray.push("Could not connect to api.");
+                            setErrorsToAppend(copyArray);
+                        } else {//if page is refreshed, a string is outputted. doesn't quite work here, it seems?
+                            // console.log(error);
+                            const copyArray = [];
+                            copyArray.push(...error);
+                            setErrorsToAppend(copyArray);
+                        }
+                    });
     //make post to recipes api that verifies input data. 
-    //it sends back the app_id and app_key to finish building the fetch request.
+    //add app_id and app_key to finish building the fetch request. send it back.
     //then call getRecipesFromRemoteApi. 
     //add another argument to getRecipesFromRemoteApi. If the string fetchRequest is null, 
     //then do a ifNull, use this fetch request. else, use the public fetch request.
 }
 
 function createExternalFetchRequest(response) {
-    const fetchString = "https://api.edamam.com/api/recipes/v2?type=public"
     let externalFetchString = ("https://api.edamam.com/api/recipes/v2?type=public");
     for (var i = 0; i < response.healthLabels.length; i++) {
         externalFetchString = externalFetchString.concat("&health=",response.healthLabels[i].healthLabel);
@@ -101,8 +132,7 @@ function createExternalFetchRequest(response) {
 }
 
 function fetchUser() {
-        {const jwt = userData.jwt;
-        fetch("http://localhost:8080/api/users/account/"+userData.user.userId, {
+        {fetch("http://localhost:8080/api/users/account/"+userData.user.userId, {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",

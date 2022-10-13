@@ -1,10 +1,14 @@
 package learn.recipemanager.controllers;
 
 import learn.recipemanager.domain.AppUserService;
+import learn.recipemanager.domain.Result;
+import learn.recipemanager.domain.ResultType;
+import learn.recipemanager.models.AppUser;
 import learn.recipemanager.models.viewmodels.SearchCriteria;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collections;
@@ -34,11 +38,30 @@ public class RecipesController {
         apiQueryInput.put("q", searchCriteria.getSearchCriteria());
         return ResponseEntity.ok(apiQueryInput);
     }
-
-    //search recipe as a user and admin:
-    //take CreateRequest in. verify permissions. then return inputs for external api for filtered recipe list.
-    //todo create private searchRecipes functionality only for users here
-    
+    @PostMapping("/personal")
+    public ResponseEntity<?> getFilteredRecipes(@RequestBody SearchCriteria searchCriteria) {//find random 20 filtered recipes
+        //only admin and users can use this method: websecurityconfig covers this.
+        AppUser currentUser = (AppUser) SecurityContextHolder
+                .getContext()
+                .getAuthentication()
+                .getPrincipal();
+        boolean isAdmin = currentUser.getUserRoles().stream().anyMatch(r -> r.getRoleName().equalsIgnoreCase("admin"));
+        boolean isUser = currentUser.getUserRoles().stream().anyMatch(r -> r.getRoleName().equalsIgnoreCase("user"));
+        if (isAdmin || isUser) {
+            HashMap<String, String> apiQueryInput = new HashMap<String, String>();
+            if (searchCriteria == null || searchCriteria.getSearchCriteria() == null || searchCriteria.getSearchCriteria().isBlank() ||
+                    searchCriteria.getFetchString() == null || searchCriteria.getFetchString().isBlank()) {//external api requires q
+                return new ResponseEntity("Search criteria and fetch information are required", HttpStatus.FORBIDDEN);
+            }
+            //return app_id and app_key to make api request using q query
+            apiQueryInput.put("app_id", app_id);
+            apiQueryInput.put("app_key", app_key);
+            apiQueryInput.put("q", searchCriteria.getSearchCriteria());
+            apiQueryInput.put("fetchString", searchCriteria.getFetchString());
+            return ResponseEntity.ok(apiQueryInput);
+        }
+        return new ResponseEntity("Must be a registered admin or user for a filtered search result", HttpStatus.FORBIDDEN);
+    }
 
 
 

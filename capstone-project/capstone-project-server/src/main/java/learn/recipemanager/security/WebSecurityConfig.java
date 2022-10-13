@@ -28,6 +28,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         //these are case-sensitive
         http.authorizeRequests()
                 .antMatchers(HttpMethod.POST, "/api/recipe/public").permitAll()
+                .antMatchers(HttpMethod.POST, "/api/recipe/personal").hasAnyRole("USER","ADMIN")
                 .antMatchers(HttpMethod.POST,  "/api/security/authenticate").permitAll()//HttpMethod.POST,
                 .antMatchers(HttpMethod.POST, "/api/security/create_account").permitAll()
                 .antMatchers(HttpMethod.GET, "/api/users/account/*").hasAnyRole("USER", "ADMIN")//.authenticated also works - broader option
