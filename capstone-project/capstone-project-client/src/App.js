@@ -7,17 +7,19 @@ import NavBar from './NavBar/NavBar';
 import AuthContext from './AuthContext';
 import jwtDecode from "jwt-decode";
 import Register from './Register/Register';
-import TwentyRandomRecipes from './Recipes/TwentyRandomRecipes';
+import TwentyRandomRecipes from './TwentyRandomRecipes/TwentyRandomRecipes';
 import AdminPage from './AdminPage/AdminPage';
 import Delete from './Delete/Delete';
 import Account from './Account/Account';
+import SearchResultPage from './SearchResultPage/SearchResultPage';
 
 const LOCAL_STORAGE_TOKEN_KEY = "foodiesToken";
 
 function App() {
 
   const [loginInfo, setLoginInfo] = useState(null);
-  const [user, setUser] = useState(null);
+  const [user,setUser] = useState(null);
+  const [searchData,setSearchData] = useState(null);
 
   const [restoreLoginAttemptCompleted, setRestoreLoginAttemptCompleted] = useState(false);
 
@@ -76,11 +78,10 @@ function App() {
     <div className="App">
       <AuthContext.Provider value={auth}>
         <BrowserRouter>
-          <NavBar />
+          <NavBar searchData={searchData} setSearchData={setSearchData}/>
           <Switch>
             <Route exact path="/">
-              <HomePage />
-              <TwentyRandomRecipes />
+              <HomePage setSearchData={setSearchData}/>
             </Route>
             <Route path="/login">
               <Login setLoginInfo={setLoginInfo} />
@@ -93,6 +94,9 @@ function App() {
             </Route>
             <Route path="/delete">
               <Delete />
+            </Route>
+            <Route path="/searchResultPage">
+              <SearchResultPage searchTerm={searchData}/>
             </Route>
             <Route>
               <Account path="/account" />

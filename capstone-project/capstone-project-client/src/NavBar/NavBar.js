@@ -1,11 +1,30 @@
-import { useContext } from 'react';
+import { useContext, useState, useEffect } from "react";
 import { Link } from 'react-router-dom';
+import { useHistory } from "react-router-dom";
 import AuthContext from '../AuthContext';
+import SearchResultpage from "../SearchResultPage/SearchResultPage";
 
-function NavBar(props) {
+
+function NavBar({searchData, setSearchData}) {//if there is search data, website is not on homepage so should show searchbar in navbar
 
     const auth = useContext(AuthContext);
+    const history = useHistory();
+    const [searchCriteria, setSearchCriteria] = useState("");
+    const [recipes, setRecipes] = useState([]);
+    const [errorsToAppend, setErrorsToAppend] = useState([]);
 
+    function handleSubmit(event) {
+        event.preventDefault();
+        setSearchData(searchCriteria);
+        history.push("/searchResultPage");
+        //how could I involve user input?
+    }
+
+    //if history.location.pathname === "/" then do the big front page search bar. else, do navbar searchbar.
+    //also: check widget to see how to send in search items to searchbar from user allergens list.
+    //return a props object with both the search results to be displayed and the error object?
+
+    //can later see how to make refresh work on searchpageresult
     return (
 
 
@@ -32,7 +51,7 @@ function NavBar(props) {
                     </li>
 
                     <li className="nav-item">
-                            <a className="nav-link" href={auth.user ? `/user/account/${auth.user.userId}` : "/login"}>Account</a>
+                        <a className="nav-link" href={auth.user ? `/user/${auth.userId}` : "/login"}>Account</a>
                     </li>
 
                     {auth.user ? auth.user.roles ? <li className="nav-item">
@@ -41,6 +60,21 @@ function NavBar(props) {
 
 
                 </ul>
+                {(searchData === null) ?
+                    null
+                    :
+                    <div>
+                        <form>
+                            <div className={"form-group"}>
+                                <input onChange={(e) => setSearchCriteria(e.target.value)} className={"form-control form-control-sm"} type={"text"} placeholder={"Search for recipes"} />
+                            </div>
+                            <div>
+                                <button className={"btn btn-primary"} onClick={handleSubmit} id="searchBarText">Submit</button>
+                            </div>
+                        </form>
+                    </div>
+                }
+
                 {auth.user ? <Link className="btn btn-outline-success my-2 my-sm-0 mr-2" to="/" onClick={() => auth.logout()}>Log Out</Link> :
                     <div>
                         <Link className="btn btn-outline-success my-2 my-sm-0 mr-2" to="/login"  >Log In</Link>
@@ -56,3 +90,5 @@ function NavBar(props) {
 }
 
 export default NavBar;
+
+//reformat searchbar: https://getbootstrap.com/docs/4.0/components/input-group/
