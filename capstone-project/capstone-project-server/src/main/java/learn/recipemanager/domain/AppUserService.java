@@ -95,6 +95,28 @@ public class AppUserService implements UserDetailsService {
         return result;
     }
 
+    public Result<AppUser> update(AppUser user) {
+        Result<AppUser> result = new Result<>();
+        if (user.getUserId() == null){
+             result.addMessage("No user ID found.", ResultType.INVALID);
+             return result;
+        }
+        result = validate(user.getEmail());
+        if (!result.isSuccess()){
+            return result;
+        }
+        validatePass(user.getPassword(), result);
+        if (result.isSuccess()){
+            if (repo.existsById(user.getUserId())){
+                repo.save(user);
+                result.setPayload(user);
+            } else {
+                result.addMessage("User was not found.", ResultType.NOT_FOUND);
+            }
+        }
+        return result;
+    }
+
     private Result<AppUser> validatePass(String password, Result<AppUser> result) {
 
         if (password == null || password.length() < 8) {
@@ -160,4 +182,5 @@ public class AppUserService implements UserDetailsService {
         }
         return false;
     }
+
 }

@@ -17,11 +17,11 @@ const LOCAL_STORAGE_TOKEN_KEY = "foodiesToken";
 function App() {
 
   const [loginInfo, setLoginInfo] = useState(null);
-  const [user,setUser] = useState(null);
+  const [user, setUser] = useState(null);
 
   const [restoreLoginAttemptCompleted, setRestoreLoginAttemptCompleted] = useState(false);
 
-  useEffect(()=> {
+  useEffect(() => {
     const token = localStorage.getItem(LOCAL_STORAGE_TOKEN_KEY);
     if (token) {
       login(token);
@@ -31,23 +31,26 @@ function App() {
 
   const login = (token) => {
     localStorage.setItem(LOCAL_STORAGE_TOKEN_KEY, token);
-    const {sub: username, roles: authoritiesString} = jwtDecode(token);
+    const { sub: username,
+      roles: authoritiesString,
+      jti: userId } = jwtDecode(token);
 
 
 
-    let roles = (authoritiesString.map(a =>  a['roleName']))[0];
+    let roles = (authoritiesString.map(a => a['roleName']))[0];
 
 
     const user = {
       username,
       roles,
       token,
+      userId,
       hasRole(role) {
         return this.roles.includes(role);
       }
     };
 
-  
+
     setUser(user);
     return user;
 
@@ -59,12 +62,12 @@ function App() {
   };
 
   const auth = {
-    user: user ? {...user} : null,
+    user: user ? { ...user } : null,
     login,
     logout
   };
 
-  if(!restoreLoginAttemptCompleted) {
+  if (!restoreLoginAttemptCompleted) {
     return null;
   }
 
@@ -83,16 +86,16 @@ function App() {
               <Login setLoginInfo={setLoginInfo} />
             </Route>
             <Route path="/register">
-              <Register setLoginInfo={setLoginInfo}/>
+              <Register setLoginInfo={setLoginInfo} />
             </Route>
             <Route path="/admin">
-              <AdminPage/>
+              <AdminPage />
             </Route>
             <Route path="/delete">
-              <Delete/>
+              <Delete />
             </Route>
             <Route>
-              <Account path="/account"/>
+              <Account path="/account" />
             </Route>
           </Switch>
         </BrowserRouter>

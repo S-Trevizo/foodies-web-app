@@ -32,7 +32,7 @@ function NavBar(props) {
                     </li>
 
                     <li className="nav-item">
-                            <a className="nav-link" href={auth.user ? `/user/${auth.userId}` : "/login"}>Account</a>
+                            <a className="nav-link" href={auth.user ? `/user/account/${auth.user.userId}` : "/login"}>Account</a>
                     </li>
 
                     {auth.user ? auth.user.roles ? <li className="nav-item">

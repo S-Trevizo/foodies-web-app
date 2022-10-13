@@ -1,6 +1,8 @@
 package learn.recipemanager.controllers;
 
 import learn.recipemanager.domain.AppUserService;
+import learn.recipemanager.domain.Result;
+import learn.recipemanager.domain.ResultType;
 import learn.recipemanager.models.AppUser;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -28,15 +30,34 @@ public class UserController {
         return new ResponseEntity(users, HttpStatus.OK);
     }
 
-    @GetMapping("/account/{userId}")
-    public ResponseEntity<Object> getAccount(@PathVariable String userId) {
-        AppUser user = appUserService.findById(userId).getPayload();
+    @GetMapping("/account/{id}")
+    public ResponseEntity<Object> getAccount(@PathVariable String id) {
+        AppUser user = appUserService.findById(id).getPayload();
 
         if (user == null) {
             return new ResponseEntity<>("Account was not found.", HttpStatus.BAD_REQUEST);
         }
 
         return new ResponseEntity<>(user, HttpStatus.OK);
+    }
+
+    @PutMapping("account/{id}")
+    public ResponseEntity<?> update(@PathVariable String id, @RequestBody AppUser user)  {
+
+        if (!id.equals( user.getUserId())) {
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
+        }
+
+        Result<AppUser> result = appUserService.update(user);
+
+        if (!result.isSuccess()) {
+            if (result.getType() == ResultType.NOT_FOUND) {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            } else {
+                return new ResponseEntity<>(result.getMessages(), HttpStatus.BAD_REQUEST);
+            }
+        }
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @DeleteMapping("/delete/{id}")
