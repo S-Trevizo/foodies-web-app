@@ -24,8 +24,7 @@ function Account() {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
-                Accept: "application/json",
-                Authorization: `Bearer ${auth.user.token}`
+                "Authorization": "Bearer" + localStorage.getItem("foodiesToken")
             }
         })
             .then( async response => {
