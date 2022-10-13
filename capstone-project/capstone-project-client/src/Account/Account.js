@@ -1,6 +1,7 @@
 import { useContext, useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import AuthContext from "../AuthContext";
+
 
 
 
@@ -24,7 +25,8 @@ function Account() {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
-                "Authorization": "Bearer" + localStorage.getItem("foodiesToken")
+                Accept: "application/json",
+                Authorization: `Bearer ${auth.user.token}`
             }
         })
             .then( async response => {
@@ -37,6 +39,7 @@ function Account() {
             })
             .then(userToEdit => {
                 setUser(userToEdit);
+                console.log(user);
             });
 
             // need to include a catch statement here
@@ -54,6 +57,7 @@ function Account() {
             })
             .then(async response => {
                 if (response.status === 204) {
+                
                     return response.json();
                 } else if(response.status === 400){
                     return Promise.reject(await response.json());
@@ -77,15 +81,20 @@ function Account() {
 
             <div className="container">
                 <h2>Account Info</h2>
-                <form>
+                <form onSubmit={submitHandler}>
                     <label className="form-label">Name</label>
-                    <input className="form-control" />
+                    <input className="form-control" id={user.name} defaultValue={user.name} />
 
                     <label className="form-label">Username</label>
-                    <input className="form-control" />
+                    <input className="form-control id" id={user.username} defaultValue={user.username} />
 
                     <label className="form-label">Password</label>
-                    <input className="form-control" />
+                    <input className="form-control" type="password" id={user.password}/>
+
+                    <div className="text-right">
+                        <button className="btn btn-primary mr-2 mt-2">Submit</button>
+                        <Link to="/" className="btn btn-danger mt-2">Cancel</Link>
+                    </div>
                 </form>
             </div>
 

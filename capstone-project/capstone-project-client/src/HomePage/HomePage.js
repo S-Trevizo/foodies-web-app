@@ -17,23 +17,33 @@ function HomePage(props) {
 
     return (
         <div>
+            <div className="container my-4">
+                <form onSubmit={handleSubmit}>
+                    <div className="input-group">
+                        <input onChange={(e) => setSearchCriteria(e.target.value)} className={"form-control form-control w-90 "} type={"text"} placeholder={"Search for recipes"} />
+                    <div className="input-group-append">
+                        <button className={"btn btn-primary  input-group-append"} onClick={handleSubmit} id="searchBarText">Submit</button>
+                    </div>
+                    </div>
+                    
+                </form>
+            </div>
+            <div className="" >
             {searchCriteria.length === 0 ?
                 <TwentyRandomRecipes /> :
                 <TwentyRandomRecipes props={searchCriteria} />
 
             }
-            <div>
-                <form onSubmit={handleSubmit}>
-                    <div className={"form-group"}>
-                        <input onChange={(e) => setSearchCriteria(e.target.value)} className={"form-control form-control-sm"} type={"text"} placeholder={"Search for recipes"} />
-                    </div>
-                    <div>
-                        <button className={"btn btn-primary"} onClick={handleSubmit} id="searchBarText">Submit</button>
-                    </div>
-                </form>
             </div>
+            
+
+            
 
         </div>
+
+        
+
+        
 
 
     );

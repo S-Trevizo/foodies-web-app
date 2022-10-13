@@ -26,7 +26,6 @@ public class UserController {
         for (AppUser u : users) {
             u.setPassHash("");
         }
-        ;
 
         return new ResponseEntity(users, HttpStatus.OK);
     }
@@ -45,6 +44,7 @@ public class UserController {
                 return new ResponseEntity<>(user.getMessages(),
                         user.getType() == ResultType.NOT_FOUND ? HttpStatus.NOT_FOUND : HttpStatus.BAD_REQUEST);
             }
+            user.getPayload().setPassHash("");//todo verify this is okay after branch merge
             return new ResponseEntity<>(user.getPayload(), HttpStatus.OK);
         }
         return new ResponseEntity<>(List.of("Error: must be an admin. Or, logged-in user may only request their account info (mismatching path variable id)."),HttpStatus.FORBIDDEN);

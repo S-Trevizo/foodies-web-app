@@ -100,7 +100,7 @@ function TwentyRandomRecipes(props) {
 
 
     return (
-        <div>
+        <div className="conatiner ">
             {errorsToAppend.map((r, index) => <ErrorMessages key={index} errorData={r} />)}
 
             {(recipes.length > 0) ?

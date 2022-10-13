@@ -12,12 +12,12 @@ import AdminPage from './AdminPage/AdminPage';
 import Delete from './Delete/Delete';
 import Account from './Account/Account';
 import SearchResultPage from './SearchResultPage/SearchResultPage';
+import Pantry from './Pantry/Pantry';
 
 const LOCAL_STORAGE_TOKEN_KEY = "foodiesToken";
 
 function App() {
 
-  const [loginInfo, setLoginInfo] = useState(null);
   const [user,setUser] = useState(null);
   const [searchData,setSearchData] = useState(null);
 
@@ -31,11 +31,14 @@ function App() {
     setRestoreLoginAttemptCompleted(true);
   }, []);
 
+  
+
   const login = (token) => {
     localStorage.setItem(LOCAL_STORAGE_TOKEN_KEY, token);
     const { sub: username,
       roles: authoritiesString,
       jti: userId } = jwtDecode(token);
+      
 
 
 
@@ -54,6 +57,8 @@ function App() {
 
 
     setUser(user);
+
+
     return user;
 
   };
@@ -68,6 +73,8 @@ function App() {
     login,
     logout
   };
+
+  
 
   if (!restoreLoginAttemptCompleted) {
     return null;
@@ -84,10 +91,10 @@ function App() {
               <HomePage setSearchData={setSearchData}/>
             </Route>
             <Route path="/login">
-              <Login setLoginInfo={setLoginInfo} />
+              <Login />
             </Route>
             <Route path="/register">
-              <Register setLoginInfo={setLoginInfo} />
+              <Register />
             </Route>
             <Route path="/admin">
               <AdminPage />
@@ -100,6 +107,9 @@ function App() {
             </Route>
             <Route>
               <Account path="/account" />
+            </Route>
+            <Route >
+              <Pantry path="/pantry"/>
             </Route>
           </Switch>
         </BrowserRouter>

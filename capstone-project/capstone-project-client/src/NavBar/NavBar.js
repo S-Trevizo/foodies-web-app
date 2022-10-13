@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { useHistory } from "react-router-dom";
 import AuthContext from '../AuthContext';
 import SearchResultpage from "../SearchResultPage/SearchResultPage";
+import './NavBar.css';
 
 
 function NavBar({searchData, setSearchData}) {//if there is search data, website is not on homepage so should show searchbar in navbar
@@ -28,7 +29,7 @@ function NavBar({searchData, setSearchData}) {//if there is search data, website
     return (
 
 
-        <nav className="navbar navbar-expand-lg navbar-light bg-light">
+        <nav className="navbar navbar-expand-lg navbar-dark bg-dark" >
             <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
                 <span className="navbar-toggler-icon"></span>
             </button>
@@ -42,9 +43,10 @@ function NavBar({searchData, setSearchData}) {//if there is search data, website
                         <a className="nav-link disabled" href="#">Favorites</a>
                     </li>
 
-                    <li className="nav-item">
-                        <a className="nav-link disabled" href="#">Pantry</a>
-                    </li>
+                    {auth.user  ? <li className="nav-item">
+                        <Link to="/pantry" className="nav-link">Pantry</Link>
+                    </li> : null }
+
 
                     <li className="nav-item">
                         <a className="nav-link disabled" href="#">Preferences</a>
@@ -53,6 +55,7 @@ function NavBar({searchData, setSearchData}) {//if there is search data, website
                     <li className="nav-item">
                         <a className="nav-link" href={auth.user ? `/users/account/${auth.user.userId}` : "/login"}>Account</a>
                     </li>
+                    
 
                     {auth.user ? auth.user.roles === "ADMIN" ? <li className="nav-item">
                         <Link to="/admin" className="nav-link">User Administration</Link>
@@ -77,8 +80,8 @@ function NavBar({searchData, setSearchData}) {//if there is search data, website
 
                 {auth.user ? <Link className="btn btn-outline-success my-2 my-sm-0 mr-2" to="/" onClick={() => auth.logout()}>Log Out</Link> :
                     <div>
-                        <Link className="btn btn-outline-success my-2 my-sm-0 mr-2" to="/login"  >Log In</Link>
-                        <Link className="btn btn-outline-info my-2 my-sm-0" to="/register"  >Register</Link>
+                        <Link className="btn btn-outline-success my-2 my-sm-0 mr-2 text-dark" to="/login"  >Log In</Link>
+                        <Link className="btn btn-outline-info my-2 my-sm-0 text-dark" to="/register"  >Register</Link>
                     </div>
                 }
 
