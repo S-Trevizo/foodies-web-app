@@ -25,7 +25,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.cors();
         http.csrf().disable();
         http.sessionManagement().sessionCreationPolicy( SessionCreationPolicy.STATELESS );
-
+        //these are case-sensitive
         http.authorizeRequests()
                 .antMatchers(HttpMethod.POST, "/api/recipe/public").permitAll()
                 .antMatchers(HttpMethod.POST,  "/api/security/authenticate").permitAll()//HttpMethod.POST,
