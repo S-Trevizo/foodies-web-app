@@ -7,6 +7,7 @@ import learn.recipemanager.models.AppUser;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -30,14 +31,23 @@ public class UserController {
     }
 
     @GetMapping("/account/{id}")
-    public ResponseEntity<Object> getAccount(@PathVariable String id) {
-        AppUser user = appUserService.findById(id).getPayload();
-
-        if (user == null) {
-            return new ResponseEntity<>("Account was not found.", HttpStatus.BAD_REQUEST);
+    public ResponseEntity<Object> getAccount(@PathVariable String id) {//method verified by instructor
+        //validate that person is admin or user with same id. else, forbidden
+        AppUser currentUser = (AppUser) SecurityContextHolder
+                .getContext()
+                .getAuthentication()
+                .getPrincipal();
+        boolean isAdmin = currentUser.getUserRoles().stream().anyMatch(r -> r.getRoleName().equalsIgnoreCase("admin"));//I wish admin were an enum
+        if (isAdmin || (id == currentUser.getUserId())) {
+            Result<AppUser> user = appUserService.findById(id);
+            if (!user.isSuccess()) {//user was not found or user id is missing
+                return new ResponseEntity<>(user.getMessages(),
+                        user.getType() == ResultType.NOT_FOUND ? HttpStatus.NOT_FOUND : HttpStatus.BAD_REQUEST);
+            }
+            user.getPayload().setPassHash("");//todo verify this is okay after branch merge
+            return new ResponseEntity<>(user.getPayload(), HttpStatus.OK);
         }
-        user.setPassHash("");
-        return new ResponseEntity<>(user, HttpStatus.OK);
+        return new ResponseEntity<>(List.of("Error: must be an admin. Or, logged-in user may only request their account info (mismatching path variable id)."),HttpStatus.FORBIDDEN);
     }
 
     @PutMapping("/account/{id}")
