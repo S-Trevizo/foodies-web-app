@@ -23,7 +23,7 @@ function TwentyRandomRecipes(props) {
         //also: the other fetch here tests how error message from external api are displayed
         fetch("https://api.edamam.com/api/recipes/v2?type=public&q=" + input.q + "&app_id=" + input.app_id + "&app_key=" + input.app_key, {
             // fetch("https://api.edamam.com/api/recipes/v2?type=public&q=critera&app_id=4357d5e9&app_key=84496af29c091bb734dab8904e3d9df5&health=alcohol-cocktail&health=alcohol-free&health=celery-free&health=crustacean-free&health=dairy-free&health=DASH&health=egg-free&health=fish-free&health=fodmap-free&health=gluten-free&health=immuno-supportive&health=keto-friendly&health=kidney-friendly&health=kosher&health=low-fat-abs&health=low-potassium&health=low-sugar&health=lupine-free&health=Mediterranean&health=mollusk-free&health=mustard-free&health=no-oil-added&health=paleo&health=peanut-free&health=pescatarian&health=pork-free&health=red-meat-free&health=sesame-free&health=shellfish-free&health=soy-free&health=sugar-conscious&health=sulfite-free&health=tree-nut-free&health=vegan&health=vegetarian&health=wheat-free", {
-        method: "GET",
+            method: "GET",
             headers: {
                 "Content-Type": "application/json"
             }
@@ -36,7 +36,7 @@ function TwentyRandomRecipes(props) {
             } else if (response.status === 403) {
                 return Promise.reject(await response.json());
             } else if (response.status === 429) {
-                return Promise.reject( ["Too many requests sent to the api."] );
+                return Promise.reject(["Too many requests sent to the api."]);
             }
             else {
                 return Promise.reject(await response.json());
@@ -88,17 +88,17 @@ function TwentyRandomRecipes(props) {
     useEffect(
         () => {
             //todo: I need to find a way to optionally let user input search criteria
-            const input = { searchCriteria:"random" };
-            if(props.props !== undefined) {
+            const input = { searchCriteria: "random" };
+            if (props.props !== undefined) {
                 input.searchCriteria = props.props;
             }
             loadRandomRecipes(input);//loads twice. "double tap" due to strict mode
         },
         []);
-//might be good to refactor this return based on the current path. If it is homepage, do carousel.
+    //might be good to refactor this return based on the current path. If it is homepage, do carousel.
     //and if it is search results page, do cards.
 
-    
+
     return (
         <div>
             {errorsToAppend.map((r, index) => <ErrorMessages key={index} errorData={r} />)}
