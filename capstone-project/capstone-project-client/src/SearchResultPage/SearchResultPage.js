@@ -10,7 +10,7 @@ import NavBar from "../NavBar/NavBar";
 
 
 
-function SearchResultPage({searchTerm}) {
+function SearchResultPage({searchTerm}) {//refresh on this component and twentyrandomrecipes.js don't work rn.
 
 console.log(searchTerm);
 

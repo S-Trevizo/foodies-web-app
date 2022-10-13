@@ -11,6 +11,7 @@ function TwentyRandomRecipes(props) {
     // todo continued: maybe also take in an argument with information on what to filter? not sure. needs security at that point. or do separate component for that. will see.
     const [recipes, setRecipes] = useState([]);
     const [errorsToAppend, setErrorsToAppend] = useState([]);
+    const history = useHistory();
     // todo: first, make an api request. ignore login status for now. 
     // const userData = useContext(AuthContext);
 
