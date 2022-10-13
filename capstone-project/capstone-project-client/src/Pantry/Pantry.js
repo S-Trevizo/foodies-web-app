@@ -61,9 +61,6 @@ function Pantry() {
             }
         })    
     }
-
-      console.log(user);
-
     return(
         <div className="container">
         <h2>Your Pantry</h2>

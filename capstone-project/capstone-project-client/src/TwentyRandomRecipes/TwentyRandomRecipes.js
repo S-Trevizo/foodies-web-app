@@ -100,11 +100,11 @@ function TwentyRandomRecipes(props) {
 
 
     return (
-        <div className="conatiner ">
+        <div className="container text-center">
             {errorsToAppend.map((r, index) => <ErrorMessages key={index} errorData={r} />)}
 
             {(recipes.length > 0) ?
-                <div id="carouselExampleIndicators" className="carousel slide w-25" data-ride="carousel">
+                <div id="carouselExampleIndicators" className="carousel slide w-70 h-30" data-ride="carousel">
                     <ol className="carousel-indicators">
                         {recipes &&
                             recipes.map((r, index) => <li data-target="#carouselExampleIndicators" key={index} data-slide-to={"" + index + ""} className={index === 0 ? "active" : ""} />)}
