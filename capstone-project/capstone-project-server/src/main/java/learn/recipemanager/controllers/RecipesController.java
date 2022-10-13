@@ -37,7 +37,8 @@ public class RecipesController {
 
     //search recipe as a user and admin:
     //take CreateRequest in. verify permissions. then return inputs for external api for filtered recipe list.
-
+    //todo create private searchRecipes functionality only for users here
+    
 
 
 

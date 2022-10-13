@@ -11,8 +11,9 @@ function SearchResultPage({searchTerm}) {//refresh on this component and twentyr
 //using a setter redraws the current component it is in. This is done after retrieving data to display.
 const [recipes, setRecipes] = useState([]);
 const [errorsToAppend, setErrorsToAppend] = useState([]);
-const [user, setUser] = useState(null);
 const userData = useContext(AuthContext);
+const [user, setUser] = useState(null);
+const [externalFetchInput, setExternalFetchInput] = useState(null);
 
 function getRecipesFromRemoteApi(input) {
     if (input === null) {
@@ -82,13 +83,25 @@ function loadRandomRecipes(input) {
     });
 }
 
-// function doRemoteStretch(userObject) {
-//     setExternalString("fetchrequest");
-// }
+function loadFilteredRecipes(externalFetchString) {
+    //make post to recipes api that verifies input data. 
+    //it sends back the app_id and app_key to finish building the fetch request.
+    //then call getRecipesFromRemoteApi. 
+    //add another argument to getRecipesFromRemoteApi. If the string fetchRequest is null, 
+    //then do a ifNull, use this fetch request. else, use the public fetch request.
+}
+
+function createExternalFetchRequest(response) {
+    const fetchString = "https://api.edamam.com/api/recipes/v2?type=public"
+    let externalFetchString = ("https://api.edamam.com/api/recipes/v2?type=public");
+    for (var i = 0; i < response.healthLabels.length; i++) {
+        externalFetchString = externalFetchString.concat("&health=",response.healthLabels[i].healthLabel);
+    }
+    loadFilteredRecipes(externalFetchString);
+}
 
 function fetchUser() {
         {const jwt = userData.jwt;
-        // console.log(jwt);
         fetch("http://localhost:8080/api/users/account/"+userData.user.userId, {
                 method: "GET",
                 headers: {
@@ -107,11 +120,7 @@ function fetchUser() {
                     return Promise.reject(await response.json());
                 }
             }).then(response => {
-                console.log(response);
-                //instructor said response is user object
-                //setUser(response);
-                //do a fetch request using user's information. External fetch, yes. 
-                //
+                createExternalFetchRequest(response);
             }).catch(error => {
                 if (error instanceof TypeError) {
                     const errors = [];
@@ -135,7 +144,6 @@ useEffect(
         } else {
             fetchUser();
             console.log("userData is not null: use their id to fetch information by id.");
-            const jwt = localStorage.getItem("foodiesToken");
         }
         const input = { searchCriteria: searchTerm };
         loadRandomRecipes(input);//loads twice. "double tap" due to strict mode
