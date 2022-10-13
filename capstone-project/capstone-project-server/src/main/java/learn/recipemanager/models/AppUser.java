@@ -80,11 +80,11 @@ public class AppUser implements UserDetails {
         this.userRoles = userRoles;
     }
 
-    public List<Recipe> getSavedRecipes() {
+    public List<Recipe> getFavorites() {
         return favorites;
     }
 
-    public void setSavedRecipes(List<Recipe> savedRecipes) {
+    public void setFavorites(List<Recipe> savedRecipes) {
         this.favorites = savedRecipes;
     }
 
