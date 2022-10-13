@@ -24,7 +24,7 @@ function Account() {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
-                "Authorization": "Bearer" + localStorage.getItem("foodiesToken")
+                "Authorization": "Bearer " + localStorage.getItem("foodiesToken")
             }
         })
             .then( async response => {
