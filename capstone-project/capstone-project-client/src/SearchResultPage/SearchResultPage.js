@@ -109,7 +109,7 @@ function fetchUser() {
             }).then(response => {
                 console.log(response);
                 //instructor said response is user object
-                // setUser(response);
+                //setUser(response);
                 //do a fetch request using user's information. External fetch, yes. 
                 //
             }).catch(error => {

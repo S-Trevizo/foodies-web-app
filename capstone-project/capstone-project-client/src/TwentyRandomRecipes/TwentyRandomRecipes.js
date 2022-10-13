@@ -84,11 +84,10 @@ function TwentyRandomRecipes(props) {
         });
     }
 
-
     useEffect(
         () => {
             //todo: I need to find a way to optionally let user input search criteria
-            const input = { searchCriteria: "pig" };
+            const input = { searchCriteria: "chicken feet" };
             if (props.props !== undefined) {
                 input.searchCriteria = props.props;
             }
