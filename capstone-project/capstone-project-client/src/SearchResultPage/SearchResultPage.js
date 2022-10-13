@@ -19,9 +19,12 @@ function getRecipesFromRemoteApi(input) {
     if (input === null) {
         return;
     }
-    console.log(input.fetchString);
-    //how do I not hard-code the api key?
-    fetch("https://api.edamam.com/api/recipes/v2?type=public&q=" + input.q + "&app_id=" + input.app_id + "&app_key=" + input.app_key, {
+    let finalFetch = ("https://api.edamam.com/api/recipes/v2?type=public&q=" + input.q + "&app_id=" + input.app_id + "&app_key=" + input.app_key);
+    if (input.fetchString !== null) {//additional search criteria in here for registered users or admins
+        finalFetch = input.fetchString;
+        finalFetch = finalFetch.concat("&q=",input.q,"&app_id=",input.app_id,"&app_key=",input.app_key);
+    }
+    fetch(finalFetch, {
     method: "GET",
         headers: {
             "Content-Type": "application/json"
@@ -171,12 +174,12 @@ useEffect(
     () => {
         if (userData.user === null) {
             console.log("userData is null. do not build special string. do nothing.");
+            const input = { searchCriteria: searchTerm };
+            loadRandomRecipes(input);//loads twice. "double tap" due to strict mode
         } else {
             fetchUser();
             console.log("userData is not null: use their id to fetch information by id.");
         }
-        const input = { searchCriteria: searchTerm };
-        loadRandomRecipes(input);//loads twice. "double tap" due to strict mode
     },
     []);
 
