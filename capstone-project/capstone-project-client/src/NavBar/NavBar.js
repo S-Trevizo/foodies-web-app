@@ -54,7 +54,7 @@ function NavBar({searchData, setSearchData}) {//if there is search data, website
                         <a className="nav-link" href={auth.user ? `/user/${auth.userId}` : "/login"}>Account</a>
                     </li>
 
-                    {auth.user ? auth.user.roles ? <li className="nav-item">
+                    {auth.user ? auth.user.roles === "ADMIN" ? <li className="nav-item">
                         <Link to="/admin" className="nav-link">User Administration</Link>
                     </li> : null : null}
 
