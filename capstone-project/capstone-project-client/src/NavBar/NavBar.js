@@ -42,9 +42,10 @@ function NavBar({searchData, setSearchData}) {//if there is search data, website
                         <a className="nav-link disabled" href="#">Favorites</a>
                     </li>
 
-                    <li className="nav-item">
-                        <a className="nav-link disabled" href="#">Pantry</a>
-                    </li>
+                    {auth.user  ? <li className="nav-item">
+                        <Link to="/pantry" className="nav-link">Pantry</Link>
+                    </li> : null }
+
 
                     <li className="nav-item">
                         <a className="nav-link disabled" href="#">Preferences</a>
@@ -53,8 +54,9 @@ function NavBar({searchData, setSearchData}) {//if there is search data, website
                     <li className="nav-item">
                         <a className="nav-link" href={auth.user ? `/users/account/${auth.user.userId}` : "/login"}>Account</a>
                     </li>
+                    
 
-                    {auth.user ? auth.user.roles ? <li className="nav-item">
+                    {auth.user ? auth.user.roles === "ADMIN" ? <li className="nav-item">
                         <Link to="/admin" className="nav-link">User Administration</Link>
                     </li> : null : null}
 
