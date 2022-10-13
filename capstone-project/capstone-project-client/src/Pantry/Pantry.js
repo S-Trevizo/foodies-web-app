@@ -32,8 +32,9 @@ function Pantry() {
       console.log(user);
 
     return(
-
-        {}
+        <div>
+            hello 
+        </div>
     );
 
 }

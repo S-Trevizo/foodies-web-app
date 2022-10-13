@@ -108,8 +108,8 @@ function App() {
             <Route>
               <Account path="/account" />
             </Route>
-            <Route path="/pantry">
-              <Pantry />
+            <Route >
+              <Pantry path="/pantry"/>
             </Route>
           </Switch>
         </BrowserRouter>
