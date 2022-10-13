@@ -25,7 +25,6 @@ public class UserController {
         for (AppUser u : users) {
             u.setPassHash("");
         }
-        ;
 
         return new ResponseEntity(users, HttpStatus.OK);
     }

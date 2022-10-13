@@ -3,9 +3,9 @@ function ErrorMessages(props) {
     return (
         <>
             {props.errorData.message ?
-                <div className="alert alert-danger">{props.errorData.message}</div>
+                <div>{props.errorData.message}</div>
                 :
-                <div>{props.errorData}</div>
+                <div className="alert alert-danger">{props.errorData}</div>
             }
         </>
     );
