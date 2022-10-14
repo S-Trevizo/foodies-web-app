@@ -31,12 +31,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.POST, "/api/recipe/personal").hasAnyRole("USER","ADMIN")
                 .antMatchers(HttpMethod.POST,  "/api/security/authenticate").permitAll()//HttpMethod.POST,
                 .antMatchers(HttpMethod.POST, "/api/security/create_account").permitAll()
-                .antMatchers(HttpMethod.GET, "/api/users/account/*").hasAnyRole("USER", "ADMIN")//.authenticated also works - broader option
+                .antMatchers(HttpMethod.GET, "/api/user/*").hasAnyRole("USER", "ADMIN")//.authenticated also works - broader option
                 .antMatchers(HttpMethod.GET, "/api/security/*").hasAnyRole("ADMIN")
                 .antMatchers(HttpMethod.DELETE, "/api/security/**").hasAnyRole("ADMIN")
                 .antMatchers(HttpMethod.GET, "/api/users").hasAnyRole("ADMIN")
                 .antMatchers(HttpMethod.DELETE, "/api/users/**").hasAnyRole("ADMIN")
-                .antMatchers(HttpMethod.PUT, "/api/users/**").authenticated()
+                .antMatchers(HttpMethod.PUT, "/api/user/*").authenticated()
                 .antMatchers("/**").denyAll()
                 .and()
                 .sessionManagement()

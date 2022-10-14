@@ -14,12 +14,12 @@ import java.util.List;
 import java.util.Objects;
 
 @RestController
-@RequestMapping("/api/users")
+@RequestMapping("/api")
 @AllArgsConstructor
 public class UserController {
     private final AppUserService appUserService;
 
-    @GetMapping
+    @GetMapping("/users")
     public ResponseEntity<List<AppUser>> getUsers() {
 
         List<AppUser> users = appUserService.findAll();
@@ -31,7 +31,7 @@ public class UserController {
         return new ResponseEntity(users, HttpStatus.OK);
     }
 
-    @GetMapping("/account/{id}")
+    @GetMapping("/user/{id}")
     public ResponseEntity<Object> getAccount(@PathVariable String id) {//method verified by instructor
         //validate that person is admin or user with same id. else, forbidden
         AppUser currentUser = (AppUser) SecurityContextHolder
@@ -51,7 +51,7 @@ public class UserController {
         return new ResponseEntity<>(List.of("Error: must be an admin. Or, logged-in user may only request their account info (mismatching path variable id)."),HttpStatus.FORBIDDEN);
     }
 
-    @PutMapping("/account/{id}")
+    @PutMapping("/user/{id}")
     public ResponseEntity<?> update(@PathVariable String id, @RequestBody AppUser user)  {
 
         if (!id.equals( user.getUserId())) {
@@ -70,7 +70,7 @@ public class UserController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/users/delete/{id}")
     public ResponseEntity deleteById(@PathVariable String id) {
         if (appUserService.deleteById(id)) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);

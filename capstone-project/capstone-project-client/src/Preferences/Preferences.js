@@ -54,7 +54,7 @@ function Preferences() {
     const [user, setUser] = useState([]);
 
     useEffect(() => {
-        fetch(`http://localhost:8080/api/users/account/${auth.user.userId}`, {
+        fetch(`http://localhost:8080/api/user/${auth.user.userId}`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
@@ -86,7 +86,33 @@ function Preferences() {
     }, []);
 
     function selectHandler(event) {
+        event.preventDefault();
 
+        fetch(`http://localhost:8080/api/user/${auth.user.userId}`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+                Accept: "application/json",
+                Authorization: `Bearer ${auth.user.token}`
+            },
+            body: JSON.stringify(user),
+        })
+            .then(async response => {
+                if (response.status === 204) {
+                    return response.json();
+                } else if (response.status === 400) {
+                    return Promise.reject(await response.json());
+                } else {
+                    return Promise.reject(["Failed to update user's information."]);
+                }
+            })
+            .catch((error) => {
+                if (error instanceof TypeError) {
+                    setErrors(["Could not connect to the API."]);
+                } else {
+                    setErrors(error);
+                }
+            })
     }
 
     return (

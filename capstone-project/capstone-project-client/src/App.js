@@ -107,13 +107,13 @@ function App() {
             <Route path="/searchResultPage">
               <SearchResultPage searchTerm={searchData}/>
             </Route>
-            <Route path="/users/account/*">
+            <Route path="/account/*">
               <Account />
             </Route>
             <Route path="/pantry">
               <Pantry />
             </Route>
-            <Route path="/preferences">
+            <Route path="/preferences/*">
               <Preferences/>
             </Route>
           </Switch>

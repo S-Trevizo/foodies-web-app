@@ -50,11 +50,11 @@ function NavBar({ searchData, setSearchData }) {//if there is search data, websi
 
 
                         <li className="nav-item">
-                            <a className="nav-link" href={auth.user ? "/preferences" : "/login"}>Preferences</a>
+                            <a className="nav-link" href={auth.user ? `/preferences/${auth.user.userId}` : "/login"}>Preferences</a>
                         </li>
 
                         <li className="nav-item">
-                            <a className="nav-link" href={auth.user ? `/users/account/${auth.user.userId}` : "/login"}>Account</a>
+                            <a className="nav-link" href={auth.user ? `/account/${auth.user.userId}` : "/login"}>Account</a>
                         </li>
 
 

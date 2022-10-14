@@ -15,7 +15,7 @@ function Account() {
 
     useEffect(() => {
         console.log(auth.user)
-        fetch(`http://localhost:8080/api/users/account/${auth.user.userId}`, {
+        fetch(`http://localhost:8080/api/user/${auth.user.userId}`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
@@ -48,7 +48,7 @@ function Account() {
     function submitHandler(event) {
         event.preventDefault();
 
-        fetch(`http://localhost:8080/api/users/account/${auth.user.userId}`, {
+        fetch(`http://localhost:8080/api/user/${auth.user.userId}`, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",

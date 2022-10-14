@@ -35,7 +35,7 @@ function Pantry() {
       function submitHandler(event) {
         event.preventDefault();
         
-        fetch(`http://localhost:8080/api/users/account/${auth.user.userId}`,{
+        fetch(`http://localhost:8080/api/user/${auth.user.userId}`,{
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",

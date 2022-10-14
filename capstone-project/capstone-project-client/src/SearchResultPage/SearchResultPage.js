@@ -131,7 +131,7 @@ function createExternalFetchRequest(response) {
 }
 
 function fetchUser() {
-        {fetch("http://localhost:8080/api/users/account/"+userData.user.userId, {
+        {fetch("http://localhost:8080/api/user/"+userData.user.userId, {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
