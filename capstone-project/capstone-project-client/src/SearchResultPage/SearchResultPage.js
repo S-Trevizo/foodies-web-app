@@ -21,11 +21,14 @@ function getRecipesFromRemoteApi(input) {
     if (input === null) {
         return;
     }
+    input.q = input.q.replaceAll(" ","%");
+    //todo: convert q to a single string with no spaces?
     let finalFetch = ("https://api.edamam.com/api/recipes/v2?type=public&q=" + input.q + "&app_id=" + input.app_id + "&app_key=" + input.app_key);
-    if (input.fetchString !== null) {//additional search criteria in here for registered users or admins
+    if (input.fetchString !== undefined) {//additional search criteria in here for registered users or admins
         finalFetch = input.fetchString;
         finalFetch = finalFetch.concat("&q=",input.q,"&app_id=",input.app_id,"&app_key=",input.app_key);
     }
+    console.log(finalFetch);
     fetch(finalFetch, {
     method: "GET",
         headers: {
@@ -50,7 +53,7 @@ function getRecipesFromRemoteApi(input) {
     }).catch(error => {
         if (error instanceof TypeError) {//is this error even possible here?
             const copyArray = [];
-            copyArray.push("Could not connect to api.");
+            copyArray.push("Could not connect to remote api.");
             setErrorsToAppend(copyArray);
         } else {
             const copyArray = [];
@@ -78,7 +81,7 @@ function loadRandomRecipes(input) {
     }).catch(error => {
         if (error instanceof TypeError) {
             const copyArray = [];
-            copyArray.push("Could not connect to api.");
+            copyArray.push("Could not connect to local api from public recipe files.");
             setErrorsToAppend(copyArray);
         } else {//if page is refreshed, a string is outputted. doesn't quite work here, it seems?
             // console.log(error);
@@ -91,7 +94,7 @@ function loadRandomRecipes(input) {
 
 function loadFilteredRecipes(externalFetchString) {
     const input = { searchCriteria: searchTerm,
-                    fetchString: externalFetchString,
+                    fetchString: externalFetchString
                  };
 
     fetch("http://localhost:8080/api/recipe/personal", {
@@ -112,7 +115,7 @@ function loadFilteredRecipes(externalFetchString) {
                     }).catch(error => {
                         if (error instanceof TypeError) {
                             const copyArray = [];
-                            copyArray.push("Could not connect to api.");
+                            copyArray.push("Could not connect to local api from private recipe files.");
                             setErrorsToAppend(copyArray);
                         } else {//if page is refreshed, a string is outputted. doesn't quite work here, it seems? not sure I'd want this particular error to show to user though.
                             // console.log(error);
@@ -125,8 +128,10 @@ function loadFilteredRecipes(externalFetchString) {
 
 function createExternalFetchRequest(response) {
     let externalFetchString = ("https://api.edamam.com/api/recipes/v2?type=public");
-    for (var i = 0; i < response.healthLabels.length; i++) {
-        externalFetchString = externalFetchString.concat("&health=",response.healthLabels[i].healthLabel);
+    if (response.healthLabels !== null) {
+        for (var i = 0; i < response.healthLabels.length; i++) {
+            externalFetchString = externalFetchString.concat("&health=",response.healthLabels[i].healthLabel);
+        }
     }
     loadFilteredRecipes(externalFetchString);
 }
@@ -154,7 +159,7 @@ function fetchUser() {
             }).catch(error => {
                 if (error instanceof TypeError) {
                     const errors = [];
-                    errors.push("Could not connect to api.");
+                    errors.push("Could not connect to api from user files.");
                     setErrorsToAppend(errors);
                 } else {
                     console.log(error);
