@@ -4,6 +4,7 @@ import learn.recipemanager.domain.AppUserService;
 import learn.recipemanager.domain.Result;
 import learn.recipemanager.domain.ResultType;
 import learn.recipemanager.models.AppUser;
+import learn.recipemanager.models.viewmodels.EditUserAccountRequest;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -51,14 +52,10 @@ public class UserController {
         return new ResponseEntity<>(List.of("Error: must be an admin. Or, logged-in user may only request their account info (mismatching path variable id)."),HttpStatus.FORBIDDEN);
     }
 
-    @PutMapping("/user/{id}")
-    public ResponseEntity<?> update(@PathVariable String id, @RequestBody AppUser user)  {
+    @PutMapping("/user")
+    public ResponseEntity<?> update( @RequestBody EditUserAccountRequest request)  {
 
-        if (!id.equals( user.getUserId())) {
-            return new ResponseEntity<>(HttpStatus.CONFLICT);
-        }
-
-        Result<AppUser> result = appUserService.update(user);
+        Result<AppUser> result = appUserService.updateAccount(request);
 
         if (!result.isSuccess()) {
             if (result.getType() == ResultType.NOT_FOUND) {

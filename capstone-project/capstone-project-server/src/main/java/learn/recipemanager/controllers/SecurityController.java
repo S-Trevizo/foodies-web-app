@@ -4,6 +4,7 @@ import learn.recipemanager.domain.AppUserService;
 import learn.recipemanager.domain.Result;
 import learn.recipemanager.models.AppUser;
 import learn.recipemanager.models.HealthLabel;
+import learn.recipemanager.models.Ingredient;
 import learn.recipemanager.models.viewmodels.CreateRequest;
 import learn.recipemanager.models.viewmodels.LoginRequest;
 import learn.recipemanager.security.JwtConverter;
@@ -53,7 +54,7 @@ public class SecurityController {
             labels.add(new HealthLabel(request.getHealthLabels().get(i)));
         }
 
-        Result<AppUser> appUser = appUserService.create(request.getEmail(), request.getPassword(), request.getName(), new ArrayList<>(), labels, new ArrayList<>());
+        Result<AppUser> appUser = appUserService.create(request.getEmail(), request.getPassword(), request.getName(), new ArrayList<>(), labels, new ArrayList<Ingredient>());
 
         if (!appUser.isSuccess()) {
             return ErrorResponse.build(appUser);

@@ -2,6 +2,7 @@ package learn.recipemanager.domain;
 
 import learn.recipemanager.data.AppUserRepo;
 import learn.recipemanager.models.*;
+import learn.recipemanager.models.viewmodels.EditUserAccountRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -77,6 +78,13 @@ public class AppUserService implements UserDetailsService {
             return result;
         }
 
+        if (repo.findByUsername(email).size() > 0) {
+            result.addMessage("Email already registered", ResultType.INVALID);
+            return result;
+        }
+
+
+
         AppRole appRole = new AppRole();
         appRole.setRoleName("USER");
         password = encoder.encode(password);
@@ -114,6 +122,71 @@ public class AppUserService implements UserDetailsService {
         }
         return result;
     }
+
+    public Result<AppUser> updateAccount(EditUserAccountRequest request) {
+        Result<AppUser> userResult = new Result<>();
+
+        if (request.getUserId() == null || request.getUserId().isBlank()) {
+            userResult.addMessage("User Id is required", ResultType.INVALID);
+        }
+
+        userResult = validate(request.getEmail());
+
+        if (!userResult.isSuccess()) {
+            return userResult;
+        }
+
+        validatePass(request.getPassword(), userResult );
+
+        if (userResult.isSuccess()) {
+            Optional userOptional = repo.findById(request.getUserId());
+            if (userOptional.isPresent()){
+                AppUser user = (AppUser)userOptional.get();
+
+                user.setEmail(request.getEmail());
+                user.setPassHash(encoder.encode(request.getPassword()));
+                user.setName(request.getName());
+
+                user = repo.save(user);
+
+                userResult.setPayload(user);
+            }
+        }
+        return userResult;
+
+    }
+
+//    public Result<AppUser> updatePantry(EditUserPantryRequest request) {
+//        Result<AppUser> userResult = new Result<>();
+//
+//        if (request.getUserId() == null || request.getUserId().isBlank()) {
+//            userResult.addMessage("User Id is required", ResultType.INVALID);
+//        }
+//
+//        userResult = validate(request.getEmail());
+//
+//        if (!userResult.isSuccess()) {
+//            return userResult;
+//        }
+//
+//        validatePass(request.getPassword(), userResult );
+//
+//        if (userResult.isSuccess()) {
+//            Optional userOptional = repo.findById(request.getUserId());
+//            if (userOptional.isPresent()){
+//                AppUser user = (AppUser)userOptional.get();
+//
+//                user.setEmail(request.getEmail());
+//                user.setPassHash(encoder.encode(request.getPassword()));
+//                user.setName(request.getName());
+//                user = repo.save(user);
+//
+//                userResult.setPayload(user);
+//            }
+//        }
+//        return userResult;
+//
+//    }
 
     public boolean deleteById(String id) {
         Optional<AppUser> userOptional = repo.findById(id);
@@ -172,11 +245,6 @@ public class AppUserService implements UserDetailsService {
             result.addMessage("Entry should be a proper email", ResultType.INVALID);
             return result;
         }
-
-        if (repo.findByUsername(email).size() > 0) {
-            result.addMessage("Email already registered", ResultType.INVALID);
-        }
-
         return result;
 
     }
