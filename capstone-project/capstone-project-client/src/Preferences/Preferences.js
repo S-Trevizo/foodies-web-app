@@ -115,6 +115,13 @@ function Preferences() {
             })
     }
 
+
+    function changeHandler(e) {
+        let healthToEdit = { ...user };
+        healthToEdit[e.target.name] = e.target.value;
+        setUser(healthToEdit);
+    }
+
     return (
         <div className="container mt-5">
             <h2 className="text-center">Health Preferences for {user.name}</h2>
@@ -124,10 +131,10 @@ function Preferences() {
                     {alergens.map(index =>
                         <div>
                             <input
-                                className="form-check-input"
                                 type="checkbox"
                                 name={index.value}
-                                // onChange="" still trying to figure this one out
+                                checked={user.healthLabels.map(h => h.healthLabel).includes(index.value)}
+                                onChange={changeHandler}
                                 id={index.value}
                             />
                             <span>{index.label}</span>
@@ -139,11 +146,11 @@ function Preferences() {
                     {dietOptions.map(index =>
                         <div>
                             <input
-                                className="form-check-input"
                                 type="checkbox"
                                 name={index.value}
-                                // onChange="" still trying to figure this one out
-                                id={index.value}
+                                checked={user.healthLabels.map(h => h.healthLabel).includes(index.value)}
+                                onChange={changeHandler}
+                                d={index.value}
                             />
                             <span>{index.label}</span>
 
@@ -154,10 +161,10 @@ function Preferences() {
                     {options.map(index =>
                         <div>
                             <input
-                                className="form-check-input"
                                 type="checkbox"
                                 name={index.value}
-                                // onChange="" still trying to figure this one out
+                                checked={user.healthLabels.map(h => h.healthLabel).includes(index.value)}
+                                onChange={changeHandler}
                                 id={index.value}
                             />
                             <span>{index.label}</span>
@@ -170,7 +177,7 @@ function Preferences() {
             </form>
         </div>
 
-    ); 
+    );
 
 }
 export default Preferences;

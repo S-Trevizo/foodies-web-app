@@ -96,8 +96,7 @@ function Register() {
                 if (error instanceof TypeError) {
                     setErrors(["Could not connect to the API."]);
                 } else {
-                    console.log(error);
-                    setErrors(error);
+                    setErrors([...error]);
                 }
             });
     }
@@ -109,13 +108,12 @@ function Register() {
 
         <div className="container mt-5">
             <h2>Register</h2>
-            {errors ?
+
                 <div className="container">
                     {/* Still can't got this to work. up to suggestions. */}
-                    {/* {errors.map((e, index) =>
-                        <ErrorMessages key={index} errorData={e} />)} */}
+                    {errors.map((e, index) =>
+                        <ErrorMessages key={index} errorData={e} />)}
                 </div>
-                : null}
             <form>
                 <div className="form-group">
                     <label htmlFor="name">Name:</label>
