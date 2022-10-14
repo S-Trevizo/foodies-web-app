@@ -7,13 +7,13 @@ import RecipeCarouseItem from "../RecipeCarouseItem/RecipeCarouseItem";
 import UserCard from "../User/UserCard";
 import NavBar from "../NavBar/NavBar";
 
-function SearchResultPage({searchTerm}) {//refresh on this component and twentyrandomrecipes.js don't work rn.
+function SearchResultPage({searchTerm}) {
+//refresh on this component and twentyrandomrecipes.js don't work rn.
 //using a setter redraws the current component it is in. This is done after retrieving data to display.
 const [recipes, setRecipes] = useState([]);
 const [errorsToAppend, setErrorsToAppend] = useState([]);
 const userData = useContext(AuthContext);
-const [user, setUser] = useState(null);
-const [externalFetchInput, setExternalFetchInput] = useState(null);
+const [user, setUser] = useState(null);//todo: might use this so I have a way to update user's favorites. not sure yet.
 
 function getRecipesFromRemoteApi(input) {
     if (input === null) {
@@ -112,18 +112,13 @@ function loadFilteredRecipes(externalFetchString) {
                             const copyArray = [];
                             copyArray.push("Could not connect to api.");
                             setErrorsToAppend(copyArray);
-                        } else {//if page is refreshed, a string is outputted. doesn't quite work here, it seems?
+                        } else {//if page is refreshed, a string is outputted. doesn't quite work here, it seems? not sure I'd want this particular error to show to user though.
                             // console.log(error);
                             const copyArray = [];
                             copyArray.push(...error);
                             setErrorsToAppend(copyArray);
                         }
                     });
-    //make post to recipes api that verifies input data. 
-    //add app_id and app_key to finish building the fetch request. send it back.
-    //then call getRecipesFromRemoteApi. 
-    //add another argument to getRecipesFromRemoteApi. If the string fetchRequest is null, 
-    //then do a ifNull, use this fetch request. else, use the public fetch request.
 }
 
 function createExternalFetchRequest(response) {
@@ -166,16 +161,14 @@ function fetchUser() {
                     setErrorsToAppend(errors);
                 }
             })}
-
-    //print user data. next step.
 }
 
-useEffect(
+useEffect(//the main structure of this component: see console.log in this useEffect
     () => {
         if (userData.user === null) {
             console.log("userData is null. do not build special string. do nothing.");
             const input = { searchCriteria: searchTerm };
-            loadRandomRecipes(input);//loads twice. "double tap" due to strict mode
+            loadRandomRecipes(input);
         } else {
             fetchUser();
             console.log("userData is not null: use their id to fetch information by id.");
@@ -183,19 +176,26 @@ useEffect(
     },
     []);
 
-//later: can modify code so that refreshing this component does not cause 403 error from bad json syntax
+//todo maybe later: can modify code so that refreshing this component does not cause 403 error from bad json syntax. 
+// any component involved with searchData from app.js, really.
+//the 403 happens because refreshing invalidates the searchData or something like that I think. need to double check with instructor.
     return (
-        //I can print recipe data. I need to edit a user's preferences onclick on each card. 
-        //find a way to overload component argument and take in user: 
-        //then, print their information if user argument is not null.
-        //also, double check that user has permission to have filtered search. 
-        //after that: implement additional filtered searches by building up a string
-        <div>
+        //todo: I can print recipe data. I need to edit a user's preferences onclick or something on each card. 
+        //maybe find a way to overload component argument and take in user - should they just be dangling around like this though?
+        <div className="container text-center">
+            
             {errorsToAppend.map((r, index) => <ErrorMessages key={index} errorData={r} />)}
 
-            made it to searchresultpage.js. This will print out recipes as cards.
-            perform search here.
+            {(recipes.length > 0) ?
+                <div>
+                    
+                    print out recipes as cards here
+                    
+                    
+                    </div>
+                : <div>No recipes found.</div>}
         </div>
+
     );
 }
 
