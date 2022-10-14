@@ -104,6 +104,14 @@ public class AppUser implements UserDetails {
         this.name = name;
     }
 
+    public List<Ingredient> getIngredients() {
+        return ingredients;
+    }
+
+    public void setIngredients(List<Ingredient> ingredients) {
+        this.ingredients = ingredients;
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return userRoles.stream().map(role -> new SimpleGrantedAuthority("ROLE_" + role.getRoleName())).collect(Collectors.toList());

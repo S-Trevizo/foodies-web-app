@@ -48,7 +48,7 @@ function Account() {
     function submitHandler(event) {
         event.preventDefault();
 
-        fetch(`http://localhost:8080/api/user/${auth.user.userId}`, {
+        fetch(`http://localhost:8080/api/user`, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
@@ -75,19 +75,31 @@ function Account() {
             })
     }
 
+    function handleChange(e) {
+        
+
+        let userToEdit = {...user};
+
+        userToEdit[e.target.name] = e.target.value;
+
+        console.log(userToEdit);
+        setUser(userToEdit);
+
+    }
+
     return (
 
         <div className="container">
             <h2>Account Info</h2>
             <form onSubmit={submitHandler}>
                 <label className="form-label">Name</label>
-                <input className="form-control" id={user.name} defaultValue={user.name} />
+                <input className="form-control" name="name" id={user.name} defaultValue={user.name} onChange={ handleChange}/>
 
                 <label className="form-label">Username</label>
-                <input className="form-control id" id={user.username} defaultValue={user.username} />
+                <input className="form-control id" name="email" id={user.username} defaultValue={user.username} onChange={ handleChange} />
 
                 <label className="form-label">Password</label>
-                <input className="form-control" type="password" id={user.password} />
+                <input className="form-control" name="password" type="password" id={user.password} onChange={ handleChange} />
 
                 <div className="text-right">
                     <button className="btn btn-primary mr-2 mt-2">Submit</button>

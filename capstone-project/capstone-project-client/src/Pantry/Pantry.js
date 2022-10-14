@@ -26,6 +26,7 @@ function Pantry() {
               // need to finish the error handling here
           })
           .then(userToEdit => {
+            console.log(userToEdit);
               setUser(userToEdit);
           });
     
@@ -35,7 +36,7 @@ function Pantry() {
       function submitHandler(event) {
         event.preventDefault();
         
-        fetch(`http://localhost:8080/api/user/${auth.user.userId}`,{
+        fetch(`http://localhost:8080/api/user`,{
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
