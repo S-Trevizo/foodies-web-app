@@ -9,7 +9,8 @@ import NavBar from "../NavBar/NavBar";
 //this component searches random for public user. for registered user, it automatically filters results to include user's allergens/healthlabels. (example: "soy-free")
 
 function SearchResultPage({searchTerm}) {
-console.log("change page");
+    console.log("searchData from searchresultpage: " + searchTerm);
+    console.log("change page");
 //refresh on this component and twentyrandomrecipes.js don't work rn.
 //using a setter redraws the current component it is in. This is done after retrieving data to display.
 const [recipes, setRecipes] = useState([]);
@@ -62,7 +63,7 @@ function getRecipesFromRemoteApi(input) {
     });
 }
 
-function loadRandomRecipes(input) {
+function loadRecipes(input) {
     fetch("http://localhost:8080/api/recipe/public", {
         method: "POST",
         body: JSON.stringify(input),
@@ -171,20 +172,23 @@ function fetchUser() {
 
 useEffect(//the main structure of this component: see console.log in this useEffect
     () => {
+        //assume that searchTerm is valid and doesn't need to be manually fixed in this line.
+        let input = { searchCriteria: searchTerm };
         if (userData.user === null) {
             console.log("userData is null. do not build special string. do nothing.");
-            const input = { searchCriteria: searchTerm };
-            loadRandomRecipes(input);
+            loadRecipes(input);
         } else {
             fetchUser();
             console.log("userData is not null: use their id to fetch information by id.");
         }
     },
-    []);
+    [searchTerm]);
 
 //todo maybe later: can modify code so that refreshing this component does not cause 403 error from bad json syntax. 
 // any component involved with searchData from app.js, really.
 //the 403 happens because refreshing invalidates the searchData or something like that I think. need to double check with instructor.
+console.log(searchTerm);
+// console.log("recipe name: " +);//recipes[0].recipe.label
 console.log(recipes);
 return (
         //todo: I can print recipe data. I need to edit a user's preferences onclick or something on each card. 

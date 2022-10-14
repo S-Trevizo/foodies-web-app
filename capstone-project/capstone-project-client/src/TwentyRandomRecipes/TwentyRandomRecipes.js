@@ -7,7 +7,7 @@ import RecipeCarouseItem from "../RecipeCarouseItem/RecipeCarouseItem";
 import CarouselBody from "../CarouselBody/CarouselBody";
 
 
-function TwentyRandomRecipes(props) {
+function TwentyRandomRecipes() {
     // todo: search bar component will call this class with searchCriteria as argument.
     // todo continued: maybe also take in an argument with information on what to filter? not sure. needs security at that point. or do separate component for that. will see.
     const [recipes, setRecipes] = useState([]);
@@ -88,16 +88,12 @@ function TwentyRandomRecipes(props) {
     useEffect(
         () => {
             //todo: I need to find a way to optionally let user input search criteria
-            const input = { searchCriteria: "chicken feet" };
-            if (props.props !== undefined) {
-                input.searchCriteria = props.props;
-            }
+            let input = { searchCriteria: "roses" };
             loadRandomRecipes(input);//loads twice. "double tap" due to strict mode
         },
         []);
     //might be good to refactor this return based on the current path. If it is homepage, do carousel.
     //and if it is search results page, do cards.
-
 
     return (
         <div className="container text-center">
