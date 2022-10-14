@@ -203,3 +203,5 @@ useEffect(//the main structure of this component: see console.log in this useEff
 }
 
 export default SearchResultPage;
+
+//future option: implement filter with ability to enter allergens in textbox for additional filtering based on ingredients.
