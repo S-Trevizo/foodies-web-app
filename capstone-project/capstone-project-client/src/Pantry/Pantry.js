@@ -77,7 +77,7 @@ function Pantry() {
             } else {
                 return Promise.reject(["Failed to update user's information."]);
             }
-        })
+        }).then(setToAdd(DEFAULT_INGREDIENT))
         .catch((error) => {
             if(error instanceof TypeError){
                 setState({
@@ -135,7 +135,8 @@ function Pantry() {
             user: {...state.user},
             errors: [...state.errors],
             hidden: false,
-            edit: true
+            edit: true,
+            index: index
         })
     }
 
@@ -143,9 +144,12 @@ function Pantry() {
         e.preventDefault();
         let toEdit = {...state.user}
 
+        toEdit.ingredients.splice(state.index, 1);
+
         toEdit.ingredients.push(toAdd);
 
         submitHandler(toEdit);
+    
     }
     return(
         <div className="container">
