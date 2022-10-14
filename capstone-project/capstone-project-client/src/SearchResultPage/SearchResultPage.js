@@ -190,7 +190,10 @@ useEffect(//the main structure of this component: see console.log in this useEff
                 <div>
                     
                     print out recipes as cards here
-                    
+                    card: option to favorite it, 
+                    recipe name where name is link,
+                    recipe image,
+                    option to expand a button to see ingredients maybe
                     
                     </div>
                 : <div>No recipes found.</div>}

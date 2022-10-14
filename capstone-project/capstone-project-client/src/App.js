@@ -14,6 +14,7 @@ import Account from './Account/Account';
 import SearchResultPage from './SearchResultPage/SearchResultPage';
 import Pantry from './Pantry/Pantry';
 
+
 const LOCAL_STORAGE_TOKEN_KEY = "foodiesToken";
 
 function App() {

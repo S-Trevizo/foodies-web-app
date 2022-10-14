@@ -101,13 +101,12 @@ function TwentyRandomRecipes(props) {
 
     return (
         <div className="container text-center">
-            
             {errorsToAppend.map((r, index) => <ErrorMessages key={index} errorData={r} />)}
 
             {(recipes.length > 0) ?
                 <CarouselBody listOfObjects={recipes}/>
                 : <div>no recipes found</div>}
-
+                
         </div>
     );
 }
