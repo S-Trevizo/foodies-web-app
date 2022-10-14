@@ -62,29 +62,38 @@ function NavBar({ searchData, setSearchData }) {//if there is search data, websi
                             <Link to="/admin" className="nav-link">User Administration</Link>
                         </li> : null : null}
 
+                        {(searchData === null) ?
+                            null
+                            :
+                            <div >
+                                <div className="input-group mb-0">
+                                    <input type="text" id="searchForRecipes" onChange={(e) => setSearchCriteria(e.target.value)} className="form-control" placeholder={"Search for recipes"} aria-label="Recipient's username" aria-describedby="basic-addon2" />
+                                    <div className={"form-group"}>
+                                        <button className="btn btn-outline-secondary" type="button" onClick={handleSubmit} id="searchBarText">Submit</button>
+                                    </div>
+                                </div>
+                            </div>
+                        }
 
-                    </ul>
-                    {(searchData === null) ?
-                        null
-                        :
-                        <div>
-                            <form>
-                                <div className={"form-group"}>
-                                    <input onChange={(e) => setSearchCriteria(e.target.value)} className={"form-control form-control-sm"} type={"text"} placeholder={"Search for recipes"} />
+                        {auth.user ?
+                            <div className="col-md-2">
+                                <Link className="btn btn-outline-success my-2 my-sm-0 mr-2" to="/" onClick={() => auth.logout()}>Log Out</Link>
+                            </div>
+                            :
+                            <div >
+                                {/* className="col-md-2" */}
+                                <div>
+                                    <Link className="btn btn-outline-success my-2 my-sm-0 mr-2 " to="/login"  >Log In</Link>
                                 </div>
                                 <div>
-                                    <button className={"btn btn-primary"} onClick={handleSubmit} id="searchBarText">Submit</button>
+                                    <Link className="btn btn-outline-info my-2 my-sm-0 " to="/register"  >Register</Link>
                                 </div>
-                            </form>
-                        </div>
-                    }
+                            </div>
+                        }
 
-                    {auth.user ? <Link className="btn btn-outline-success my-2 my-sm-0 mr-2" to="/" onClick={() => auth.logout()}>Log Out</Link> :
-                        <div>
-                            <Link className="btn btn-outline-success my-2 my-sm-0 mr-2 " to="/login"  >Log In</Link>
-                            <Link className="btn btn-outline-info my-2 my-sm-0 " to="/register"  >Register</Link>
-                        </div>
-                    }
+                    </ul>
+
+
 
                 </div>
             </nav>

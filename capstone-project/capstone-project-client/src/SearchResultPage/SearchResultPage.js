@@ -9,6 +9,7 @@ import NavBar from "../NavBar/NavBar";
 //this component searches random for public user. for registered user, it automatically filters results to include user's allergens/healthlabels. (example: "soy-free")
 
 function SearchResultPage({searchTerm}) {
+    console.log("change page");
 //refresh on this component and twentyrandomrecipes.js don't work rn.
 //using a setter redraws the current component it is in. This is done after retrieving data to display.
 const [recipes, setRecipes] = useState([]);

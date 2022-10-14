@@ -5,3 +5,7 @@
 h1 {
     text-shadow: 3px 2px 3px rgba(255, 255, 255, .2);
 }
+
+#searchForRecipes {
+    background: rgb(62, 62, 62);
+}
