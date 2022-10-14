@@ -10,7 +10,7 @@ function Pantry() {
     const [hidden, setHidden] = useState(true);
 
     useEffect(() => {
-        fetch(`http://localhost:8080/api/users/account/${auth.user.userId}`, {
+        fetch(`http://localhost:8080/api/user/${auth.user.userId}`, {
           method: "GET",
           headers: {
               "Content-Type": "application/json",
