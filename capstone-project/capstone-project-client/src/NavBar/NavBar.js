@@ -28,7 +28,7 @@ function NavBar({ searchData, setSearchData }) {//if there is search data, websi
                 <div className="collapse navbar-collapse" id="navbarTogglerDemo02">
                     <ul className="navbar-nav mr-auto mt-2 mt-lg-0">
                         <li className="nav-item">
-                            <Link to="/" className="nav-link">Foodies</Link>
+                            <Link to="/" className="nav-link">Home</Link>
                         </li>
                         <li className="nav-item">
                             <a className="nav-link disabled" href="#">Favorites</a>
@@ -50,32 +50,37 @@ function NavBar({ searchData, setSearchData }) {//if there is search data, websi
                             <Link to="/admin" className="nav-link">User Administration</Link>
                         </li> : null : null}
 
-                        <div >
-                            <div className="input-group mb-0">
-                                <input type="text" id="searchForRecipes" onChange={(e) => setSearchData(e.target.value)} className="form-control" placeholder={"Search for recipes"} aria-label="Recipient's username" aria-describedby="basic-addon2" />
-                                <div className={"form-group"}>
-                                    <button className="btn btn-outline-secondary" type="button" onClick={handleSubmit} id="searchBarText">Submit</button>
-                                </div>
-                            </div>
-                        </div>
-
-                        {auth.user ?
-                            <div className="col-md-2">
-                                <Link className="btn btn-outline-success my-2 my-sm-0 mr-2" to="/" onClick={() => auth.logout()}>Log Out</Link>
-                            </div>
-                            :
-                            <div >
-                                {/* className="col-md-2" */}
-                                <div>
-                                    <Link className="btn btn-outline-success my-2 my-sm-0 mr-2 " to="/login"  >Log In</Link>
-                                </div>
-                                <div>
-                                    <Link className="btn btn-outline-info my-2 my-sm-0 " to="/register"  >Register</Link>
-                                </div>
-                            </div>
-                        }
+                        
 
                     </ul>
+
+                    <div>
+
+                        <div className="input-group mt-3">
+                            <input type="text" id="searchForRecipes" onChange={(e) => setSearchData(e.target.value)} className="form-control" placeholder={"Search for recipes"}  aria-describedby="basic-addon2" />
+                            <div className={"form-group"}>
+                                <button className="btn btn-outline-secondary input-group-append mr-3" type="button" onClick={handleSubmit} id="searchBarText">Submit</button>
+                            </div>
+                        </div>
+                        
+                    </div>
+
+                        {auth.user ?
+                            <div>
+                                <Link className="btn btn-outline-success my-3" to="/" onClick={() => auth.logout()}>Log Out</Link>
+                            </div>
+                            :
+                            (
+                                <>
+                                <div>
+                                    <Link className="btn btn-outline-success my-3  mr-2 " to="/login"  >Log In</Link>
+                                </div>
+                                <div>
+                                    <Link className="btn btn-outline-info my-3 " to="/register"  >Register</Link>
+                                </div>
+                                </>
+                            )
+                        }
                 </div>
             </nav>
         </div>
