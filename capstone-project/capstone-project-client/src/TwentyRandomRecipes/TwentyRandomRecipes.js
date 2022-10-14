@@ -88,7 +88,7 @@ function TwentyRandomRecipes() {
     useEffect(
         () => {
             //todo: I need to find a way to optionally let user input search criteria
-            let input = { searchCriteria: "roses" };
+            let input = { searchCriteria: "gingerbread cookie" };
             loadRandomRecipes(input);//loads twice. "double tap" due to strict mode
         },
         []);
