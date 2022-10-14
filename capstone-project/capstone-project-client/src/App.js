@@ -21,7 +21,7 @@ const LOCAL_STORAGE_TOKEN_KEY = "foodiesToken";
 function App() {
 
   const [user,setUser] = useState(null);
-  const [searchData,setSearchData] = useState(null);
+  const [searchData,setSearchData] = useState("random");
 
   const [restoreLoginAttemptCompleted, setRestoreLoginAttemptCompleted] = useState(false);
 

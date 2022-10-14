@@ -32,7 +32,7 @@ public class UserController {
         return new ResponseEntity(users, HttpStatus.OK);
     }
 
-    @GetMapping("/user/{id}")
+    @GetMapping("/user/{id}")//todo remove id from this
     public ResponseEntity<Object> getAccount(@PathVariable String id) {//method verified by instructor
         //validate that person is admin or user with same id. else, forbidden
         AppUser currentUser = (AppUser) SecurityContextHolder
