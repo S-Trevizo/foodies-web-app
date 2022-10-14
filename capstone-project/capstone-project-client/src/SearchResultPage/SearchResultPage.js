@@ -168,7 +168,8 @@ useEffect(//the main structure of this component: see console.log in this useEff
     () => {
         if (userData.user === null) {
             console.log("userData is null. do not build special string. do nothing.");
-            const input = { searchCriteria: searchTerm };
+            let input = { searchCriteria: searchTerm };
+            input = {searchCriteria: "raspberry"};
             loadRandomRecipes(input);
         } else {
             fetchUser();

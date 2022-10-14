@@ -1,13 +1,29 @@
 import { useState, useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
 import AuthContext from "../AuthContext";
+import ErrorMessages from "../ErrorMessages/ErrorMessages";
 
 function Pantry() {
 
     const auth = useContext(AuthContext);
-    const [user, setUser] = useState(null);
-    const [errors, setErrors] = useState(null);
-    const [hidden, setHidden] = useState(true);
+
+    const [state, setState] = useState({
+        user: null,
+        errors: [],
+        hidden: true,
+        edit: false
+    });
+    
+    const DEFAULT_INGREDIENT = {
+        name: "",
+        foodCategory: "",
+        quantity: 0,
+        measure: ""
+    };
+
+    const [toAdd, setToAdd] = useState(DEFAULT_INGREDIENT)
+     
+    
 
     useEffect(() => {
         fetch(`http://localhost:8080/api/user/${auth.user.userId}`, {
@@ -16,37 +32,45 @@ function Pantry() {
               "Content-Type": "application/json",
               "Authorization": "Bearer " + localStorage.getItem("foodiesToken")
           }
-      })
-          .then( async response => {
+      }) .then( async response => {
               if (response.status === 200) {
                   return response.json();
               } else {
                   return Promise.reject(await response.json());
               }
               // need to finish the error handling here
-          })
-          .then(userToEdit => {
+          }).then(userToEdit => {
             console.log(userToEdit);
-              setUser(userToEdit);
-          });
-    
+              setState({
+                user: {...userToEdit},
+                errors: [...state.errors],
+                hidden: true,
+                edit: false
+              })
+          })
           // need to include a catch statement here
-      },[auth.user]);
+      }, [auth.user]);
 
-      function submitHandler(event) {
-        event.preventDefault();
+
+      function submitHandler(toUpdate) {
         
-        fetch(`http://localhost:8080/api/user`,{
+        fetch(`http://localhost:8080/api/pantry`,{
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
                 Accept: "application/json",
                 Authorization: `Bearer ${auth.user.token}`
             },
-            body: JSON.stringify(user),
+            body: JSON.stringify(toUpdate),
         })
         .then(async response => {
             if (response.status === 204) {
+                setState({
+                    user: {...toUpdate},
+                    errors: [...state.errors],
+                    hidden: true,
+                    edit: false
+                })
                 return response.json();
             } else if(response.status === 400){
                 return Promise.reject(await response.json());
@@ -56,44 +80,108 @@ function Pantry() {
         })
         .catch((error) => {
             if(error instanceof TypeError){
-                setErrors(["Could not connect to the API."]);
+                setState({
+                    user: {...state.user},
+                    errors: ["Could not connect to the API."],
+                    hidden: state.hidden,
+                    edit: false
+                })
             } else {
-                setErrors(error);
+                setState({
+                    user: {...state.user},
+                    errors: [...error],
+                    hidden: state.hidden,
+                    edit: false
+                })
             }
         })    
+    }
+
+    function handleChange(e) {
+        
+        let updatedToAdd = {...toAdd};
+
+        updatedToAdd[e.target.name] = e.target.value;
+
+        setToAdd(updatedToAdd);
+
+    }
+
+    function handleDelete(e,index) {
+        e.preventDefault();
+        let toEdit = {...state.user}
+
+        toEdit.ingredients.splice(index,1);
+        
+
+        submitHandler(toEdit);
+
+    }
+
+    function handleAdd(e) {
+        e.preventDefault();
+        let toEdit = {...state.user}
+
+        toEdit.ingredients.push(toAdd);
+
+        submitHandler(toEdit);
+        
+    }
+
+    function prepareEdit(e, index) {
+        setToAdd(state.user.ingredients[index]);
+
+        setState({
+            user: {...state.user},
+            errors: [...state.errors],
+            hidden: false,
+            edit: true
+        })
+    }
+
+    function handleEdit(e) {
+        e.preventDefault();
+        let toEdit = {...state.user}
+
+        toEdit.ingredients.push(toAdd);
+
+        submitHandler(toEdit);
     }
     return(
         <div className="container">
         <h2>Your Pantry</h2>
+    
 
-        <button className={"btn btn-primary mb-1" + (!hidden ? " d-none" : "")} onClick={() => setHidden(false)}> Add an Ingredient to Your Pantry</button>
+        <button className={"btn btn-primary mb-1" + (!state.hidden ? " d-none" : "")} onClick={() => setState({user: {...state.user}, errors: [...state.errors], hidden: false, edit: false})}> Add an Ingredient to Your Pantry</button>
 
-        <div className={"card my-2" + (hidden ? " d-none" : "")}>
+        <div className={"card my-2" + (state.hidden && !state.edit ? " d-none" : "")}>
             <div className="card-header">
-                <h4 className="card-title">Add an ingredient</h4>
+                {state.edit ? <h4 className="card-title">Edit an ingredient</h4> :<h4 className="card-title">Add an ingredient</h4>}
             </div>
             <div className="card-body">
-                <form onSubmit={submitHandler}>
+                <form>
                     <label className="form-label">Ingredient Name</label>
-                    <input className="form-control"   />
+                    <input name="name" defaultValue={toAdd.name === "" ? "" : toAdd.name} className="form-control" onChange={handleChange}  />
 
                     <label className="form-label">Category</label>
-                    <input className="form-control"/>
+                    <input name="foodCategory" defaultValue={toAdd.foodCategory === "" ? "" : toAdd.foodCategory} className="form-control" onChange={handleChange}/>
 
                     <label className="form-label">Quantity</label>
-                    <input type="number" className="form-control"  />
+                    <input name="quantity" defaultValue={toAdd.quantity === 0 ? "" : toAdd.quantity} type="number" className="form-control"  onChange={handleChange}/>
 
                     <label className="form-label">Measure</label>
-                    <input className="form-control"/>
+                    <input name="measure" defaultValue={toAdd.measure === "" ? "" : toAdd.measure} className="form-control" onChange={handleChange}/>
 
                     <div className="text-right">
-                        <button className="btn btn-primary mr-2 mt-2">Submit</button>
-                        <button className="btn btn-danger mt-2" onClick={() => setHidden(true)}>Cancel</button>
+                        <button className="btn btn-primary mr-2 mt-2" onClick={ state.edit ? (e)=> handleEdit(e) : (e) => handleAdd(e)}>Submit</button>
+                        <button className="btn btn-danger mt-2" onClick={(e) => {e.preventDefault(); setState({user: {...state.user}, errors: [...state.errors], hidden: true, edit: false});}}>Cancel</button>
                     </div>
                 </form>
 
             </div>
         </div>
+
+        
 
         <div className="card my-2">
             <div className="card-header">
@@ -101,6 +189,33 @@ function Pantry() {
             </div>
 
             <div className="card-body">
+
+            <table className="table table-striped table-hover">
+                <thead className="thead-dark">
+                        <tr>
+                            <th>Name</th>
+                            <th>Food Category</th>
+                            <th>Quantity</th>
+                            <th>Measure</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {state.user ? state.user.ingredients.map((i, index) => (
+                            <tr key={index}>
+                            <td>{i.name}</td>
+                            <td>{i.foodCategory}</td>
+                            <td>{i.quantity}</td>
+                            <td>{i.measure}</td>
+                            <td className="text-right">
+                                <button type="button" className="btn btn-primary btn-sm mx-1" onClick={(e)=>prepareEdit(e,index)}>Edit</button>
+                                <button type="button" className="btn btn-danger btn-sm mx-1" onClick={(e) => handleDelete(e,index)}>Delete</button>
+                            </td>
+                        </tr>
+                    ))
+                     : null}
+                    </tbody>
+                </table>
                 
             </div>
             

@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Ingredient {
 
-    private String foodId;
+    // private String foodId;
     private String name;
     private String foodCategory;
     private double quantity;

@@ -37,6 +37,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.GET, "/api/users").hasAnyRole("ADMIN")
                 .antMatchers(HttpMethod.DELETE, "/api/users/**").hasAnyRole("ADMIN")
                 .antMatchers(HttpMethod.PUT, "/api/user").authenticated()
+                .antMatchers(HttpMethod.PUT, "/api/pantry").authenticated()
                 .antMatchers("/**").denyAll()
                 .and()
                 .sessionManagement()
