@@ -13,6 +13,7 @@ import Delete from './Delete/Delete';
 import Account from './Account/Account';
 import SearchResultPage from './SearchResultPage/SearchResultPage';
 import Pantry from './Pantry/Pantry';
+import Preferences from './Preferences/Preferences';
 
 
 const LOCAL_STORAGE_TOKEN_KEY = "foodiesToken";
@@ -111,6 +112,9 @@ function App() {
             </Route>
             <Route path="/pantry">
               <Pantry />
+            </Route>
+            <Route path="/preferences">
+              <Preferences/>
             </Route>
           </Switch>
         </BrowserRouter>

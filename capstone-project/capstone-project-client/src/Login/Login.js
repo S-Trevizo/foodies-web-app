@@ -53,7 +53,7 @@ function Login(props) {
 
 
     return (
-        <div className="container-fluid">
+        <div className="container mt-5">
             <h2>Login</h2>
             {errors ?
                 <div className="container">
