@@ -200,7 +200,11 @@ return (
             {(recipes.length > 0) ?
                 <div>
                     
-                    print out recipes as cards here
+                    print out recipes as cards here: yes/no button, image, expand button, and caption
+                    
+
+
+
                     card: option to favorite it, 
                     recipe name where name is link,
                     recipe image,
