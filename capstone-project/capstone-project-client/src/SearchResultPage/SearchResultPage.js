@@ -9,7 +9,7 @@ import NavBar from "../NavBar/NavBar";
 //this component searches random for public user. for registered user, it automatically filters results to include user's allergens/healthlabels. (example: "soy-free")
 
 function SearchResultPage({searchTerm}) {
-    console.log("change page");
+console.log("change page");
 //refresh on this component and twentyrandomrecipes.js don't work rn.
 //using a setter redraws the current component it is in. This is done after retrieving data to display.
 const [recipes, setRecipes] = useState([]);
@@ -44,8 +44,7 @@ function getRecipesFromRemoteApi(input) {
             return Promise.reject(await response.json());
         } else if (response.status === 429) {//this doesn't quite seem to catch 429 errors
             return Promise.reject( ["Too many requests sent to the api."] );
-        }
-        else {
+        } else {
             return Promise.reject(await response.json());
         }
     }).then(recipesOutput => {
@@ -186,7 +185,8 @@ useEffect(//the main structure of this component: see console.log in this useEff
 //todo maybe later: can modify code so that refreshing this component does not cause 403 error from bad json syntax. 
 // any component involved with searchData from app.js, really.
 //the 403 happens because refreshing invalidates the searchData or something like that I think. need to double check with instructor.
-    return (
+console.log(recipes);
+return (
         //todo: I can print recipe data. I need to edit a user's preferences onclick or something on each card. 
         //maybe find a way to overload component argument and take in user - should they just be dangling around like this though?
         <div className="container text-center">

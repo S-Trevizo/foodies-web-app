@@ -16,6 +16,7 @@ function NavBar({ searchData, setSearchData }) {//if there is search data, websi
 
     function handleSubmit(event) {
         event.preventDefault();
+        console.log(searchCriteria);
         setSearchData(searchCriteria);
         history.push("/searchResultPage");
         //how could I involve user input?
