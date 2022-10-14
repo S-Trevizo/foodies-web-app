@@ -41,6 +41,6 @@ Content-Type: application/json
 
 ###
 
-GET https://api.edamam.com/api/recipes/v2?type=public&q=burger%waffle&app_id=6cb09ed9&app_key=d6a13e436430e1c7060acb41373f73cf HTTP/1.1
+GET https://api.edamam.com/api/recipes/v2?type=public&q=food_a9m7tjlaizm6qwb80yipna6dvd20&app_id=4357d5e9&app_key=84496af29c091bb734dab8904e3d9df5 HTTP/1.1
 Content-Type: application/json
 
