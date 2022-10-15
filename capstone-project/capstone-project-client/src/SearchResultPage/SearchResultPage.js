@@ -54,7 +54,7 @@ function SearchResultPage({ searchTerm }) {
         }).catch(error => {
             if (error instanceof TypeError) {//is this error even possible here?
                 const copyArray = [];
-                copyArray.push("Could not connect to remote api.");
+                copyArray.push("Remote api is currently timed out: please wait for new results.");
                 setErrorsToAppend(copyArray);
             } else {
                 const copyArray = [];
@@ -200,7 +200,9 @@ function SearchResultPage({ searchTerm }) {
         <div className="container text-center">
             {errorsToAppend.map((r, index) => <ErrorMessages key={index} errorData={r} />)}
             {(recipes.length > 0) ?
-                    recipes.map((r, index) => <RecipeCardItem key={index} recipeData={r.recipe} />)
+                <div className="card-columns">
+                    {recipes.map((r, index) => <RecipeCardItem key={index} recipeData={r.recipe} index={index} userId={(userData.user === null) ? null : userData.user.userId} />)}
+                </div>
                 : <div>No recipes found.</div>}
         </div>
 
