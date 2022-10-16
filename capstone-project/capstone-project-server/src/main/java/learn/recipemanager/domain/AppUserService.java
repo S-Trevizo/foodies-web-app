@@ -2,6 +2,7 @@ package learn.recipemanager.domain;
 
 import learn.recipemanager.data.AppUserRepo;
 import learn.recipemanager.models.*;
+import learn.recipemanager.models.viewmodels.EditHealthLabelRequest;
 import learn.recipemanager.models.viewmodels.EditUserAccountRequest;
 import learn.recipemanager.models.viewmodels.EditUserPantryRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -181,6 +182,26 @@ public class AppUserService implements UserDetailsService {
 
     }
 
+    public Result<AppUser> updateHealthLabels(EditHealthLabelRequest request) {
+        Result<AppUser> result = new Result<>();
+
+        if (request.getUserId() == null || request.getUserId().isBlank()) {
+            result.addMessage("User Id is required", ResultType.INVALID);
+        }
+
+        if (result.isSuccess()) {
+            Optional userOptional = repo.findById(request.getUserId());
+            if (userOptional.isPresent()) {
+                AppUser user = (AppUser) userOptional.get();
+
+                user.setHealthLabels(request.getHealthLabels());
+                repo.save(user);
+                result.setPayload(user);
+            }
+        }
+        return result;
+    }
+
     public boolean deleteById(String id) {
         Optional<AppUser> userOptional = repo.findById(id);
         if (userOptional.isPresent()) {
@@ -241,7 +262,5 @@ public class AppUserService implements UserDetailsService {
         return result;
 
     }
-
-
 
 }

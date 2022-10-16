@@ -1,54 +1,49 @@
 import { useContext, useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import AuthContext from "../AuthContext";
 
 function Preferences() {
 
-    const alergens = [
-        { value: "wheat-free", label: "Wheat-Free" },
-        { value: "gluten-free", label: "Gluten-Free" },
-        { value: "tree-nut-free", label: "Tree-Nut-Free" },
-        { value: "shellfish-free", label: "Shellfish-Free" },
-        { value: "sulfite-free", label: "Sulfite-Free" },
-        { value: "sesame-free", label: "Sesame-Free" },
-        { value: "soy-free", label: "Soy-Free" },
-        { value: "dairy-free", label: "Dairy-Free" },
-        { value: "celery-free", label: "Celery-Free" },
-        { value: "alcohol-free", label: "Alcohol-Free" },
-        { value: "mollusk-free", label: "Mollusk-Free" },
-        { value: "red-meat-free", label: "Red-Meat-Free" },
-        { value: "egg-free", label: "Egg-Free" },
-        { value: "fish-free", label: "Fish-Free" },
-        { value: "lupine-free", label: "Lupine-Free" },
-        { value: "peanut-free", label: "Peanut-Free" },
-        { value: "pork-free", label: "Pork-Free" },
-        { value: "mustard-free", label: "Mustard-Free" },
-    ];
-
-    const dietOptions = [
-        { value: "vegetarian", label: "Vegetarian" },
-        { value: "vegan", label: "Vegan" },
-        { value: "sugar-conscious", label: "Sugar-Concious" },
-        { value: "low-sugar", label: "Low-Sugar" },
-        { value: "pescatarian", label: "Pescatarian" },
-        { value: "paleo", label: "Paleo" },
-        { value: "kosher", label: "Kosher" },
-        { value: "keto-friendly", label: "Keto-Friendly" },
-        { value: "keto-friendly", label: "Keto-Friendly" },
-        { value: "low-fat-abs", label: "Low-Fat-Abs" },
-        { value: "no-oil-added", label: "No-Oil-Added" },
-        { value: "fodmap-free", label: "Fodmap-Free" },
-    ];
-
     const options = [
-        { value: "alcohol-cocktail", label: "Alcohol-Cocktail" },
-        { value: "DASH", label: "DASH" },
-        { value: "immuno-supportive", label: "Immuno-Supportive" },
-        { value: "kidney-friendly", label: "Kidney-Friendly" },
-        { value: "low-potassium", label: "Low-Potassium" },
-        { value: "mediterranean", label: "Mediterranean" },
+        { value: "wheat-free", label: "Wheat-Free", tag: "alergens" },
+        { value: "gluten-free", label: "Gluten-Free", tag: "alergens" },
+        { value: "tree-nut-free", label: "Tree-Nut-Free", tag: "alergens" },
+        { value: "shellfish-free", label: "Shellfish-Free", tag: "alergens" },
+        { value: "sulfite-free", label: "Sulfite-Free", tag: "alergens" },
+        { value: "sesame-free", label: "Sesame-Free", tag: "alergens" },
+        { value: "soy-free", label: "Soy-Free", tag: "alergens" },
+        { value: "dairy-free", label: "Dairy-Free", tag: "alergens" },
+        { value: "celery-free", label: "Celery-Free", tag: "alergens" },
+        { value: "alcohol-free", label: "Alcohol-Free", tag: "alergens" },
+        { value: "mollusk-free", label: "Mollusk-Free", tag: "alergens" },
+        { value: "red-meat-free", label: "Red-Meat-Free", tag: "alergens" },
+        { value: "egg-free", label: "Egg-Free", tag: "alergens" },
+        { value: "fish-free", label: "Fish-Free", tag: "alergens" },
+        { value: "lupine-free", label: "Lupine-Free", tag: "alergens" },
+        { value: "peanut-free", label: "Peanut-Free", tag: "alergens" },
+        { value: "pork-free", label: "Pork-Free", tag: "alergens" },
+        { value: "mustard-free", label: "Mustard-Free", tag: "alergens" },
+        { value: "vegetarian", label: "Vegetarian", tag: "diet"},
+        { value: "vegan", label: "Vegan", tag: "diet" },
+        { value: "sugar-conscious", label: "Sugar-Concious", tag: "diet" },
+        { value: "low-sugar", label: "Low-Sugar", tag: "diet" },
+        { value: "pescatarian", label: "Pescatarian", tag: "diet" },
+        { value: "paleo", label: "Paleo", tag: "diet" },
+        { value: "kosher", label: "Kosher", tag: "diet" },
+        { value: "keto-friendly", label: "Keto-Friendly", tag: "diet" },
+        { value: "keto-friendly", label: "Keto-Friendly", tag: "diet" },
+        { value: "low-fat-abs", label: "Low-Fat-Abs", tag: "diet" },
+        { value: "no-oil-added", label: "No-Oil-Added", tag: "diet" },
+        { value: "fodmap-free", label: "Fodmap-Free", tag: "diet" },
+        { value: "alcohol-cocktail", label: "Alcohol-Cocktail", tag: "misc" },
+        { value: "DASH", label: "DASH", tag: "misc" },
+        { value: "immuno-supportive", label: "Immuno-Supportive", tag: "misc" },
+        { value: "kidney-friendly", label: "Kidney-Friendly", tag: "misc" },
+        { value: "low-potassium", label: "Low-Potassium", tag: "misc" },
+        { value: "mediterranean", label: "Mediterranean", tag: "misc" },
     ];
 
+    const history = useHistory();
     const auth = useContext(AuthContext);
     const [errors, setErrors] = useState([]);
     const [user, setUser] = useState([]);
@@ -72,7 +67,6 @@ function Preferences() {
                 }
             })
             .then(usertoView => {
-                console.log(usertoView);
                 setUser(usertoView);
 
             })
@@ -83,12 +77,12 @@ function Preferences() {
                     setErrors(error);
                 }
             })
-    }, []);
+    }, [auth.user.token, auth.user.userId]);
 
-    function selectHandler(event) {
+    function submitHandler(event) {
         event.preventDefault();
 
-        fetch(`http://localhost:8080/api/user/${auth.user.userId}`, {
+        fetch("http://localhost:8080/api/preferences", {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
@@ -99,6 +93,7 @@ function Preferences() {
         })
             .then(async response => {
                 if (response.status === 204) {
+                    history.push("/")
                     return response.json();
                 } else if (response.status === 400) {
                     return Promise.reject(await response.json());
@@ -116,65 +111,47 @@ function Preferences() {
     }
 
 
-    function changeHandler(e) {
-        let healthToEdit = { ...user };
-        healthToEdit[e.target.name] = e.target.value;
-        setUser(healthToEdit);
+    function selectHandler(e) {
+        const addingCheck = e.target.checked;
+        const healthLabel = e.target.name;
+        const copy = { ...user };
+
+        console.log(addingCheck);
+
+        if(addingCheck){
+            if(!copy.healthLabels == null){
+               copy.healthLabels = []; 
+            }
+            copy.healthLabels.push ({healthLabel});
+        } else {
+            copy.healthLabels = copy.healthLabels.filter(i => i.healthLabel !== healthLabel)
+        }
+        console.log(copy);
+        setUser(copy);
     }
 
     return (
-        <div className="container mt-5">
-            <h2 className="text-center">Health Preferences for {user.name}</h2>
-            <form className="container row mt-4">
+        <div className="container mt-5"> 
+            <h2 className="text-center">Health Preferences</h2>
+            { user ? <form className="container row mt-4" onSubmit={submitHandler} >
                 <div className="col-4">
                     <h6>Alergens</h6>
-                    {alergens.map(index =>
+                    {options.map((a, index) =>
                         <div>
                             <input
                                 type="checkbox"
-                                name={index.value}
-                                checked={user.healthLabels.map(h => h.healthLabel).includes(index.value)}
-                                onChange={changeHandler}
-                                id={index.value}
-                            />
-                            <span>{index.label}</span>
-
-                        </div>)}
-                </div>
-                <div className="col-4">
-                    <h6>Diets</h6>
-                    {dietOptions.map(index =>
-                        <div>
-                            <input
-                                type="checkbox"
-                                name={index.value}
-                                checked={user.healthLabels.map(h => h.healthLabel).includes(index.value)}
-                                onChange={changeHandler}
-                                d={index.value}
-                            />
-                            <span>{index.label}</span>
-
-                        </div>)}
-                </div>
-                <div className="col-4">
-                    <h6>Miscellaneous</h6>
-                    {options.map(index =>
-                        <div>
-                            <input
-                                type="checkbox"
-                                name={index.value}
-                                checked={user.healthLabels.map(h => h.healthLabel).includes(index.value)}
-                                onChange={changeHandler}
-                                id={index.value}
-                            />
-                            <span>{index.label}</span>
-
+                                checked={user.healthLabels ? user.healthLabels.map((h) => h.healthLabel).includes(a.value) : false}
+                                onChange={selectHandler}
+                                id={a.value}
+                                name={a.value}
+                                key={index} />
+                            <label>{a.label}</label>
                         </div>)}
                 </div>
                 <div className="text-right">
-                    <button className="btn btn-primary" onClick={selectHandler}>Save</button>
+                    <button className="btn btn-primary">Save</button>
                 </div>
-            </form>
+            </form> : null }
         </div>
 
     );
