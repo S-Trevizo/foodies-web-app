@@ -78,9 +78,9 @@ function Account() {
 
         setUser(userToEdit);
     }
-
-    var check = function() {
-        if (document.getElementById('password').value ==  document.getElementById('toConfirm').value) {
+    
+    function check() {
+        if (document.getElementById('password').value === document.getElementById('toConfirm').value) {
             document.getElementById('message').style.color = 'green';
             document.getElementById('message').innerHTML = 'Passwords match';
         } else {
@@ -88,6 +88,7 @@ function Account() {
             document.getElementById('message').innerHTML = 'Password and Corfirm Password are not matching';
         }
     }
+
 
     return (
 
@@ -105,7 +106,7 @@ function Account() {
                 <input className="form-control id" name="email" id={user.username} defaultValue={user.username} onChange={ handleChange} />
 
                 <label className="form-label">Password</label>
-                <input className="form-control" name="password" type="password" id={user.password} onChange={ handleChange} 
+                <input className="form-control" name="password" type="password" id="password" onChange={ handleChange} 
                 onKeyUp={check}/>
 
                 <label className="form-label">Confirm Password</label>
