@@ -51,7 +51,6 @@ public class UserController {
         }
         return new ResponseEntity<>(List.of("Error: must be an admin. Or, logged-in user may only request their account info (mismatching path variable id)."),HttpStatus.FORBIDDEN);
     }
-
     @PutMapping("/user")
     public ResponseEntity<?> update( @RequestBody EditUserAccountRequest request)  {
 
@@ -64,6 +63,24 @@ public class UserController {
                 return new ResponseEntity<>(result.getMessages(), HttpStatus.BAD_REQUEST);
             }
         }
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    //todo make sure this has all the validation for update/put mapping. I think controller is good.
+    // also add to websecurityconfig
+    // finish this method: then test it by adding favorites. log in and out and see if it saves.
+    @PutMapping("/user/update")
+    public ResponseEntity<?> update( @RequestBody AppUser request)  {
+    //todo make sure proper user is involved
+//        Result<AppUser> result = appUserService.updateAccount(request);
+
+//        if (!result.isSuccess()) {
+//            if (result.getType() == ResultType.NOT_FOUND) {
+//                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+//            } else {
+//                return new ResponseEntity<>(result.getMessages(), HttpStatus.BAD_REQUEST);
+//            }
+//        }
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 

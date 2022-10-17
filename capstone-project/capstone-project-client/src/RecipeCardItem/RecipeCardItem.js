@@ -15,19 +15,83 @@ function RecipeCardItem(props) {
     const userData = useContext(AuthContext);
     const [errorsToAppend, setErrorsToAppend] = useState([]);
     const [isFavorited, setIsFavorited] = useState(false);
+    const [userCopy, setUserCopy] = useState(null);
+    const [recipe, setRecipe] = useState(props.recipeData);
 
     function addToFavorites(event) {
         console.log(event.target.checked);
-        //going to update the user from database
-
-
-
-
-        //does the state variable also need to be set again? i.e. setIsFavorited
+        //find index of recipe from user data. If it is favorited, index > 0.
+        let index = 0;
+        for (let i = 0; i < userCopy.favorites.length; i++) {//could also check for duplicates maybe?
+            if ((userCopy.favorites[i].uri.substr(userCopy.favorites[i].uri.length - 32)) === (props.recipeData.uri.substr(props.recipeData.uri.length - 32))) {
+                index = i;
+                break;//break out of loop
+            }
+        }
+        //event.target.checked 
+        if (index !== 0) {
+            //add the new recipe, set userCopy
+            const favoritesCopy = [];
+            favoritesCopy.push(...userCopy.favorites);
+            //need to push the recipe: first, create a version of the recipe that backend constructor will take in.
+            const recipeCopy = {
+                recipeId: recipe.uri.substr(recipe.uri.length - 32),
+                recipeUrl: recipe.shareAs,
+                imageUrl: recipe.image,
+                recipeName: recipe.label
+            }
+            favoritesCopy.push(recipeCopy);
+            //create a copy of the user to use to edit and replace userCopy
+            const editedUserCopy = {...userCopy};
+            editedUserCopy.favorites = favoritesCopy;
+            setUserCopy(editedUserCopy);
+        } else {
+            //remove the recipe at the index, set userCopy
+            const editedUserCopy = {...userCopy};
+            const favoritesCopy = [];
+            favoritesCopy.push(...editedUserCopy.favorites);
+            favoritesCopy.splice(index,1);
+            editedUserCopy.favorites = favoritesCopy;
+            setUserCopy(editedUserCopy);
+        }
+        //then, update database with copyuser
+        updateUserInDatabase();
     }
-
+    function updateUserInDatabase() {
+        {fetch("http://localhost:8080/api/user/update", {
+                method: "PUT",
+                body: JSON.stringify(userCopy),
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": "Bearer " + localStorage.getItem("foodiesToken")
+                }
+            })
+            .then(async response => {
+                if (response.status === 204) {
+                    return response.json();
+                } else if (response.status === 404) {
+                    return Promise.reject(["User not found (possibly deleted)."]);
+                } else if (response.status === 400) {
+                    return Promise.reject(await response.json());
+                }
+            })
+            .catch(errorList => {
+                if (errorList instanceof TypeError) {
+                    const copyArray = [];
+                    copyArray.push("Could not connect to api.");
+                    setErrorsToAppend(copyArray);
+                } else {
+                    const copyArray = [];
+                    copyArray.push(...errorList);
+                    setErrorsToAppend(copyArray);
+                }
+            });
+        }
+    }
+        
+    //does the state variable also need to be set again? i.e. setIsFavorited
     function determineIfRecipeIsFavorited(response) {
-        //if it is favorited, use the variable in print statement below to output the checked option for 'save to favorites' checkbox
+        // if it is favorited, use the variable in print statement below to output the checked option for 'save to favorites' checkbox
         if (response.favorites === null) {
             setIsFavorited(false);
             return;
@@ -42,8 +106,7 @@ function RecipeCardItem(props) {
     }
 
     function fetchUser() {
-        {
-            fetch("http://localhost:8080/api/user/" + userData.user.userId, {
+        {fetch("http://localhost:8080/api/user/" + userData.user.userId, {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
@@ -61,6 +124,18 @@ function RecipeCardItem(props) {
                     return Promise.reject(await response.json());
                 }
             }).then(response => {
+                let copyUser = {//did I copy the arrays properly? (favorites, etc.)
+                    userId: response.userId,
+                    email: response.email,
+                    passHash: response.passHash,
+                    isDeleted: response.deleted,
+                    userRoles: response.userRoles,
+                    name: response.name,
+                    favorites: response.favorites,
+                    healthLabels: response.healthLabels,
+                    ingredients: response.ingredients
+                }
+                setUserCopy(copyUser);
                 determineIfRecipeIsFavorited(response);
             }).catch(error => {
                 if (error instanceof TypeError) {
@@ -79,6 +154,7 @@ function RecipeCardItem(props) {
 
     useEffect(
         () => {
+
             if (userData.user === null) {
                 console.log("userData is null. make 'add to favorites' button disabled");
             } else {
@@ -87,6 +163,8 @@ function RecipeCardItem(props) {
             }
         },
         []);//try favoritng a recipe, searching for food2, then search for food1 and see if still there.
+
+    console.log(userCopy.favorites);
 
     return (
         <>

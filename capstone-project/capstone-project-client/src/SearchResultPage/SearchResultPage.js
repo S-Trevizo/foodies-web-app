@@ -10,8 +10,8 @@ import RecipeCardItem from "../RecipeCardItem/RecipeCardItem";
 //this component searches random for public user. for registered user, it automatically filters results to include user's allergens/healthlabels. (example: "soy-free")
 
 function SearchResultPage({ searchTerm }) {
-    console.log("searchData from searchresultpage: " + searchTerm);
-    console.log("change page");
+    // console.log("searchData from searchresultpage: " + searchTerm);
+    // console.log("change page");
     //refresh on this component and twentyrandomrecipes.js don't work rn.
     //using a setter redraws the current component it is in. This is done after retrieving data to display.
     const [recipes, setRecipes] = useState([]);
@@ -30,7 +30,7 @@ function SearchResultPage({ searchTerm }) {
             finalFetch = input.fetchString;
             finalFetch = finalFetch.concat("&q=", input.q, "&app_id=", input.app_id, "&app_key=", input.app_key);
         }
-        console.log(finalFetch);
+        // console.log(finalFetch);
         fetch(finalFetch, {
             method: "GET",
             headers: {
@@ -191,9 +191,9 @@ function SearchResultPage({ searchTerm }) {
     //todo maybe later: can modify code so that refreshing this component does not cause 403 error from bad json syntax. 
     // any component involved with searchData from app.js, really.
     //the 403 happens because refreshing invalidates the searchData or something like that I think. need to double check with instructor.
-    console.log(searchTerm);
+    // console.log(searchTerm);
     // console.log("recipe name: " +);//recipes[0].recipe.label
-    console.log(recipes);
+    // console.log(recipes);
     return (
         //todo: I can print recipe data. I need to edit a user's preferences onclick or something on each card. 
         //maybe find a way to overload component argument and take in user - should they just be dangling around like this though?
