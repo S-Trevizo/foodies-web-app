@@ -126,9 +126,10 @@ public class AppUserService implements UserDetailsService {
             userResult.addMessage("User was not found.", ResultType.NOT_FOUND);
             return userResult;
         }
-
         return userResult;
     }
+
+
 
     public Result<AppUser> updateAccount(EditUserAccountRequest request) {
         Result<AppUser> userResult = new Result<>();
