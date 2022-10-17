@@ -38,7 +38,6 @@ function Pantry() {
               } else {
                   return Promise.reject(await response.json());
               }
-              // need to finish the error handling here
           }).then(userToEdit => {
               setState({
                 user: {...userToEdit},
@@ -46,8 +45,14 @@ function Pantry() {
                 hidden: true,
                 edit: false
               })
+          }).catch((error) => {
+            setState({
+                user: {...state.user},
+                errors: error,
+                hidden: state.hidden,
+                edit: false
+            })
           })
-          // need to include a catch statement here
       }, [auth.user]);
 
 
@@ -154,86 +159,89 @@ function Pantry() {
     }
 
     function handleReset() {
-        
-
           setToAdd(DEFAULT_INGREDIENT);
     }
 
     return(
         <div className="container">
-        <h2>Your Pantry</h2>
+            <h2>Your Pantry</h2>
+
+            <div>
+                {state.errors ? state.errors.map((e, index) =>
+                    <ErrorMessages key={index} errorData={e} />) : null}
+            </div>
     
 
-        <button className={"btn btn-primary mb-1" + (!state.hidden ? " d-none" : "")} onClick={() => setState({user: {...state.user}, errors: state.errors, hidden: false, edit: false})}> Add an Ingredient to Your Pantry</button>
+            <button className={"btn btn-primary mb-1" + (!state.hidden ? " d-none" : "")} onClick={() => setState({user: {...state.user}, errors: state.errors, hidden: false, edit: false})}> Add an Ingredient to Your Pantry</button>
 
-        <div className={"card my-2" + (state.hidden ? " d-none" : "")}>
-            <div className="card-header">
-                {state.edit ? <h4 className="card-title">Edit an ingredient</h4> :<h4 className="card-title">Add an ingredient</h4>}
+            <div className={"card my-2" + (state.hidden ? " d-none" : "")}>
+                <div className="card-header">
+                    {state.edit ? <h4 className="card-title">Edit an ingredient</h4> :<h4 className="card-title">Add an ingredient</h4>}
+                </div>
+                <div className="card-body">
+                    <form>
+                        <label className="form-label">Ingredient Name</label>
+                        <input name="name"  value={toAdd.name === "" ? "" : toAdd.name} className="form-control" onChange={handleChange}  />
+
+                        <label className="form-label">Category</label>
+                        <input name="foodCategory"  value={toAdd.foodCategory === "" ? "" : toAdd.foodCategory} className="form-control" onChange={handleChange}/>
+
+                        <label className="form-label">Quantity</label>
+                        <input name="quantity" value={toAdd.quantity === 0 ? 0 : toAdd.quantity} type="number" className="form-control"  onChange={handleChange}/>
+
+                        <label className="form-label">Measure</label>
+                        <input name="measure"  value={toAdd.measure === "" ? "" : toAdd.measure} className="form-control" onChange={handleChange}/>
+
+                        <div className="text-right">
+                            <button className="btn btn-primary mr-2 mt-2" onClick={ state.edit ? (e)=> handleEdit(e) : (e) => handleAdd(e)}>Submit</button>
+                            <button className="btn btn-danger mt-2" onClick={(e) => {e.preventDefault(); setState({user: {...state.user}, errors: state.errors, hidden: true, edit: false}); handleReset();}}>Close</button>
+                        </div>
+                    </form>
+
+                </div>
             </div>
-            <div className="card-body">
-                <form>
-                    <label className="form-label">Ingredient Name</label>
-                    <input name="name"  value={toAdd.name === "" ? "" : toAdd.name} className="form-control" onChange={handleChange}  />
-
-                    <label className="form-label">Category</label>
-                    <input name="foodCategory"  value={toAdd.foodCategory === "" ? "" : toAdd.foodCategory} className="form-control" onChange={handleChange}/>
-
-                    <label className="form-label">Quantity</label>
-                    <input name="quantity" value={toAdd.quantity === 0 ? 0 : toAdd.quantity} type="number" className="form-control"  onChange={handleChange}/>
-
-                    <label className="form-label">Measure</label>
-                    <input name="measure"  value={toAdd.measure === "" ? "" : toAdd.measure} className="form-control" onChange={handleChange}/>
-
-                    <div className="text-right">
-                        <button className="btn btn-primary mr-2 mt-2" onClick={ state.edit ? (e)=> handleEdit(e) : (e) => handleAdd(e)}>Submit</button>
-                        <button className="btn btn-danger mt-2" onClick={(e) => {e.preventDefault(); setState({user: {...state.user}, errors: state.errors, hidden: true, edit: false}); handleReset();}}>Close</button>
-                    </div>
-                </form>
-
-            </div>
-        </div>
 
         
 
-        <div className="card my-2">
-            <div className="card-header">
-                <h4 className="card-title">Current Inventory</h4>
-            </div>
+            <div className="card my-2">
+                <div className="card-header">
+                    <h4 className="card-title">Current Inventory</h4>
+                </div>
 
-            <div className="card-body">
+                <div className="card-body">
 
-            <table className="table table-striped table-hover">
-                <thead className="thead-dark">
-                        <tr>
-                            <th>Name</th>
-                            <th>Food Category</th>
-                            <th>Quantity</th>
-                            <th>Measure</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {state.user ? state.user.ingredients.map((i, index) => (
-                            <tr key={index}>
-                            <td>{i.name}</td>
-                            <td>{i.foodCategory}</td>
-                            <td>{i.quantity}</td>
-                            <td>{i.measure}</td>
-                            <td className="text-right">
-                                <button type="button" className="btn btn-primary btn-sm mx-1" onClick={(e)=>prepareEdit(e,index)}>Edit</button>
-                                <button type="button" className="btn btn-danger btn-sm mx-1" onClick={(e) => handleDelete(e,index)}>Delete</button>
-                            </td>
-                        </tr>
-                    ))
-                     : null}
-                    </tbody>
-                </table>
+                <table className="table table-striped table-hover">
+                    <thead className="thead-dark">
+                            <tr>
+                                <th>Name</th>
+                                <th>Food Category</th>
+                                <th>Quantity</th>
+                                <th>Measure</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {state.user ? state.user.ingredients.map((i, index) => (
+                                <tr key={index}>
+                                <td>{i.name}</td>
+                                <td>{i.foodCategory}</td>
+                                <td>{i.quantity}</td>
+                                <td>{i.measure}</td>
+                                <td className="text-right">
+                                    <button type="button" className="btn btn-primary btn-sm mx-1" onClick={(e)=>prepareEdit(e,index)}>Edit</button>
+                                    <button type="button" className="btn btn-danger btn-sm mx-1" onClick={(e) => handleDelete(e,index)}>Delete</button>
+                                </td>
+                            </tr>
+                        ))
+                        : null}
+                        </tbody>
+                    </table>
+                    
+                </div>
                 
             </div>
-            
-        </div>
         
-    </div>
+        </div>
     );
 
     
