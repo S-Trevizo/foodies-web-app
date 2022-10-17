@@ -40,10 +40,9 @@ function Pantry() {
               }
               // need to finish the error handling here
           }).then(userToEdit => {
-            console.log(userToEdit);
               setState({
                 user: {...userToEdit},
-                errors: [...state.errors],
+                errors: state.errors,
                 hidden: true,
                 edit: false
               })
@@ -65,19 +64,21 @@ function Pantry() {
         })
         .then(async response => {
             if (response.status === 204) {
+                handleReset();
                 setState({
                     user: {...toUpdate},
-                    errors: [...state.errors],
+                    errors: [],
                     hidden: true,
                     edit: false
-                })
+                });
+                
                 return response.json();
             } else if(response.status === 400){
                 return Promise.reject(await response.json());
             } else {
-                return Promise.reject(["Failed to update user's information."]);
+                return Promise.reject(["Failed to update user's pantry."]);
             }
-        }).then(setToAdd(DEFAULT_INGREDIENT))
+        })
         .catch((error) => {
             if(error instanceof TypeError){
                 setState({
@@ -89,7 +90,7 @@ function Pantry() {
             } else {
                 setState({
                     user: {...state.user},
-                    errors: [...error],
+                    errors: error,
                     hidden: state.hidden,
                     edit: false
                 })
@@ -133,7 +134,7 @@ function Pantry() {
 
         setState({
             user: {...state.user},
-            errors: [...state.errors],
+            errors: state.errors,
             hidden: false,
             edit: true,
             index: index
@@ -151,34 +152,41 @@ function Pantry() {
         submitHandler(toEdit);
     
     }
+
+    function handleReset() {
+        
+
+          setToAdd(DEFAULT_INGREDIENT);
+    }
+
     return(
         <div className="container">
         <h2>Your Pantry</h2>
     
 
-        <button className={"btn btn-primary mb-1" + (!state.hidden ? " d-none" : "")} onClick={() => setState({user: {...state.user}, errors: [...state.errors], hidden: false, edit: false})}> Add an Ingredient to Your Pantry</button>
+        <button className={"btn btn-primary mb-1" + (!state.hidden ? " d-none" : "")} onClick={() => setState({user: {...state.user}, errors: state.errors, hidden: false, edit: false})}> Add an Ingredient to Your Pantry</button>
 
-        <div className={"card my-2" + (state.hidden && !state.edit ? " d-none" : "")}>
+        <div className={"card my-2" + (state.hidden ? " d-none" : "")}>
             <div className="card-header">
                 {state.edit ? <h4 className="card-title">Edit an ingredient</h4> :<h4 className="card-title">Add an ingredient</h4>}
             </div>
             <div className="card-body">
                 <form>
                     <label className="form-label">Ingredient Name</label>
-                    <input name="name" defaultValue={toAdd.name === "" ? "" : toAdd.name} className="form-control" onChange={handleChange}  />
+                    <input name="name"  value={toAdd.name === "" ? "" : toAdd.name} className="form-control" onChange={handleChange}  />
 
                     <label className="form-label">Category</label>
-                    <input name="foodCategory" defaultValue={toAdd.foodCategory === "" ? "" : toAdd.foodCategory} className="form-control" onChange={handleChange}/>
+                    <input name="foodCategory"  value={toAdd.foodCategory === "" ? "" : toAdd.foodCategory} className="form-control" onChange={handleChange}/>
 
                     <label className="form-label">Quantity</label>
-                    <input name="quantity" defaultValue={toAdd.quantity === 0 ? "" : toAdd.quantity} type="number" className="form-control"  onChange={handleChange}/>
+                    <input name="quantity" value={toAdd.quantity === 0 ? 0 : toAdd.quantity} type="number" className="form-control"  onChange={handleChange}/>
 
                     <label className="form-label">Measure</label>
-                    <input name="measure" defaultValue={toAdd.measure === "" ? "" : toAdd.measure} className="form-control" onChange={handleChange}/>
+                    <input name="measure"  value={toAdd.measure === "" ? "" : toAdd.measure} className="form-control" onChange={handleChange}/>
 
                     <div className="text-right">
                         <button className="btn btn-primary mr-2 mt-2" onClick={ state.edit ? (e)=> handleEdit(e) : (e) => handleAdd(e)}>Submit</button>
-                        <button className="btn btn-danger mt-2" onClick={(e) => {e.preventDefault(); setState({user: {...state.user}, errors: [...state.errors], hidden: true, edit: false});}}>Cancel</button>
+                        <button className="btn btn-danger mt-2" onClick={(e) => {e.preventDefault(); setState({user: {...state.user}, errors: state.errors, hidden: true, edit: false}); handleReset();}}>Close</button>
                     </div>
                 </form>
 
