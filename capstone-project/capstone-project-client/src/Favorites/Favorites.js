@@ -67,6 +67,7 @@ function fetchUser() {
 
 useEffect(
     () => {
+        //check for userdata if user manually types in the webpage. if null, then push to login page.
         fetchUser();
     },
     []);
