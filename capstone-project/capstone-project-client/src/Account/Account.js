@@ -1,11 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import AuthContext from "../AuthContext";
-
-
-
-
-
+import ErrorMessages from "../ErrorMessages/ErrorMessages";
 
 function Account() {
 
@@ -14,7 +10,6 @@ function Account() {
     const [user, setUser] = useState([]);
 
     useEffect(() => {
-        console.log(auth.user)
         fetch(`http://localhost:8080/api/user/${auth.user.userId}`, {
             method: "GET",
             headers: {
@@ -77,20 +72,31 @@ function Account() {
 
     function handleChange(e) {
         
-
         let userToEdit = {...user};
 
         userToEdit[e.target.name] = e.target.value;
 
-        console.log(userToEdit);
         setUser(userToEdit);
+    }
 
+    function check() {
+        if (document.getElementById('password').value ===document.getElementById('toConfirm').value) {
+            document.getElementById('message').style.color = 'green';
+            document.getElementById('message').innerHTML = 'Passwords match';
+        } else {
+            document.getElementById('message').style.color = 'red';
+            document.getElementById('message').innerHTML = 'Passwords are not matching';
+        }
     }
 
     return (
 
-        <div className="container">
-            <h2>Account Info</h2>
+        <div className="container mt-4 p-4 bg-light rounded">
+            <h2 className="text-center">Account Info</h2>
+
+            {errors ? errors.map((e, index) =>
+                <ErrorMessages key={index} errorData={e} />) : null}
+
             <form onSubmit={submitHandler}>
                 <label className="form-label">Name</label>
                 <input className="form-control" name="name" id={user.name} defaultValue={user.name} onChange={ handleChange}/>
@@ -99,7 +105,13 @@ function Account() {
                 <input className="form-control id" name="email" id={user.username} defaultValue={user.username} onChange={ handleChange} />
 
                 <label className="form-label">Password</label>
-                <input className="form-control" name="password" type="password" id={user.password} onChange={ handleChange} />
+                <input className="form-control" name="password" type="password" id={user.password} onChange={ handleChange} 
+                onKeyUp={check}/>
+
+                <label className="form-label">Confirm Password</label>
+                <input className="form-control" name="toConfirm" type="password" id="toConfirm" onChange={handleChange}
+                onKeyUp={check}/>
+                <span id="message"></span>
 
                 <div className="text-right">
                     <button className="btn btn-primary mr-2 mt-2">Submit</button>
@@ -110,5 +122,4 @@ function Account() {
 
     );
 }
-
 export default Account;

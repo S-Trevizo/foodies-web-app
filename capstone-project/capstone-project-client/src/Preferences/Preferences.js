@@ -1,6 +1,8 @@
 import { useContext, useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import AuthContext from "../AuthContext";
+import ErrorMessages from "../ErrorMessages/ErrorMessages";
+
 
 function Preferences() {
 
@@ -23,7 +25,7 @@ function Preferences() {
         { value: "peanut-free", label: "Peanut-Free", tag: "alergens" },
         { value: "pork-free", label: "Pork-Free", tag: "alergens" },
         { value: "mustard-free", label: "Mustard-Free", tag: "alergens" },
-        { value: "vegetarian", label: "Vegetarian", tag: "diet"},
+        { value: "vegetarian", label: "Vegetarian", tag: "diet" },
         { value: "vegan", label: "Vegan", tag: "diet" },
         { value: "sugar-conscious", label: "Sugar-Concious", tag: "diet" },
         { value: "low-sugar", label: "Low-Sugar", tag: "diet" },
@@ -118,26 +120,24 @@ function Preferences() {
 
         console.log(addingCheck);
 
-        if(addingCheck){
-            if(!copy.healthLabels == null){
-               copy.healthLabels = []; 
+        if (addingCheck) {
+            if (!copy.healthLabels == null) {
+                copy.healthLabels = [];
             }
-            copy.healthLabels.push ({healthLabel});
+            copy.healthLabels.push({ healthLabel });
         } else {
             copy.healthLabels = copy.healthLabels.filter(i => i.healthLabel !== healthLabel)
         }
-        console.log(copy);
         setUser(copy);
     }
 
     return (
-        <div className="container mt-5"> 
+        <div className="container mt-5 p-4 bg-light rounded">
             <h2 className="text-center">Health Preferences</h2>
-            { user ? <form className="container row mt-4" onSubmit={submitHandler} >
-                <div className="col-4">
-                    <h6>Alergens</h6>
+            {user ? <form className="container" onSubmit={submitHandler} >
+                <div className="row p-4">
                     {options.map((a, index) =>
-                        <div>
+                        <div className="form-check col-4">
                             <input
                                 type="checkbox"
                                 checked={user.healthLabels ? user.healthLabels.map((h) => h.healthLabel).includes(a.value) : false}
@@ -147,11 +147,16 @@ function Preferences() {
                                 key={index} />
                             <label>{a.label}</label>
                         </div>)}
+                    <div className="container">
+                        {errors ? errors.map((e, index) =>
+                            <ErrorMessages key={index} errorData={e} />) : null}
+                    </div>
+                    <div>
+                        <button className="btn btn-primary">Save</button>
+                    </div>
                 </div>
-                <div className="text-right">
-                    <button className="btn btn-primary">Save</button>
-                </div>
-            </form> : null }
+
+            </form> : null}
         </div>
 
     );

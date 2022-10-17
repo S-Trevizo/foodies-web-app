@@ -87,7 +87,7 @@ function Register() {
                     history.push("/login");
                     return response.json();
                 } else if (response.status === 400) {
-                    return Promise.reject(response.json());
+                    return Promise.reject(await response.json());
                 } else {
                     return Promise.reject(["Failed to create User."]);
                 }
@@ -96,24 +96,15 @@ function Register() {
                 if (error instanceof TypeError) {
                     setErrors(["Could not connect to the API."]);
                 } else {
-                    setErrors([...error]);
+                    setErrors(error);
                 }
             });
     }
 
-
-
-
     return (
 
-        <div className="container mt-5">
-            <h2>Register</h2>
-
-                <div className="container">
-                    {/* Still can't got this to work. up to suggestions. */}
-                    {errors.map((e, index) =>
-                        <ErrorMessages key={index} errorData={e} />)}
-                </div>
+        <div className="container mt-5 p-4 bg-light rounded">
+            <h2 className='text-center'>Register</h2>
             <form>
                 <div className="form-group">
                     <label htmlFor="name">Name:</label>
@@ -132,17 +123,16 @@ function Register() {
                     <label>Health Labels: </label>
                     <Select isMulti closeMenuOnSelect={false} components={animated} className='basic-multi-select' classNamePrefix="select" options={options} onChange={handleChange}></Select>
                 </div>
-
+                <div className="container">
+                    {errors ? errors.map((e, index) =>
+                        <ErrorMessages key={index} errorData={e} />) : null}
+                </div>
                 <div className="text-right">
-                    <button className="btn btn-primary " onClick={registerHandler}>Submit</button>
+                    <button className="btn btn-primary mr-2" onClick={registerHandler}>Submit</button>
                     <Link to="/" className="btn btn-danger">Cancel</Link>
                 </div>
             </form>
-
         </div>
-
     );
-
 }
-
 export default Register;

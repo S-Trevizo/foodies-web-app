@@ -31,7 +31,7 @@ function Login(props) {
             .then(async response => {
                 if (response.status === 200) {
                     return response.json();
-                } else if (response.status === 403){
+                } else if (response.status === 403) {
                     return Promise.reject(["The username or password is Incorrect."]);
                 } else {
                     return Promise.reject(["Failed to Login."]);
@@ -53,34 +53,28 @@ function Login(props) {
 
 
     return (
-        <div className="container mt-5">
-            <h2>Login</h2>
-            {errors ?
-                <div className="container">
-                    {errors.map((e, index) => 
-                    <ErrorMessages key={index} errorData={e} />)}
-                </div>
-                : null}
+        <div className="container mt-5 p-4 bg-light rounded">
+            <h2 className='text-center'>Login</h2>
             <form onSubmit={loginHandler} >
                 <div className="form-group">
-                    <label htmlFor="username">User Name (email)</label>
-
+                    <label htmlFor="username">User Name(email):</label>
                     <input id="username" name="username" className="form-control"
                         onChange={(event) => setEmail(event.target.value)} />
-
-
                 </div>
                 <div className="form-group">
-                    <label htmlFor="password">Password</label>
+                    <label htmlFor="password">Password:</label>
                     <input id="password" name="password" type="password" className="form-control"
                         onChange={(event) => setPassword(event.target.value)} />
                 </div>
-
+                <div className="container">
+                    {errors ? errors.map((e, index) =>
+                        <ErrorMessages key={index} errorData={e} />) : null}
+                </div>
                 <div className="text-right">
                     <button className="btn btn-primary mr-2">Log In</button>
                     <Link to="/" className="btn btn-danger">Cancel</Link>
                 </div>
-     
+
             </form>
         </div>
     );
