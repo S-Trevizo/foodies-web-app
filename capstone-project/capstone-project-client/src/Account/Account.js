@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import AuthContext from "../AuthContext";
 import ErrorMessages from "../ErrorMessages/ErrorMessages";
 
@@ -7,6 +7,7 @@ import ErrorMessages from "../ErrorMessages/ErrorMessages";
 
 function Account() {
 
+    const history = useHistory();
     const auth = useContext(AuthContext);
     const [errors, setErrors] = useState([]);
     const [user, setUser] = useState([]);
@@ -60,6 +61,7 @@ function Account() {
         })
             .then(async response => {
                 if (response.status === 204) {
+                    history.push("/");
                     return response.json();
                 } else if (response.status === 400) {
                     return Promise.reject(await response.json());
