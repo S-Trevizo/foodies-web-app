@@ -33,7 +33,6 @@ function Preferences() {
         { value: "paleo", label: "Paleo", tag: "diet" },
         { value: "kosher", label: "Kosher", tag: "diet" },
         { value: "keto-friendly", label: "Keto-Friendly", tag: "diet" },
-        { value: "keto-friendly", label: "Keto-Friendly", tag: "diet" },
         { value: "low-fat-abs", label: "Low-Fat-Abs", tag: "diet" },
         { value: "no-oil-added", label: "No-Oil-Added", tag: "diet" },
         { value: "fodmap-free", label: "Fodmap-Free", tag: "diet" },

@@ -4,11 +4,14 @@ import learn.recipemanager.domain.AppUserService;
 import learn.recipemanager.domain.Result;
 import learn.recipemanager.domain.ResultType;
 import learn.recipemanager.models.AppUser;
+import learn.recipemanager.models.Ingredient;
 import learn.recipemanager.models.viewmodels.EditUserPantryRequest;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/pantry")
@@ -26,10 +29,10 @@ public class PantryController {
             if (result.getType() == ResultType.NOT_FOUND) {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             } else {
-                return new ResponseEntity<>(result.getMessages(), HttpStatus.BAD_REQUEST);
+                return ErrorResponse.build(result);
             }
         }
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(List.of("Successfully updated"),HttpStatus.NO_CONTENT);
     }
 
 

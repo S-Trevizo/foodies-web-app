@@ -1,10 +1,13 @@
 import { useContext, useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import AuthContext from "../AuthContext";
 import ErrorMessages from "../ErrorMessages/ErrorMessages";
 
+
+
 function Account() {
 
+    const history = useHistory();
     const auth = useContext(AuthContext);
     const [errors, setErrors] = useState([]);
     const [user, setUser] = useState([]);
@@ -31,15 +34,19 @@ function Account() {
                 setUser(userToEdit);
 
             })
-            .then(error => {
+            .catch(error => {
                 if (error instanceof TypeError) {
                     setErrors(["Could not connect to the API."]);
                 } else {
-                    setErrors(error);
+                    console.log(error);
+                    const copyArray = [];
+                    copyArray.push(...error);
+                    setErrors(copyArray);
+
                 }
             })
-
     }, []);
+
     function submitHandler(event) {
         event.preventDefault();
 
@@ -54,8 +61,11 @@ function Account() {
         })
             .then(async response => {
                 if (response.status === 204) {
+                    history.push("/");
                     return response.json();
                 } else if (response.status === 400) {
+                    return Promise.reject(await response.json());
+                } else if (response.status === 404) {
                     return Promise.reject(await response.json());
                 } else {
                     return Promise.reject(["Failed to update user's information."]);
@@ -66,21 +76,22 @@ function Account() {
                     setErrors(["Could not connect to the API."]);
                 } else {
                     setErrors(error);
+
                 }
             })
     }
 
     function handleChange(e) {
-        
-        let userToEdit = {...user};
+
+        let userToEdit = { ...user };
 
         userToEdit[e.target.name] = e.target.value;
 
         setUser(userToEdit);
     }
 
-    var check = function() {
-        if (document.getElementById('password').value ==  document.getElementById('toConfirm').value) {
+    function check() {
+        if (document.getElementById('password').value === document.getElementById('toConfirm').value) {
             document.getElementById('message').style.color = 'green';
             document.getElementById('message').innerHTML = 'Passwords match';
         } else {
@@ -88,31 +99,29 @@ function Account() {
             document.getElementById('message').innerHTML = 'Password and Corfirm Password are not matching';
         }
     }
-
     return (
 
         <div className="container mt-4 p-4 bg-light rounded">
             <h2 className="text-center">Account Info</h2>
-
-            {errors ? errors.map((e, index) =>
-                <ErrorMessages key={index} errorData={e} />) : null}
-
             <form onSubmit={submitHandler}>
                 <label className="form-label">Name</label>
-                <input className="form-control" name="name" id={user.name} defaultValue={user.name} onChange={ handleChange}/>
+                <input className="form-control" name="name" id={user.name} defaultValue={user.name} onChange={handleChange} />
 
                 <label className="form-label">Username</label>
-                <input className="form-control id" name="email" id={user.username} defaultValue={user.username} onChange={ handleChange} />
+                <input className="form-control id" name="email" id={user.username} defaultValue={user.username} onChange={handleChange} />
 
                 <label className="form-label">Password</label>
-                <input className="form-control" name="password" type="password" id={user.password} onChange={ handleChange} 
-                onKeyUp={check}/>
+                <input className="form-control" name="password" type="password" id="password" onChange={handleChange}
+                    onKeyUp={check} />
 
                 <label className="form-label">Confirm Password</label>
                 <input className="form-control" name="toConfirm" type="password" id="toConfirm" onChange={handleChange}
-                onKeyUp={check}/>
+                    onKeyUp={check} />
                 <span id="message"></span>
-
+                <div>
+                    {errors.length > 0 ? errors.map((e, index) =>
+                        <ErrorMessages key={index} errorData={e} />) : null}
+                </div>
                 <div className="text-right">
                     <button className="btn btn-primary mr-2 mt-2">Submit</button>
                     <Link to="/" className="btn btn-danger mt-2">Cancel</Link>
