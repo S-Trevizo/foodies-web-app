@@ -14,6 +14,7 @@ import Account from './Account/Account';
 import SearchResultPage from './SearchResultPage/SearchResultPage';
 import Pantry from './Pantry/Pantry';
 import Preferences from './Preferences/Preferences';
+import Favorites from './Favorites/Favorites';
 
 
 const LOCAL_STORAGE_TOKEN_KEY = "foodiesToken";
@@ -91,6 +92,9 @@ function App() {
           <Switch>
             <Route exact path="/">
               <HomePage setSearchData={setSearchData}/>
+            </Route>
+            <Route path="/favorites">
+              <Favorites/>
             </Route>
             <Route path="/login">
               <Login />
