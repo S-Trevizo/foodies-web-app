@@ -179,8 +179,11 @@ public class AppUserService implements UserDetailsService {
 
 
                 userResult.setPayload(user);
+
+                return userResult;
             }
         }
+        userResult.addMessage("User not found", ResultType.NOT_FOUND);
         return userResult;
 
     }
