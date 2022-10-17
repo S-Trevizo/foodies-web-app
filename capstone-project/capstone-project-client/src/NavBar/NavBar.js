@@ -9,17 +9,22 @@ import './NavBar.css';
 function NavBar({ searchData, setSearchData }) {//if there is search data, website is not on homepage so should show searchbar in navbar
     const auth = useContext(AuthContext);
     const history = useHistory();
+    const [toSearch, setToSearch] = useState("");
 
     function handleSubmit(event) {//the submit button does not trigger a refresh/another request
         event.preventDefault();
-        setSearchData(searchData);
+        setSearchData(toSearch);
+        console.log(searchData);
         history.push("/searchResultPage");
     }
     //can later see how to make refresh work on searchpageresult
     return (
 
         <div>
-            <h1 className="text-center">Foodies</h1>
+            <div>
+                <h1 className="text-center">Foodies </h1>
+                <div id="edamam-badge" data-color="transparent"></div>
+            </div>
             <nav className="navbar navbar-expand-lg navbar-dark bg-dark" >
                 <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
                     <span className="navbar-toggler-icon"></span>
@@ -49,42 +54,32 @@ function NavBar({ searchData, setSearchData }) {//if there is search data, websi
                         {auth.user ? auth.user.roles === "ADMIN" ? <li className="nav-item">
                             <Link to="/admin" className="nav-link">User Administration</Link>
                         </li> : null : null}
-
-                        
-
                     </ul>
 
-                    <div>
-
+                    <form>
                         <div className="input-group mt-3">
-                            <input type="text" id="searchForRecipes" onChange={(e) => setSearchData(e.target.value)} className="form-control" placeholder={"Search for recipes"}  aria-describedby="basic-addon2" />
+                            <input type="text" id="searchForRecipes" onChange={(e) => setToSearch(e.target.value)} className="form-control bg-light" placeholder={"Search by Ingredient"} aria-describedby="basic-addon2" />
                             <div className={"form-group"}>
-                                <button className="btn btn-outline-secondary input-group-append mr-3" type="button" onClick={handleSubmit} id="searchBarText">Submit</button>
+                                <button className="btn btn-outline-secondary input-group-append mr-3" type="button" onClick={handleSubmit} id="searchBarText">Search</button>
                             </div>
                         </div>
-                        
-                    </div>
+                    </form>
 
-                        {auth.user ?
+                    {auth.user ?
+                        <div>
+                            <Link className="btn btn-outline-success my-3" to="/" onClick={() => auth.logout()}>Log Out</Link>
+                        </div>
+                        : (<>
                             <div>
-                                <Link className="btn btn-outline-success my-3" to="/" onClick={() => auth.logout()}>Log Out</Link>
+                                <Link className="btn btn-outline-success my-3  mr-2 " to="/login"  >Log In</Link>
                             </div>
-                            :
-                            (
-                                <>
-                                <div>
-                                    <Link className="btn btn-outline-success my-3  mr-2 " to="/login"  >Log In</Link>
-                                </div>
-                                <div>
-                                    <Link className="btn btn-outline-info my-3 " to="/register"  >Register</Link>
-                                </div>
-                                </>
-                            )
-                        }
+                            <div>
+                                <Link className="btn btn-outline-info my-3 " to="/register"  >Register</Link>
+                            </div>
+                        </>)}
                 </div>
             </nav>
         </div>
-
     );
 
 }

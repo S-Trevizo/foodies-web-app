@@ -191,7 +191,7 @@ function RecipeCardItem(props) {
                                     <input className="form-check-input" type="checkbox" value="" onClick={addToFavorites} id="defaultCheck2" />
                                 )
                             }
-                            <label className="form-check-label" for="defaultCheck2">
+                            <label className="form-check-label" htmlFor="defaultCheck2">
                                 Save to favorites
                             </label>
                         </div>
