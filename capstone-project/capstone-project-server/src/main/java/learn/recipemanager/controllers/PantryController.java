@@ -11,6 +11,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/pantry")
 @AllArgsConstructor
@@ -30,7 +32,7 @@ public class PantryController {
                 return ErrorResponse.build(result);
             }
         }
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(List.of("Successfully updated"),HttpStatus.NO_CONTENT);
     }
 
 

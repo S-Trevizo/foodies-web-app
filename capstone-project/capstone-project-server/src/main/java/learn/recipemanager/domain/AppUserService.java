@@ -211,7 +211,7 @@ public class AppUserService implements UserDetailsService {
             }
 
             for (Ingredient j : ingredients) {
-                if (i.getName().equalsIgnoreCase(j.getName())) {
+                if (i.getName().equalsIgnoreCase(j.getName()) && ingredients.indexOf(i) != ingredients.indexOf(j)) {
                     result.addMessage("Ingredient cannot be a duplicate", ResultType.INVALID);
                     return result;
                 }
