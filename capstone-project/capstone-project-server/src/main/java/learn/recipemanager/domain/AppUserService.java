@@ -109,25 +109,18 @@ public class AppUserService implements UserDetailsService {
             userResult.addMessage("No user ID found.", ResultType.INVALID);
             return userResult;
         }
-<<<<<<< HEAD
-=======
-
->>>>>>> 8d9f43987a9db69017dd30267811d64c9ece774a
         Optional userOptional = repo.findById(user.getUserId());
         if (userOptional.isPresent()) {
             AppUser user2 = (AppUser) userOptional.get();
             if (user.getFavorites() == null || (user.getFavorites().size() < 1)) {
                 userResult.addMessage("Null or zero-length favorites is not allowed for update",
                         ResultType.INVALID);
-<<<<<<< HEAD
-=======
-
+                
                 user2.setFavorites(user.getFavorites());
                 //can add more setters here for other variables
                 repo.save(user2);
                 userResult.setPayload(user2);
                 return userResult;
->>>>>>> 8d9f43987a9db69017dd30267811d64c9ece774a
             }
             userResult.addMessage("User was not found.", ResultType.NOT_FOUND);
             return userResult;
