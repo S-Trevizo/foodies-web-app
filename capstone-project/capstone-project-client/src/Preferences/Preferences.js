@@ -118,8 +118,6 @@ function Preferences() {
         const healthLabel = e.target.name;
         const copy = { ...user };
 
-        console.log(addingCheck);
-
         if (addingCheck) {
             if (!copy.healthLabels == null) {
                 copy.healthLabels = [];
@@ -133,7 +131,7 @@ function Preferences() {
 
     return (
         <div className="container mt-5 p-4 bg-light rounded">
-            <h2 className="text-center">Health Preferences</h2>
+            <h2 className="text-center border-bottom-2">Health Preferences</h2>
             {user ? <form className="container" onSubmit={submitHandler} >
                 <div className="row p-4">
                     {options.map((a, index) =>
