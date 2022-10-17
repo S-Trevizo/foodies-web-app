@@ -115,7 +115,7 @@ public class AppUserService implements UserDetailsService {
             if (user.getFavorites() == null || (user.getFavorites().size() < 1)) {
                 userResult.addMessage("Null or zero-length favorites is not allowed for update",
                         ResultType.INVALID);
-                
+
                 user2.setFavorites(user.getFavorites());
                 //can add more setters here for other variables
                 repo.save(user2);
