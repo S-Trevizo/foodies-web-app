@@ -105,38 +105,28 @@ public class AppUserService implements UserDetailsService {
     public Result<AppUser> update(AppUser user) {
         Result<AppUser> userResult = new Result<>();
         //pull the password from the repo and pull it into the user.
-        if (user.getUserId() == null){
+        if (user.getUserId() == null) {
             userResult.addMessage("No user ID found.", ResultType.INVALID);
             return userResult;
         }
-<<<<<<< HEAD
+
         Optional userOptional = repo.findById(user.getUserId());
-        if (userOptional.isPresent()){
-            AppUser user2 = (AppUser)userOptional.get();
+        if (userOptional.isPresent()) {
+            AppUser user2 = (AppUser) userOptional.get();
             if (user.getFavorites() == null || (user.getFavorites().size() < 1)) {
                 userResult.addMessage("Null or zero-length favorites is not allowed for update",
                         ResultType.INVALID);
-=======
-        result = validateEmail(user.getEmail());
-        if (!result.isSuccess()){
-            return result;
-        }
-        validatePassword(user.getPassword(), result);
-        if (result.isSuccess()){
-            if (repo.existsById(user.getUserId())){
-                repo.save(user);
-                result.setPayload(user);
-            } else {
-                result.addMessage("User was not found.", ResultType.NOT_FOUND);
->>>>>>> ea78fe3ef99d6d48d83cfbb615bbdc5d00db3cdd
+
+                user2.setFavorites(user.getFavorites());
+                //can add more setters here for other variables
+                repo.save(user2);
+                userResult.setPayload(user2);
+                return userResult;
             }
-            user2.setFavorites(user.getFavorites());
-            //can add more setters here for other variables
-            repo.save(user2);
-            userResult.setPayload(user2);
+            userResult.addMessage("User was not found.", ResultType.NOT_FOUND);
             return userResult;
         }
-        userResult.addMessage("User was not found.", ResultType.NOT_FOUND);
+
         return userResult;
     }
 
