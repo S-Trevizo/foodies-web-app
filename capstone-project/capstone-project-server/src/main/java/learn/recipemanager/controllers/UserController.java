@@ -81,9 +81,9 @@ public class UserController {
             if (result.isSuccess()) {//return good: 204
                 return new ResponseEntity<>(List.of("Successfully updated"),HttpStatus.NO_CONTENT);
             } else if (result.getType() == ResultType.NOT_FOUND) {//return 404: not found
-                return new ResponseEntity<>(result.getMessages(),HttpStatus.NO_CONTENT);
+                return new ResponseEntity<>(result.getMessages(),HttpStatus.NOT_FOUND);
             } else if (result.getType() == ResultType.INVALID) {//return 400: bad request
-                return new ResponseEntity<>(result.getMessages(),HttpStatus.NO_CONTENT);
+                return new ResponseEntity<>(result.getMessages(),HttpStatus.BAD_REQUEST);
             }
         }
         return new ResponseEntity<>(List.of("Error: must be a registered admin or user."),HttpStatus.FORBIDDEN);//403

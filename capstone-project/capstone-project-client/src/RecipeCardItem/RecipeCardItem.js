@@ -3,6 +3,8 @@ import AuthContext from "../AuthContext";
 import { useContext, useState, useEffect } from "react";
 import ErrorMessages from "../ErrorMessages/ErrorMessages";
 
+
+//create service update method that does not require password. 
 /*
     //first, check for logged in status. 
     //if logged in, then check to see if recipe id is in favorited list of recipes
@@ -19,25 +21,25 @@ function RecipeCardItem(props) {
     const [recipe, setRecipe] = useState(props.recipeData);
 
     function addToFavorites(event) {
-        console.log(event.target.checked);
-        //find index of recipe from user data. If it is favorited, index > 0.
+        //event.target.checked
         let index = 0;
-        if (userCopy.favorites === null) {
+        console.log(userCopy);
+        if (!userCopy.favorites) {//=== undefined || userCopy.favorites === null
             index = 0;
         } else {
             for (let i = 0; i < userCopy.favorites.length; i++) {//could also check for duplicates maybe?
-                if ((userCopy.favorites[i].uri.substr(userCopy.favorites[i].uri.length - 32)) === (props.recipeData.uri.substr(props.recipeData.uri.length - 32))) {
+                if ((userCopy.favorites[i].recipeId) === (props.recipeData.uri.substr(props.recipeData.uri.length - 32))) {
                     index = i;
                     break;//break out of loop
                 }
             }
         }
-        //event.target.checked 
-        if (index !== 0) {
-            //add the new recipe, set userCopy
-            const favoritesCopy = [];
-            favoritesCopy.push(userCopy.favorites);///was ...
-            //need to push the recipe: first, create a version of the recipe that backend constructor will take in.
+        let editedUserCopy = null;
+        if (event.target.checked === true) {
+            let favoritesCopy = [];
+            if (userCopy.favorites !== null) {
+                favoritesCopy = [...(userCopy.favorites)];
+            }
             const recipeCopy = {
                 recipeId: recipe.uri.substr(recipe.uri.length - 32),
                 recipeUrl: recipe.shareAs,
@@ -45,27 +47,21 @@ function RecipeCardItem(props) {
                 recipeName: recipe.label
             }
             favoritesCopy.push(recipeCopy);
-            //create a copy of the user to use to edit and replace userCopy
-            const editedUserCopy = {...userCopy};
-            editedUserCopy.favorites = favoritesCopy;
-            setUserCopy(editedUserCopy);
+            editedUserCopy = {...userCopy, favorites: favoritesCopy};
         } else {
-            //remove the recipe at the index, set userCopy
-            const editedUserCopy = {...userCopy};
-            const favoritesCopy = [];
-            favoritesCopy.push(editedUserCopy.favorites);///was ...
+            let favoritesCopy = [];
+            favoritesCopy = [...(userCopy.favorites)];
             favoritesCopy.splice(index,1);
-            editedUserCopy.favorites = favoritesCopy;
-            setUserCopy(editedUserCopy);
+            editedUserCopy = {...userCopy, favorites: favoritesCopy};
         }
-        //then, update database with copyuser
-        updateUserInDatabase();
-        console.log(userCopy);
+        console.log(editedUserCopy);
+        updateUserInDatabase(editedUserCopy);
     }
-    function updateUserInDatabase() {
+
+    function updateUserInDatabase(editedUserCopy) {
         {fetch("http://localhost:8080/api/user/update", {
                 method: "PUT",
-                body: JSON.stringify(userCopy),
+                body: JSON.stringify(editedUserCopy),
                 headers: {
                     "Content-Type": "application/json",
                     "Authorization": "Bearer " + localStorage.getItem("foodiesToken")
@@ -73,6 +69,7 @@ function RecipeCardItem(props) {
             })
             .then(async response => {
                 if (response.status === 204) {
+                    fetchUser();
                     return response.json();
                 } else if (response.status === 404) {
                     return Promise.reject(["User not found (possibly deleted)."]);
@@ -81,9 +78,6 @@ function RecipeCardItem(props) {
                 } else if (response.status === 403) {// 403 is forbidden: not admin nor user
                     return Promise.reject(await response.json());
                 }
-                // } else {
-                //     return Promise.reject(await response.json());//this opens the possibility of non-array errors: i.e. errors we don't want to display to user. 
-                // }
             })
             .catch(errorList => {
                 if (errorList instanceof TypeError) {
@@ -91,7 +85,6 @@ function RecipeCardItem(props) {
                     copyArray.push("Could not connect to api.");
                     setErrorsToAppend(copyArray);
                 } else if (errorList instanceof Error){
-                    // console.log(errorList.message);
                     //do nothing
                 } else {
                     const copyArray = [];
@@ -102,9 +95,7 @@ function RecipeCardItem(props) {
         }
     }
         
-    //does the state variable also need to be set again? i.e. setIsFavorited
     function determineIfRecipeIsFavorited(response) {
-        // if it is favorited, use the variable in print statement below to output the checked option for 'save to favorites' checkbox
         if (response.favorites === null) {
             setIsFavorited(false);
             return;
@@ -148,16 +139,15 @@ function RecipeCardItem(props) {
                     healthLabels: response.healthLabels,
                     ingredients: response.ingredients
                 }
-                console.log(copyUser);
                 setUserCopy(copyUser);
                 determineIfRecipeIsFavorited(response);
             }).catch(error => {
                 if (error instanceof TypeError) {
                     const errors = [];
-                    errors.push("Could not connect to api from user files.");
+                    // errors.push("Could not connect to api from user files.");   this has been triggered when external api runs out. so I'll comment this out for now.
                     setErrorsToAppend(errors);
                 } else {
-                    console.log(error);
+                    // console.log(error);
                     const errors = [];
                     errors.push(...error);
                     setErrorsToAppend(errors);
@@ -168,7 +158,6 @@ function RecipeCardItem(props) {
 
     useEffect(
         () => {
-
             if (userData.user === null) {
                 console.log("userData is null. make 'add to favorites' button disabled");
             } else {
@@ -176,7 +165,7 @@ function RecipeCardItem(props) {
                 fetchUser();
             }
         },
-        []);//try favoritng a recipe, searching for food2, then search for food1 and see if still there.
+        []);
 
     return (
         <>
@@ -184,7 +173,6 @@ function RecipeCardItem(props) {
                 errorsToAppend.map((r, index) => <ErrorMessages key={index} errorData={r} />) :
                 null
             }
-
             <div className="card">
                 <div className="card-body">
                     <img src={props.recipeData.image} className="card-img-top" alt="..." />

@@ -104,25 +104,27 @@ public class AppUserService implements UserDetailsService {
     }
 
     public Result<AppUser> update(AppUser user) {
-        Result<AppUser> result = new Result<>();
+        Result<AppUser> userResult = new Result<>();
+        //pull the password from the repo and pull it into the user.
         if (user.getUserId() == null){
-             result.addMessage("No user ID found.", ResultType.INVALID);
-             return result;
+            userResult.addMessage("No user ID found.", ResultType.INVALID);
+            return userResult;
         }
-        result = validate(user.getEmail());
-        if (!result.isSuccess()){
-            return result;
-        }
-        validatePass(user.getPassword(), result);
-        if (result.isSuccess()){
-            if (repo.existsById(user.getUserId())){
-                repo.save(user);
-                result.setPayload(user);
-            } else {
-                result.addMessage("User was not found.", ResultType.NOT_FOUND);
+        Optional userOptional = repo.findById(user.getUserId());
+        if (userOptional.isPresent()){
+            AppUser user2 = (AppUser)userOptional.get();
+            if (user.getFavorites() == null || (user.getFavorites().size() < 1)) {
+                userResult.addMessage("Null or zero-length favorites is not allowed for update",
+                        ResultType.INVALID);
             }
+            user2.setFavorites(user.getFavorites());
+            //can add more setters here for other variables
+            repo.save(user2);
+            userResult.setPayload(user2);
+            return userResult;
         }
-        return result;
+        userResult.addMessage("User was not found.", ResultType.NOT_FOUND);
+        return userResult;
     }
 
     public Result<AppUser> updateAccount(EditUserAccountRequest request) {
