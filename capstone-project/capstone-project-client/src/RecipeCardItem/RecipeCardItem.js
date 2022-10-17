@@ -22,17 +22,21 @@ function RecipeCardItem(props) {
         console.log(event.target.checked);
         //find index of recipe from user data. If it is favorited, index > 0.
         let index = 0;
-        for (let i = 0; i < userCopy.favorites.length; i++) {//could also check for duplicates maybe?
-            if ((userCopy.favorites[i].uri.substr(userCopy.favorites[i].uri.length - 32)) === (props.recipeData.uri.substr(props.recipeData.uri.length - 32))) {
-                index = i;
-                break;//break out of loop
+        if (userCopy.favorites === null) {
+            index = 0;
+        } else {
+            for (let i = 0; i < userCopy.favorites.length; i++) {//could also check for duplicates maybe?
+                if ((userCopy.favorites[i].uri.substr(userCopy.favorites[i].uri.length - 32)) === (props.recipeData.uri.substr(props.recipeData.uri.length - 32))) {
+                    index = i;
+                    break;//break out of loop
+                }
             }
         }
         //event.target.checked 
         if (index !== 0) {
             //add the new recipe, set userCopy
             const favoritesCopy = [];
-            favoritesCopy.push(...userCopy.favorites);
+            favoritesCopy.push(userCopy.favorites);///was ...
             //need to push the recipe: first, create a version of the recipe that backend constructor will take in.
             const recipeCopy = {
                 recipeId: recipe.uri.substr(recipe.uri.length - 32),
@@ -49,7 +53,7 @@ function RecipeCardItem(props) {
             //remove the recipe at the index, set userCopy
             const editedUserCopy = {...userCopy};
             const favoritesCopy = [];
-            favoritesCopy.push(...editedUserCopy.favorites);
+            favoritesCopy.push(editedUserCopy.favorites);///was ...
             favoritesCopy.splice(index,1);
             editedUserCopy.favorites = favoritesCopy;
             setUserCopy(editedUserCopy);
@@ -135,6 +139,7 @@ function RecipeCardItem(props) {
                     healthLabels: response.healthLabels,
                     ingredients: response.ingredients
                 }
+                console.log(copyUser);
                 setUserCopy(copyUser);
                 determineIfRecipeIsFavorited(response);
             }).catch(error => {
@@ -163,8 +168,6 @@ function RecipeCardItem(props) {
             }
         },
         []);//try favoritng a recipe, searching for food2, then search for food1 and see if still there.
-
-    console.log(userCopy.favorites);
 
     return (
         <>

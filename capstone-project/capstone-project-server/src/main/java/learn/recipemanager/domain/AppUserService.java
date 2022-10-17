@@ -159,7 +159,11 @@ public class AppUserService implements UserDetailsService {
     }
 
     public Result<AppUser> updatePantry(EditUserPantryRequest request) {
-        Result<AppUser> userResult = new Result<>();
+        Result<AppUser> userResult = validateIngredients(request.getIngredients());
+
+        if (!userResult.isSuccess()) {
+            return userResult;
+        }
 
         if (request.getUserId() == null || request.getUserId().isBlank()) {
             userResult.addMessage("User Id is required", ResultType.INVALID);
@@ -179,6 +183,41 @@ public class AppUserService implements UserDetailsService {
             }
         }
         return userResult;
+
+    }
+
+    private Result<AppUser> validateIngredients(List<Ingredient> ingredients) {
+        Result<AppUser> result = new Result<>();
+
+        for (Ingredient i : ingredients) {
+
+            if (i.getName() == null || i.getName().isBlank()) {
+                result.addMessage("Ingredient name is required", ResultType.INVALID);
+                return result;
+            }
+
+            if (i.getFoodCategory() == null || i.getFoodCategory().isBlank()) {
+                result.addMessage("Food category is required", ResultType.INVALID);
+                return result;
+            }
+
+            if (i.getQuantity() <= 0) {
+                result.addMessage("Quantity is requires and cannot be negative", ResultType.INVALID);
+                return result;
+            }
+
+            if (i.getMeasure() == null || i.getMeasure().isBlank()) {
+                result.addMessage("Measure is required", ResultType.INVALID);
+            }
+
+            for (Ingredient j : ingredients) {
+                if (i.getName().equalsIgnoreCase(j.getName())) {
+                    result.addMessage("Ingredient cannot be a duplicate", ResultType.INVALID);
+                    return result;
+                }
+            }
+        }
+        return result;
 
     }
 

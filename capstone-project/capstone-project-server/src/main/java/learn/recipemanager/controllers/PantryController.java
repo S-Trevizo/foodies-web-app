@@ -4,6 +4,7 @@ import learn.recipemanager.domain.AppUserService;
 import learn.recipemanager.domain.Result;
 import learn.recipemanager.domain.ResultType;
 import learn.recipemanager.models.AppUser;
+import learn.recipemanager.models.Ingredient;
 import learn.recipemanager.models.viewmodels.EditUserPantryRequest;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -26,7 +27,7 @@ public class PantryController {
             if (result.getType() == ResultType.NOT_FOUND) {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             } else {
-                return new ResponseEntity<>(result.getMessages(), HttpStatus.BAD_REQUEST);
+                return ErrorResponse.build(result);
             }
         }
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
