@@ -3,8 +3,8 @@ Dev10 Capstone Project
 
 Requirements
 ====================================
-~ Docker
-~ Npm
+* Docker
+* Npm
 
 Running the application
 ====================================
