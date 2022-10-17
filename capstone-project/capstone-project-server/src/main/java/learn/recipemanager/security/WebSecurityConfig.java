@@ -31,6 +31,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.POST, "/api/recipe/personal").hasAnyRole("USER","ADMIN")
                 .antMatchers(HttpMethod.POST,  "/api/security/authenticate").permitAll()//HttpMethod.POST,
                 .antMatchers(HttpMethod.POST, "/api/security/create_account").permitAll()
+                .antMatchers(HttpMethod.PUT, "/api/user/*").hasAnyRole("USER", "ADMIN")//.authenticated also works - broader option
                 .antMatchers(HttpMethod.GET, "/api/user/*").hasAnyRole("USER", "ADMIN")//.authenticated also works - broader option
                 .antMatchers(HttpMethod.GET, "/api/security/*").hasAnyRole("ADMIN")
                 .antMatchers(HttpMethod.DELETE, "/api/security/**").hasAnyRole("ADMIN")

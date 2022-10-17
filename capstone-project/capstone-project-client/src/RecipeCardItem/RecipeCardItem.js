@@ -60,6 +60,7 @@ function RecipeCardItem(props) {
         }
         //then, update database with copyuser
         updateUserInDatabase();
+        console.log(userCopy);
     }
     function updateUserInDatabase() {
         {fetch("http://localhost:8080/api/user/update", {
@@ -75,15 +76,23 @@ function RecipeCardItem(props) {
                     return response.json();
                 } else if (response.status === 404) {
                     return Promise.reject(["User not found (possibly deleted)."]);
-                } else if (response.status === 400) {
+                } else if (response.status === 400) {//bad request.
+                    return Promise.reject(await response.json());
+                } else if (response.status === 403) {// 403 is forbidden: not admin nor user
                     return Promise.reject(await response.json());
                 }
+                // } else {
+                //     return Promise.reject(await response.json());//this opens the possibility of non-array errors: i.e. errors we don't want to display to user. 
+                // }
             })
             .catch(errorList => {
                 if (errorList instanceof TypeError) {
                     const copyArray = [];
                     copyArray.push("Could not connect to api.");
                     setErrorsToAppend(copyArray);
+                } else if (errorList instanceof Error){
+                    // console.log(errorList.message);
+                    //do nothing
                 } else {
                     const copyArray = [];
                     copyArray.push(...errorList);

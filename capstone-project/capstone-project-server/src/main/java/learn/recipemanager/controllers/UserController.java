@@ -51,6 +51,7 @@ public class UserController {
         }
         return new ResponseEntity<>(List.of("Error: must be an admin. Or, logged-in user may only request their account info (mismatching path variable id)."),HttpStatus.FORBIDDEN);
     }
+
     @PutMapping("/user")
     public ResponseEntity<?> update( @RequestBody EditUserAccountRequest request)  {
 
@@ -66,22 +67,25 @@ public class UserController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    //todo make sure this has all the validation for update/put mapping. I think controller is good.
-    // also add to websecurityconfig
-    // finish this method: then test it by adding favorites. log in and out and see if it saves.
     @PutMapping("/user/update")
     public ResponseEntity<?> update( @RequestBody AppUser request)  {
-    //todo make sure proper user is involved
-//        Result<AppUser> result = appUserService.updateAccount(request);
-
-//        if (!result.isSuccess()) {
-//            if (result.getType() == ResultType.NOT_FOUND) {
-//                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-//            } else {
-//                return new ResponseEntity<>(result.getMessages(), HttpStatus.BAD_REQUEST);
-//            }
-//        }
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        AppUser currentUser = (AppUser) SecurityContextHolder//validate that person is admin or user. else, forbidden
+                .getContext()
+                .getAuthentication()
+                .getPrincipal();
+        boolean isAdmin = currentUser.getUserRoles().stream().anyMatch(r -> r.getRoleName().equalsIgnoreCase("admin"));//I wish admin were an enum
+        boolean isUser = currentUser.getUserRoles().stream().anyMatch(r -> r.getRoleName().equalsIgnoreCase("user"));
+        if (isAdmin || isUser) {//good case: user or admin. can update user now.
+            Result<AppUser> result = appUserService.update(request);
+            if (result.isSuccess()) {//return good: 204
+                return new ResponseEntity<>(List.of("Successfully updated"),HttpStatus.NO_CONTENT);
+            } else if (result.getType() == ResultType.NOT_FOUND) {//return 404: not found
+                return new ResponseEntity<>(result.getMessages(),HttpStatus.NO_CONTENT);
+            } else if (result.getType() == ResultType.INVALID) {//return 400: bad request
+                return new ResponseEntity<>(result.getMessages(),HttpStatus.NO_CONTENT);
+            }
+        }
+        return new ResponseEntity<>(List.of("Error: must be a registered admin or user."),HttpStatus.FORBIDDEN);//403
     }
 
     @DeleteMapping("/users/delete/{id}")
