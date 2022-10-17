@@ -12,7 +12,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -67,14 +66,14 @@ public class AppUserService implements UserDetailsService {
 
     public Result<AppUser> create(String email, String password, String name, List<Recipe> favorites, List<HealthLabel> healthLabels, List<Ingredient> ingredients) {
 
-        Result<AppUser> result = validate(email);
+        Result<AppUser> result = validateEmail(email);
 
 
         if (!result.isSuccess()) {
             return result;
         }
 
-        validatePass(password, result);
+        validatePassword(password, result);
 
         if (!result.isSuccess()) {
             return result;
@@ -109,11 +108,11 @@ public class AppUserService implements UserDetailsService {
              result.addMessage("No user ID found.", ResultType.INVALID);
              return result;
         }
-        result = validate(user.getEmail());
+        result = validateEmail(user.getEmail());
         if (!result.isSuccess()){
             return result;
         }
-        validatePass(user.getPassword(), result);
+        validatePassword(user.getPassword(), result);
         if (result.isSuccess()){
             if (repo.existsById(user.getUserId())){
                 repo.save(user);
@@ -132,13 +131,13 @@ public class AppUserService implements UserDetailsService {
             userResult.addMessage("User Id is required", ResultType.INVALID);
         }
 
-        userResult = validate(request.getEmail());
+        userResult = validateEmail(request.getEmail());
 
         if (!userResult.isSuccess()) {
             return userResult;
         }
 
-        validatePass(request.getPassword(), userResult );
+        validatePassword(request.getPassword(), userResult );
 
         if (userResult.isSuccess()) {
             Optional userOptional = repo.findById(request.getUserId());
@@ -186,41 +185,6 @@ public class AppUserService implements UserDetailsService {
 
     }
 
-    private Result<AppUser> validateIngredients(List<Ingredient> ingredients) {
-        Result<AppUser> result = new Result<>();
-
-        for (Ingredient i : ingredients) {
-
-            if (i.getName() == null || i.getName().isBlank()) {
-                result.addMessage("Ingredient name is required", ResultType.INVALID);
-                return result;
-            }
-
-            if (i.getFoodCategory() == null || i.getFoodCategory().isBlank()) {
-                result.addMessage("Food category is required", ResultType.INVALID);
-                return result;
-            }
-
-            if (i.getQuantity() <= 0) {
-                result.addMessage("Quantity is requires and cannot be negative", ResultType.INVALID);
-                return result;
-            }
-
-            if (i.getMeasure() == null || i.getMeasure().isBlank()) {
-                result.addMessage("Measure is required", ResultType.INVALID);
-            }
-
-            for (Ingredient j : ingredients) {
-                if (i.getName().equalsIgnoreCase(j.getName()) && ingredients.indexOf(i) != ingredients.indexOf(j)) {
-                    result.addMessage("Ingredient cannot be a duplicate", ResultType.INVALID);
-                    return result;
-                }
-            }
-        }
-        return result;
-
-    }
-
     public Result<AppUser> updateHealthLabels(EditHealthLabelRequest request) {
         Result<AppUser> result = new Result<>();
 
@@ -255,7 +219,7 @@ public class AppUserService implements UserDetailsService {
         return false;
     }
 
-    private Result<AppUser> validatePass(String password, Result<AppUser> result) {
+    private Result<AppUser> validatePassword(String password, Result<AppUser> result) {
 
         if (password == null || password.length() < 8) {
             result.addMessage("Password is required and should be more than 8 characters", ResultType.INVALID);
@@ -283,7 +247,7 @@ public class AppUserService implements UserDetailsService {
         return result;
     }
 
-    private Result<AppUser> validate(String email) {
+    private Result<AppUser> validateEmail(String email) {
 
         Result<AppUser> result = new Result<>();
 
@@ -297,6 +261,41 @@ public class AppUserService implements UserDetailsService {
         if (!email.matches(regex)) {
             result.addMessage("Entry should be a proper email", ResultType.INVALID);
             return result;
+        }
+        return result;
+
+    }
+
+    private Result<AppUser> validateIngredients(List<Ingredient> ingredients) {
+        Result<AppUser> result = new Result<>();
+
+        for (Ingredient i : ingredients) {
+
+            if (i.getName() == null || i.getName().isBlank()) {
+                result.addMessage("Ingredient name is required", ResultType.INVALID);
+                return result;
+            }
+
+            if (i.getFoodCategory() == null || i.getFoodCategory().isBlank()) {
+                result.addMessage("Food category is required", ResultType.INVALID);
+                return result;
+            }
+
+            if (i.getQuantity() <= 0) {
+                result.addMessage("Quantity is requires and cannot be negative", ResultType.INVALID);
+                return result;
+            }
+
+            if (i.getMeasure() == null || i.getMeasure().isBlank()) {
+                result.addMessage("Measure is required", ResultType.INVALID);
+            }
+
+            for (Ingredient j : ingredients) {
+                if (i.getName().equalsIgnoreCase(j.getName()) && ingredients.indexOf(i) != ingredients.indexOf(j)) {
+                    result.addMessage("Ingredient cannot be a duplicate", ResultType.INVALID);
+                    return result;
+                }
+            }
         }
         return result;
 
