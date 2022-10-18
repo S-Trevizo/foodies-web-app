@@ -1,11 +1,6 @@
 import AuthContext from "../AuthContext";
 import { useContext, useState, useEffect } from "react";
-import { useHistory } from "react-router-dom";
-import Recipe from "../Recipe/Recipe";
 import ErrorMessages from "../ErrorMessages/ErrorMessages";
-import RecipeCarouseItem from "../RecipeCarouseItem/RecipeCarouseItem";
-import UserCard from "../User/UserCard";
-import NavBar from "../NavBar/NavBar";
 import RecipeCardItem from "../RecipeCardItem/RecipeCardItem";
 //this component searches random for public user. for registered user, it automatically filters results to include user's allergens/healthlabels. (example: "soy-free")
 

@@ -3,22 +3,16 @@ import AuthContext from "../AuthContext";
 import { useContext, useState, useEffect } from "react";
 import ErrorMessages from "../ErrorMessages/ErrorMessages";
 
+//the preload favorites isn't working
 
-//create service update method that does not require password. 
-/*
-    //first, check for logged in status. 
-    //if logged in, then check to see if recipe id is in favorited list of recipes
-    //todo: preload favorited recipes that happen to show up in search: <input type="checkbox" id="chkThree" name="chkThree" checked>
-    
-    // card: option to favorite it (add to user data)
-*/
-function RecipeCardItem(props) {
+function RecipeCardItem(props) {//get both of the search term variables in here: put in use-state?
     // props.recipeData = single datapoint/recipe
     const userData = useContext(AuthContext);
     const [errorsToAppend, setErrorsToAppend] = useState([]);
     const [isFavorited, setIsFavorited] = useState(false);
     const [userCopy, setUserCopy] = useState(null);
     const [recipe, setRecipe] = useState(props.recipeData);
+    // let isFavorited = false;
 
     function addToFavorites(event) {
         //event.target.checked
@@ -47,19 +41,20 @@ function RecipeCardItem(props) {
                 recipeName: recipe.label
             }
             favoritesCopy.push(recipeCopy);
-            editedUserCopy = {...userCopy, favorites: favoritesCopy};
+            editedUserCopy = { ...userCopy, favorites: favoritesCopy };
         } else {
             let favoritesCopy = [];
             favoritesCopy = [...(userCopy.favorites)];
-            favoritesCopy.splice(index,1);
-            editedUserCopy = {...userCopy, favorites: favoritesCopy};
+            favoritesCopy.splice(index, 1);
+            editedUserCopy = { ...userCopy, favorites: favoritesCopy };
         }
         console.log(editedUserCopy);
         updateUserInDatabase(editedUserCopy);
     }
 
     function updateUserInDatabase(editedUserCopy) {
-        {fetch("http://localhost:8080/api/user/update", {
+        {
+            fetch("http://localhost:8080/api/user/update", {
                 method: "PUT",
                 body: JSON.stringify(editedUserCopy),
                 headers: {
@@ -84,7 +79,7 @@ function RecipeCardItem(props) {
                     const copyArray = [];
                     copyArray.push("Could not connect to api.");
                     setErrorsToAppend(copyArray);
-                } else if (errorList instanceof Error){
+                } else if (errorList instanceof Error) {
                     //do nothing
                 } else {
                     const copyArray = [];
@@ -94,14 +89,13 @@ function RecipeCardItem(props) {
             });
         }
     }
-        
+
     function determineIfRecipeIsFavorited(response) {
-        if (response.favorites === null) {
-            setIsFavorited(false);
+        if (response.favorites === null) { 
             return;
         } else {
             for (let i = 0; i < response.favorites.length; i++) {//todo verify this works when favorites isn't empty
-                if ((response.favorites[i].uri.substr(response.favorites[i].uri.length - 32)) === (props.recipeData.uri.substr(props.recipeData.uri.length - 32))) {
+                if ((response.favorites[i].recipeId) === (props.recipeData.uri.substr(props.recipeData.uri.length - 32))) {
                     setIsFavorited(true);
                     return;
                 }
@@ -110,7 +104,8 @@ function RecipeCardItem(props) {
     }
 
     function fetchUser() {
-        {fetch("http://localhost:8080/api/user/" + userData.user.userId, {
+        {
+            fetch("http://localhost:8080/api/user/" + userData.user.userId, {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
@@ -158,6 +153,8 @@ function RecipeCardItem(props) {
 
     useEffect(
         () => {
+            console.log("isFavorited: " + isFavorited);
+            setErrorsToAppend([]);
             if (userData.user === null) {
                 console.log("userData is null. make 'add to favorites' button disabled");
             } else {

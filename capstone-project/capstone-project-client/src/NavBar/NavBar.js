@@ -35,13 +35,13 @@ function NavBar({ searchData, setSearchData }) {//if there is search data, websi
                         <li className="nav-item">
                             <Link to="/" className="nav-link">Home</Link>
                         </li>
-                        <li className="nav-item">
-                            <a className="nav-link disabled" href="#">Favorites</a>
-                        </li>
-
                         {auth.user ? <li className="nav-item">
                             <Link to="/pantry" className="nav-link">Pantry</Link>
                         </li> : null}
+
+                        <li className="nav-item">
+                            <a className="nav-link" href={auth.user ? `/favorites` : "/login"}>Favorites</a>
+                        </li>
 
                         <li className="nav-item">
                             <a className="nav-link" href={auth.user ? `/preferences/${auth.user.userId}` : "/login"}>Preferences</a>

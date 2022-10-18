@@ -6,6 +6,7 @@ import learn.recipemanager.models.viewmodels.EditHealthLabelRequest;
 import learn.recipemanager.models.viewmodels.EditUserAccountRequest;
 import learn.recipemanager.models.viewmodels.EditUserPantryRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -115,16 +116,30 @@ public class AppUserService implements UserDetailsService {
             if (user.getFavorites() == null || (user.getFavorites().size() < 1)) {
                 userResult.addMessage("Null or zero-length favorites is not allowed for update",
                         ResultType.INVALID);
-
-                user2.setFavorites(user.getFavorites());
-                //can add more setters here for other variables
-                repo.save(user2);
-                userResult.setPayload(user2);
                 return userResult;
             }
-            userResult.addMessage("User was not found.", ResultType.NOT_FOUND);
+            //before I add favorites, I need to check for duplicates
+            //        boolean isAdmin = currentUser.getUserRoles().stream().anyMatch(r -> r.getRoleName().equalsIgnoreCase("admin"));//I wish admin were an enum
+            int duplicateCount = 0;
+            for (Recipe i : user.getFavorites()) {
+                for (Recipe j : user2.getFavorites()) {
+                    if (j.getRecipeId().equals(i.getRecipeId())) {
+                        duplicateCount++;
+                    }
+                }
+            }
+            if (duplicateCount > 1) {
+                userResult.addMessage("Duplicate favorited recipes are not allowed", ResultType.INVALID);
+                return userResult;
+            }
+            //should be good to add new favorite now:
+            user2.setFavorites(user.getFavorites());
+            //can add more setters here for other variables
+            repo.save(user2);
+            userResult.setPayload(user2);
             return userResult;
         }
+        userResult.addMessage("User was not found.", ResultType.NOT_FOUND);
         return userResult;
     }
 
