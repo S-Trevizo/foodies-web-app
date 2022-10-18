@@ -53,29 +53,36 @@ function Login(props) {
 
 
     return (
-        <div className="container mt-5 p-4 bg-light rounded">
-            <h2 className='text-center'>Login</h2>
-            <form onSubmit={loginHandler} >
-                <div className="form-group">
-                    <label htmlFor="username">User Name(email):</label>
-                    <input id="username" name="username" className="form-control"
-                        onChange={(event) => setEmail(event.target.value)} />
-                </div>
-                <div className="form-group">
-                    <label htmlFor="password">Password:</label>
-                    <input id="password" name="password" type="password" className="form-control"
-                        onChange={(event) => setPassword(event.target.value)} />
-                </div>
-                <div className="container">
-                    {errors ? errors.map((e, index) =>
-                        <ErrorMessages key={index} errorData={e} />) : null}
-                </div>
-                <div className="text-right">
-                    <button className="btn btn-primary mr-2">Log In</button>
-                    <Link to="/" className="btn btn-danger">Cancel</Link>
-                </div>
+        <div className="container mt-5 p-4">
+            <div className='card'>
+                <h2 className='text-center card-header'>Login</h2>
+                <div className='card-body'>
+                    <form onSubmit={loginHandler} >
+                        <div className="form-group">
+                            <label htmlFor="username">User Name(email):</label>
+                            <input id="username" name="username" className="form-control"
+                                onChange={(event) => setEmail(event.target.value)} />
+                        </div>
+                        <div className="form-group">
+                            <label htmlFor="password">Password:</label>
+                            <input id="password" name="password" type="password" className="form-control"
+                                onChange={(event) => setPassword(event.target.value)} />
+                        </div>
+                        <div className="container">
+                            {errors ? errors.map((e, index) =>
+                                <ErrorMessages key={index} errorData={e} />) : null}
+                        </div>
+                        <div className="text-right">
+                            <button className="btn btn-primary mr-2">Log In</button>
+                            <Link to="/" className="btn btn-danger">Cancel</Link>
+                        </div>
 
-            </form>
+                    </form>
+                </div>
+                <div className='card-footer text-center'>
+                    <p>New user? <Link to="/register">Register here</Link> </p>
+                </div>
+            </div>
         </div>
     );
 }

@@ -103,35 +103,42 @@ function Register() {
 
     return (
 
-        <div className="container mt-5 p-4 bg-light rounded">
-            <h2 className='text-center'>Register</h2>
-            <form>
-                <div className="form-group">
-                    <label htmlFor="name">Name:</label>
-                    <input id="name" name="name" className="form-control" onChange={e => setName(e.target.value)} />
-                </div>
-                <div className="form-group">
-                    <label htmlFor="email">Email (username):</label>
-                    <input id="email" name="email" className="form-control" onChange={e => setEmail(e.target.value)} />
-                </div>
-                <div className="form-group">
-                    <label htmlFor="password">Password:</label>
-                    <input id="password" name="password" type="password" className="form-control" onChange={e => setPassword(e.target.value)} />
-                </div>
+        <div className="container mt-5 p-4">
+            <div className='card'>
+                <h2 className='card-header text-center'>Register</h2>
+                <div className='card-body'>
+                    <form>
+                        <div className="form-group">
+                            <label htmlFor="name">Name:</label>
+                            <input id="name" name="name" className="form-control" onChange={e => setName(e.target.value)} />
+                        </div>
+                        <div className="form-group">
+                            <label htmlFor="email">Email (username):</label>
+                            <input id="email" name="email" className="form-control" onChange={e => setEmail(e.target.value)} />
+                        </div>
+                        <div className="form-group">
+                            <label htmlFor="password">Password:</label>
+                            <input id="password" name="password" type="password" className="form-control" onChange={e => setPassword(e.target.value)} />
+                        </div>
 
-                <div className='form-group'>
-                    <label>Health Labels: </label>
-                    <Select isMulti closeMenuOnSelect={false} components={animated} className='basic-multi-select' classNamePrefix="select" options={options} onChange={handleChange}></Select>
+                        <div className='form-group'>
+                            <label>Health Labels: </label>
+                            <Select isMulti closeMenuOnSelect={false} components={animated} className='basic-multi-select' classNamePrefix="select" options={options} onChange={handleChange}></Select>
+                        </div>
+                        <div className="container">
+                            {errors ? errors.map((e, index) =>
+                                <ErrorMessages key={index} errorData={e} />) : null}
+                        </div>
+                        <div className="text-right">
+                            <button className="btn btn-primary mr-2" onClick={registerHandler}>Submit</button>
+                            <Link to="/" className="btn btn-danger">Cancel</Link>
+                        </div>
+                    </form>
                 </div>
-                <div className="container">
-                    {errors ? errors.map((e, index) =>
-                        <ErrorMessages key={index} errorData={e} />) : null}
+                <div className='card-footer text-center'>
+                    <p>Already a member? <Link to="/login">Click here</Link> </p>
                 </div>
-                <div className="text-right">
-                    <button className="btn btn-primary mr-2" onClick={registerHandler}>Submit</button>
-                    <Link to="/" className="btn btn-danger">Cancel</Link>
-                </div>
-            </form>
+            </div>
         </div>
     );
 }
