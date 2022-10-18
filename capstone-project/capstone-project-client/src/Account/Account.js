@@ -96,7 +96,7 @@ function Account() {
             document.getElementById('message').innerHTML = 'Passwords match';
         } else {
             document.getElementById('message').style.color = 'red';
-            document.getElementById('message').innerHTML = 'Password and Corfirm Password are not matching';
+            document.getElementById('message').innerHTML = 'Password and Confirm Password are not matching';
         }
     }
     return (
