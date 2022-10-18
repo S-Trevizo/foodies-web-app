@@ -123,7 +123,7 @@ function Register() {
 
                         <div className='form-group'>
                             <label>Health Labels: </label>
-                            <Select isMulti closeMenuOnSelect={false} components={animated} className='basic-multi-select' classNamePrefix="select" options={options} onChange={handleChange}></Select>
+                            <Select isMulti={true} closeMenuOnSelect={false} components={animated} className='basic-multi-select' classNamePrefix="select" options={options} onChange={handleChange}></Select>
                         </div>
                         <div className="container">
                             {errors ? errors.map((e, index) =>
