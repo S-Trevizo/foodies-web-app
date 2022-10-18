@@ -104,14 +104,9 @@ function Favorites() {
                             </div>
                         </div>)
                     ) : <p>No Favorites found (Favorite some recipes to see them here)</p>}
-
-
                 </div>
             </div>
         </div>
-
-
-
 
     );
 }

@@ -77,7 +77,7 @@ function HomePage(props) {
                                     <h6 className="card-title text-muted text-decoration-none">Sign in to veiw Pantry!!!</h6>
                                 </Link> :
                                 <ul>
-                                    {userToVeiw.ingredients.length > 0 && userToVeiw.ingredients.map((f, index) => 
+                                    {userToVeiw && userToVeiw.ingredients.map((f, index) => 
                                     <li className={f.name} key={index}>{f.name}</li>)}
                                 </ul>
 
