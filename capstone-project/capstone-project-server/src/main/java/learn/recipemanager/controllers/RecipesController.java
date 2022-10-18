@@ -11,10 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @RestController
 @RequestMapping("api/recipe")
@@ -33,8 +30,9 @@ public class RecipesController {
             return new ResponseEntity("Search criteria is required", HttpStatus.FORBIDDEN);
         }
         //return app_id and app_key to make api request using q query
-        apiQueryInput.put("app_id", app_id);
-        apiQueryInput.put("app_key", app_key);
+        Map<String, String> api_login = generateApiLogin();
+        apiQueryInput.put("app_id", api_login.get("id"));
+        apiQueryInput.put("app_key", api_login.get("key"));
         apiQueryInput.put("q", searchCriteria.getSearchCriteria());
         return ResponseEntity.ok(apiQueryInput);
     }
@@ -64,6 +62,25 @@ public class RecipesController {
     }
 
 
+    public static Map<String,String> generateApiLogin() {
+
+        String[] app_id = {"6cb09ed9", "4357d5e9", "61bd6a7a"};
+
+        String[] app_key = {"d6a13e436430e1c7060acb41373f73cf", "84496af29c091bb734dab8904e3d9df5", "e13fc8ee7aad0edf7d362669a82919e4"};
+
+        Random rand = new Random();
+
+        int randNum = rand.nextInt(app_id.length) ;
+
+        Map<String, String> keyMap = new HashMap<>();
+
+        keyMap.put("id", app_id[randNum]);
+        keyMap.put("key", app_key[randNum]);
+
+        return keyMap;
+
+
+    }
 
 
 
