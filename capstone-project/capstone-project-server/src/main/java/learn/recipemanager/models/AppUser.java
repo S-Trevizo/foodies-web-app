@@ -8,6 +8,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
@@ -23,7 +24,7 @@ public class AppUser implements UserDetails {
     private boolean isDeleted;
     private List<AppRole> userRoles;
     private String name;
-    private List<Recipe> favorites;
+    private List<Recipe> favorites = new ArrayList<>();
     private List<HealthLabel> healthLabels;
     private List<Ingredient> ingredients;
 

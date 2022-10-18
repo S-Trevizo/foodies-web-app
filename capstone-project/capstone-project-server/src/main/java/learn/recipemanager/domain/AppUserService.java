@@ -110,33 +110,20 @@ public class AppUserService implements UserDetailsService {
             userResult.addMessage("No user ID found.", ResultType.INVALID);
             return userResult;
         }
+        //todo make sure refactor user did not break code
         Optional userOptional = repo.findById(user.getUserId());
         if (userOptional.isPresent()) {
-            AppUser user2 = (AppUser) userOptional.get();
-            if (user.getFavorites() == null || (user.getFavorites().size() < 1)) {
-                userResult.addMessage("Null or zero-length favorites is not allowed for update",
+            AppUser internalUserRecord = (AppUser) userOptional.get();
+            if (user.getFavorites() == null) {//zero length is okay for update: remove one favorite.
+                userResult.addMessage("Null favorites array is not allowed for update",
                         ResultType.INVALID);
                 return userResult;
             }
-            //before I add favorites, I need to check for duplicates
-            //        boolean isAdmin = currentUser.getUserRoles().stream().anyMatch(r -> r.getRoleName().equalsIgnoreCase("admin"));//I wish admin were an enum
-            int duplicateCount = 0;
-            for (Recipe i : user.getFavorites()) {
-                for (Recipe j : user2.getFavorites()) {
-                    if (j.getRecipeId().equals(i.getRecipeId())) {
-                        duplicateCount++;
-                    }
-                }
-            }
-            if (duplicateCount > 1) {
-                userResult.addMessage("Duplicate favorited recipes are not allowed", ResultType.INVALID);
-                return userResult;
-            }
             //should be good to add new favorite now:
-            user2.setFavorites(user.getFavorites());
+            internalUserRecord.setFavorites(user.getFavorites());
             //can add more setters here for other variables
-            repo.save(user2);
-            userResult.setPayload(user2);
+            repo.save(internalUserRecord);
+            userResult.setPayload(internalUserRecord);
             return userResult;
         }
         userResult.addMessage("User was not found.", ResultType.NOT_FOUND);
