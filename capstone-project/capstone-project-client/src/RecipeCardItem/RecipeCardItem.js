@@ -169,7 +169,7 @@ function RecipeCardItem(props) {    // props.recipeData = single datapoint/recip
                 fetchUser();
             }
         },
-        [userCopy]);
+        []);
 
     //current user and list of favorites
     const currentRecipeId = (props.recipeData.uri.substr(props.recipeData.uri.length - 32));
