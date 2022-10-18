@@ -73,22 +73,12 @@ function Pantry() {
         })
             .then(async response => {
                 if (response.status === 204) {
-                    return response.json();
+                    history.go();
                 } else if (response.status === 400) {
                     return Promise.reject(await response.json());
                 } else {
                     return Promise.reject(["Failed to update user's pantry."]);
                 }
-            }).then(response => {
-                console.log(response);
-                handleReset();
-                setState({
-                    user: { ...toUpdate },
-                    errors: [],
-                    hidden: true,
-                    edit: false
-                });
-                
             })
             .catch((error) => {
                 if (error instanceof TypeError) {
@@ -108,7 +98,7 @@ function Pantry() {
                 }
             })
 
-                history.go();
+                
     }
 
     function handleChange(e) {
