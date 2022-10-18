@@ -64,9 +64,9 @@ public class RecipesController {
 
     public static Map<String,String> generateApiLogin() {
 
-        String[] app_id = {"6cb09ed9", "4357d5e9"};
+        String[] app_id = {"6cb09ed9", "4357d5e9", "61bd6a7a"};
 
-        String[] app_key = {"d6a13e436430e1c7060acb41373f73cf", "84496af29c091bb734dab8904e3d9df5"};
+        String[] app_key = {"d6a13e436430e1c7060acb41373f73cf", "84496af29c091bb734dab8904e3d9df5", "e13fc8ee7aad0edf7d362669a82919e4"};
 
         Random rand = new Random();
 
