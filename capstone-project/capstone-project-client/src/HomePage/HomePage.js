@@ -12,8 +12,8 @@ function HomePage(props) {
     const auth = useContext(AuthContext);
     const [errors, setErrors] = useState([]);
     const [userToVeiw, setUserToVeiw] = useState();
-
-    useEffect(() => {
+    
+    useEffect(() => {{auth ??
         fetch(`http://localhost:8080/api/user/${auth.user.userId}`, {
             method: "GET",
             headers: {
@@ -46,7 +46,7 @@ function HomePage(props) {
 
                 }
             })
-    }, []);
+    }}, []);
 
     function handleSubmit(event) {
         event.preventDefault();
@@ -77,7 +77,7 @@ function HomePage(props) {
                                     <h6 className="card-title text-muted text-decoration-none">Sign in to veiw Pantry!!!</h6>
                                 </Link> :
                                 <ul>
-                                    {userToVeiw && userToVeiw.ingredients.map((f, index) => 
+                                    {userToVeiw.ingredients.length > 0 && userToVeiw.ingredients.map((f, index) => 
                                     <li className={f.name} key={index}>{f.name}</li>)}
                                 </ul>
 
