@@ -73,7 +73,7 @@ function Favorites() {
                     <ErrorMessages key={index} errorData={e} />) : null}
             </div>
             <div className="container mt-5 p-4 bg-light rounded">
-                <h6 className="text-center border-bottom-2">Summary of Dietary Preferences: </h6>
+                <h6 className="text-center border-bottom-2">Summary of Current Dietary Preferences: </h6>
                 <div className="row p-4">
                     <div>
                         {user.healthLabels && user.healthLabels.length > 0 ?
@@ -104,14 +104,9 @@ function Favorites() {
                             </div>
                         </div>)
                     ) : <p>No Favorites found (Favorite some recipes to see them here)</p>}
-
-
                 </div>
             </div>
         </div>
-
-
-
 
     );
 }
