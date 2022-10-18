@@ -160,8 +160,9 @@ function RecipeCardItem(props) {    // props.recipeData = single datapoint/recip
         })
     }
 
-    useEffect(
+    useEffect(//need to reload page when searchterm changes. or when I make a request.
         () => {
+            isFavorited = false;
             if (userData.user === null) {
                 console.log("userData is null. make 'add to favorites' button disabled");
             } else {
@@ -169,11 +170,11 @@ function RecipeCardItem(props) {    // props.recipeData = single datapoint/recip
                 fetchUser();
             }
         },
-        [userCopy]);
+        []);
 
     //current user and list of favorites
     const currentRecipeId = (props.recipeData.uri.substr(props.recipeData.uri.length - 32));
-    const isFavorited = (userCopy && userCopy.favorites.some((r) => r.recipeId === currentRecipeId));
+    let isFavorited = (userCopy && userCopy.favorites.some((r) => r.recipeId === currentRecipeId));
     
     //goes inside each object and checks for an id that matches...
     //[i].recipeId
