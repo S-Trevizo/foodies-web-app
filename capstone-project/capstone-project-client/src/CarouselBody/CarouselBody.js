@@ -1,4 +1,5 @@
 import RecipeCarouseItem from "../RecipeCarouseItem/RecipeCarouseItem";
+import './CarouselBody.css';
 
 function CarouselBody({listOfObjects}) {
 

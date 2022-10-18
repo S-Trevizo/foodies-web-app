@@ -161,7 +161,7 @@ function Pantry() {
 
     return (
         <div className="container">
-            <h2>Your Pantry</h2>
+            <h2 className="text-center">Your Pantry</h2>
 
             <div>
                 {state.errors.length > 0 ? state.errors.map((e, index) =>

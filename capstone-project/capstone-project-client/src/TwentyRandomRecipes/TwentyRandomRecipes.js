@@ -7,6 +7,7 @@ import RecipeCarouseItem from "../RecipeCarouseItem/RecipeCarouseItem";
 import CarouselBody from "../CarouselBody/CarouselBody";
 
 
+
 function TwentyRandomRecipes() {
     // todo: search bar component will call this class with searchCriteria as argument.
     // todo continued: maybe also take in an argument with information on what to filter? not sure. needs security at that point. or do separate component for that. will see.
@@ -96,7 +97,7 @@ function TwentyRandomRecipes() {
     //and if it is search results page, do cards.
 
     return (
-        <div className="container text-center">
+        <div className="container text-center bg-light rounded" id="homeCarouselBody">
             {errorsToAppend.map((r, index) => <ErrorMessages key={index} errorData={r} />)}
 
             {(recipes.length > 0) ?

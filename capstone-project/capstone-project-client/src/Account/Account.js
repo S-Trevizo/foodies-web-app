@@ -101,9 +101,9 @@ function Account() {
     }
     return (
 
-        <div className="container mt-4 p-4 bg-light rounded">
+        <div >
             <h2 className="text-center">Account Info</h2>
-            <form onSubmit={submitHandler}>
+            <form className="container mt-4 p-4 bg-light rounded" onSubmit={submitHandler}>
                 <label className="form-label">Name</label>
                 <input className="form-control" name="name" id={user.name} defaultValue={user.name} onChange={handleChange} />
 

@@ -3,6 +3,8 @@ import { useContext, useState, useEffect } from "react";
 import { Link, useHistory } from "react-router-dom";
 import AuthContext from "../AuthContext";
 import ErrorMessages from "../ErrorMessages/ErrorMessages";
+import './HomePage.css';
+
 
 
 
@@ -56,20 +58,24 @@ function HomePage(props) {
         history.push("/searchResultPage");
     }
     return (
-        <div className="my-4">
-            <form onSubmit={handleSubmit} className="bg-light rounded p-4 m-4">
-                <div className="input-group">
+        <div className=" container my-4">
+
+            <form onSubmit={handleSubmit} className="bg-light rounded p-4 mb-3" id="homeSearchBar">
+                <div className=" input-group">
                     <input onChange={(e) => props.setSearchData(e.target.value)} className={"form-control form-control w-90 "} type={"text"} placeholder={"Welcome to Foodies! Start your search here, or click on a featured recipe's name below."} />
                     <div className="input-group-append">
                         <button className={"btn btn-primary  input-group-append"} onClick={handleSubmit} id="searchBarText">Submit</button>
                     </div>
                 </div>
             </form>
-            <div className="row">
-                <div className="col-8">
+
+            <div className="container row text-center">
+
+                <div className="col-9">
                     <TwentyRandomRecipes />
                 </div>
-                <div className="card col-3 bg-light rounded">
+
+                <div className="card col-3 bg-light rounded" id="homePantryCard">
                     <h5 className="card-header ">Pantry</h5>
                     <div className="card-body">
                         {!auth.user ?
@@ -79,7 +85,7 @@ function HomePage(props) {
                             <div>
                                 <ul className="list-group list-group-flush">
                                     {userToVeiw && userToVeiw.ingredients.map((f, index) =>
-                                        <li key={index}>{f.name}</li>)}
+                                        <a key={index}>{f.name}</a>)}
                                 </ul>
                             </div>
                         }
