@@ -87,24 +87,25 @@ function Favorites() {
                 </div>
             </div>
 
-            <div className="container mt-5 p-4 bg-light rounded">
+            <div className="container mt-5 p-4 bg-light rounded text-center">
                 <h6 className="text-center border-bottom-2">Favorites: </h6>
-                <div className="row p-4">
-                    <div>
-                        {user.favorites.length > 0 ? user.favorites.map((r, index) =>  (<div key={index} className="card col-4 mx-1 mb-2">
-                                <img clasName="card-img-top" src={r.imageUrl}></img>
-                                <div className="card-header">
-                                    <h5 className="d-inline">{r.recipeName}</h5>
-                                </div>
-                                <div className="card-body">
-                                    <div className="card-text">
-                                        <a href={r.recipeUrl} className="card-text btn btn-primary"><h6 className="card-title">More information</h6></a>
-                                    </div>
-                                </div>
-                            </div>)
-                        ) : <p>No Favorites found (Favorite some recipes to see them here)</p>}
+                <div className="text-center row p-4">
 
-                    </div>
+                    {user.favorites.length > 0 ? user.favorites.map((r, index) => (
+                        <div key={index} className="card col-4 mb-3">
+                            <img clasName="card-img-top" src={r.imageUrl}></img>
+                            <div className="card-header">
+                                <h5 className="d-inline">{r.recipeName}</h5>
+                            </div>
+                            <div className="card-body">
+                                <div className="card-text">
+                                    <a href={r.recipeUrl} className="btn btn-primary">Details</a>
+                                </div>
+                            </div>
+                        </div>)
+                    ) : <p>No Favorites found (Favorite some recipes to see them here)</p>}
+
+
                 </div>
             </div>
         </div>
