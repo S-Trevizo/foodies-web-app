@@ -79,7 +79,7 @@ public class UserController {
         if (isAdmin || isUser) {//good case: user or admin. can update user now.
             Result<AppUser> result = appUserService.update(request);
             if (result.isSuccess()) {//return good: 204
-                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+                return new ResponseEntity<>(result.getPayload(), HttpStatus.OK);
             } else if (result.getType() == ResultType.NOT_FOUND) {//return 404: not found
                 return new ResponseEntity<>(result.getMessages(),HttpStatus.NOT_FOUND);
             } else if (result.getType() == ResultType.INVALID) {//return 400: bad request

@@ -12,20 +12,23 @@ function SearchResultPage({ searchTerm }) {
     const [recipes, setRecipes] = useState([]);
     const [errorsToAppend, setErrorsToAppend] = useState([]);
     const userData = useContext(AuthContext);
-    const [user, setUser] = useState(null);//todo: might use this so I have a way to update user's favorites. not sure yet.
+    const [userCopy, setUserCopy] = useState(null);//todo: might use this so I have a way to update user's favorites. not sure yet.
+
+    //maintain the user from one spot. searchresultpage is okay.each card will se user data. when something is checked, 
+    //send the event back up to the component.
+    
+
 
     function getRecipesFromRemoteApi(input) {
         if (input === null) {
             return;
         }
         input.q = input.q.replaceAll(" ", "%");
-        //todo: convert q to a single string with no spaces?
         let finalFetch = ("https://api.edamam.com/api/recipes/v2?type=public&q=" + input.q + "&app_id=" + input.app_id + "&app_key=" + input.app_key);
         if (input.fetchString !== undefined) {//additional search criteria in here for registered users or admins
             finalFetch = input.fetchString;
             finalFetch = finalFetch.concat("&q=", input.q, "&app_id=", input.app_id, "&app_key=", input.app_key);
         }
-        // console.log(finalFetch);
         fetch(finalFetch, {
             method: "GET",
             headers: {
@@ -154,6 +157,19 @@ function SearchResultPage({ searchTerm }) {
                 }
             }).then(response => {
                 createExternalFetchRequest(response);
+                let copyUser = {
+                    userId: response.userId,
+                    email: response.email,
+                    passHash: response.passHash,
+                    isDeleted: response.deleted,
+                    userRoles: response.userRoles,
+                    name: response.name,
+                    favorites: response.favorites,
+                    healthLabels: response.healthLabels,
+                    ingredients: response.ingredients
+                }
+                console.log(copyUser);
+                setUserCopy(copyUser);
             }).catch(error => {
                 if (error instanceof TypeError) {
                     const errors = [];
@@ -167,6 +183,94 @@ function SearchResultPage({ searchTerm }) {
                 }
             })
         }
+    }
+
+    function addOrRemoveFavorite(event, loadedRecipe) {
+        console.log(loadedRecipe);
+        //event.target.checked
+        let index = 0;
+        console.log(userCopy);
+
+        if (!userCopy.favorites) {
+            index = 0;
+        } else {
+            for (let i = 0; i < userCopy.favorites.length; i++) {//could also check for duplicates maybe?
+                if ((userCopy.favorites[i].recipeId) === (loadedRecipe.uri.substr(loadedRecipe.uri.length - 32))) {//props.recipeData
+                    index = i;
+                    break;
+                }
+            }
+        }
+        let editedUserCopy = null;
+        if (event.target.checked === true) {
+            let favoritesCopy = [];
+            if (userCopy.favorites !== null) {
+                favoritesCopy = [...(userCopy.favorites)];
+            }
+            const recipeCopy = {
+                recipeId: loadedRecipe.uri.substr(loadedRecipe.uri.length - 32),
+                recipeUrl: loadedRecipe.shareAs,
+                imageUrl: loadedRecipe.image,
+                recipeName: loadedRecipe.label
+            }
+            favoritesCopy.push(recipeCopy);
+            editedUserCopy = { ...userCopy, favorites: favoritesCopy };
+        } else {
+            let favoritesCopy = [];
+            favoritesCopy = [...(userCopy.favorites)];
+            favoritesCopy.splice(index, 1);
+            editedUserCopy = { ...userCopy, favorites: favoritesCopy };
+        }
+        console.log(editedUserCopy);
+        updateUserInDatabase(editedUserCopy);
+    }
+
+    function updateUserInDatabase(editedUserCopy) {
+        fetch("http://localhost:8080/api/user/update", {
+            method: "PUT",
+            body: JSON.stringify(editedUserCopy),
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": "Bearer " + localStorage.getItem("foodiesToken")
+            }
+        })
+            .then(async response => {
+                if (response.status === 200) {
+                    return response.json();
+                } else if (response.status === 404) {
+                    return Promise.reject(["User not found (possibly deleted)."]);
+                } else if (response.status === 400) {//bad request.
+                    return Promise.reject(await response.json());
+                } else if (response.status === 403) {// 403 is forbidden: not admin nor user
+                    return Promise.reject(await response.json());
+                }
+            }).then(async response => {
+                let copyUser = {
+                    userId: response.userId,
+                    email: response.email,
+                    passHash: response.passHash,
+                    isDeleted: response.deleted,
+                    userRoles: response.userRoles,
+                    name: response.name,
+                    favorites: response.favorites,
+                    healthLabels: response.healthLabels,
+                    ingredients: response.ingredients
+                }
+                setUserCopy(copyUser);
+            }).catch(errorList => {
+                if (errorList instanceof TypeError) {
+                    const copyArray = [];
+                    copyArray.push("Could not connect to api.");
+                    setErrorsToAppend(copyArray);
+                } else if (errorList instanceof Error) {
+                    //doing nothing is a bad habit.
+                    console.log(errorList);
+                } else {
+                    const copyArray = [];
+                    copyArray.push(...errorList);
+                    setErrorsToAppend(copyArray);
+                }
+            });
     }
 
     useEffect(//the main structure of this component: see console.log in this useEffect
@@ -183,20 +287,20 @@ function SearchResultPage({ searchTerm }) {
         },
         [searchTerm]);
 
-    //todo maybe later: can modify code so that refreshing this component does not cause 403 error from bad json syntax. 
-    // any component involved with searchData from app.js, really.
-    //the 403 happens because refreshing invalidates the searchData or something like that I think. need to double check with instructor.
-    // console.log(searchTerm);
-    // console.log("recipe name: " +);//recipes[0].recipe.label
-    // console.log(recipes);
     return (
-        //todo: I can print recipe data. I need to edit a user's preferences onclick or something on each card. 
-        //maybe find a way to overload component argument and take in user - should they just be dangling around like this though?
         <div className="container text-center">
             {errorsToAppend.map((r, index) => <ErrorMessages key={index} errorData={r} />)}
             {(recipes.length > 0) ?
                 <div className="card-columns">
-                    {recipes.map((r, index) => <RecipeCardItem key={index} recipeData={r.recipe} index={index} userId={(userData.user === null) ? null : userData.user.userId} />)}
+                    {recipes.map((r, index) => <RecipeCardItem 
+                    key={r.recipe.uri.substr(r.recipe.uri.length - 32)} 
+                    recipeData={r.recipe} 
+                    index={index} 
+                    userCopy={userCopy}
+                    setUserCopy={setUserCopy}
+                    userId={(userData.user === null) ? null : userData.user.userId}
+                    addOrRemoveFavorite={addOrRemoveFavorite}
+                    />)}
                 </div>
                 : <div>No recipes found.</div>}
         </div>
