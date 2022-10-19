@@ -305,7 +305,7 @@ function SearchResultPage({ searchTerm }) {
     }
 
     function topFunction() {
-        document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
+        document.documentElement.scrollTop = 0; 
       }
 
     useEffect(//the main structure of this component: see console.log in this useEffect
