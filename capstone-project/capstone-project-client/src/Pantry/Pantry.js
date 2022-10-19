@@ -1,5 +1,5 @@
 import { useState, useEffect, useContext } from "react";
-import { Link, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import AuthContext from "../AuthContext";
 import ErrorMessages from "../ErrorMessages/ErrorMessages";
 import '../Styles/Shading.css';
@@ -116,7 +116,7 @@ function Pantry() {
         e.preventDefault();
         let toEdit = { ...state.user }
 
-        toEdit.ingredients = [...toEdit.ingredients].filter((i, currentindex) => currentindex != index);
+        toEdit.ingredients = [...toEdit.ingredients].filter((i, currentindex) => currentindex !== index);
 
         submitHandler(toEdit);
 
@@ -148,7 +148,7 @@ function Pantry() {
         e.preventDefault();
         let toEdit = { ...state.user }
 
-        toEdit.ingredients = [...toEdit.ingredients].filter((i, index) => index != state.index);
+        toEdit.ingredients = [...toEdit.ingredients].filter((i, index) => index !== state.index);
 
         toEdit.ingredients = [...toEdit.ingredients, toAdd];
 
@@ -170,7 +170,7 @@ function Pantry() {
             </div>
 
 
-            <button className={"btn btn-primary mb-1" + (!state.hidden ? " d-none" : "")} onClick={() => setState({ user: { ...state.user }, errors: state.errors, hidden: false, edit: false })}> Add an Ingredient to Your Pantry</button>
+            <button id="button" className={"btn btn-primary mb-1" + (!state.hidden ? " d-none" : "")} onClick={() => setState({ user: { ...state.user }, errors: state.errors, hidden: false, edit: false })}> Add an Ingredient to Your Pantry</button>
 
             <div className={"card my-2" + (state.hidden ? " d-none" : "")} id="card">
                 <div className="card-header">
