@@ -1,4 +1,3 @@
-import AuthContext from "../AuthContext";
 import { useContext, useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import Recipe from "../Recipe/Recipe";
@@ -89,7 +88,7 @@ function TwentyRandomRecipes() {
     useEffect(
         () => {
             //todo: I need to find a way to optionally let user input search criteria
-            let input = { searchCriteria: "gingerbread cookie" };
+            let input = { searchCriteria: "random" };
             loadRandomRecipes(input);//loads twice. "double tap" due to strict mode
         },
         []);
