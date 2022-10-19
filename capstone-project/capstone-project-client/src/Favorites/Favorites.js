@@ -65,7 +65,7 @@ function Favorites() {
         })
     }, []);
 
-    function removeFavorite(index) {
+    function removeFavorite(e, index) {
         let toUpdate = {...user};
 
         toUpdate.favorites.splice(index,1);
@@ -147,7 +147,7 @@ function Favorites() {
                 <div className="card-body d-flex justify-content-center  text-center row p-4">
 
                     {user.favorites.length > 0 ? user.favorites.map((r, index) => (
-                        <div key={index} className="card col-3 mb-3 mx-4 p-0">
+                        <div key={r.recipeId} className="card col-3 mb-3 mx-4 p-0">
                             <img className="card-img-top" src={r.imageUrl}></img>
                             <div className="card-header">
                                 <h5 className="d-inline">{r.recipeName}</h5>
@@ -155,7 +155,7 @@ function Favorites() {
                             <div className="card-body">
                                 <div className="card-text">
                                     <a href={r.recipeUrl} className="btn btn-primary mr-1">Details</a>
-                                    <button className="btn btn-danger" onClick={(e, index) => removeFavorite(index)}>Delete</button>
+                                    <button className="btn btn-danger" onClick={(e) => removeFavorite(e, index)}>Delete</button>
                                 </div>
                             </div>
                         </div>)
