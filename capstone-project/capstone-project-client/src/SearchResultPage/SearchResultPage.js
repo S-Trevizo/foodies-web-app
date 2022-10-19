@@ -7,19 +7,36 @@ import RecipeCardItem from "../RecipeCardItem/RecipeCardItem";
 function SearchResultPage({ searchTerm }) {
     const [recipes, setRecipes] = useState([]);
     const [errorsToAppend, setErrorsToAppend] = useState([]);
+    const [nextLink, setNextLink] = useState("");
     const userData = useContext(AuthContext);
     const [userCopy, setUserCopy] = useState(null);
+    const [fetches, setFetches] = useState([]);
+    const [fetchIndex, setFetchIndex] = useState(0);
+    const [maxRecipeIndex, setMaxRecipeIndex] = useState(20);
 
     function getRecipesFromRemoteApi(input) {
         if (input === null) {
             return;
         }
-        input.q = input.q.replaceAll(" ", "%");
-        let finalFetch = ("https://api.edamam.com/api/recipes/v2?type=public&q=" + input.q + "&app_id=" + input.app_id + "&app_key=" + input.app_key);
-        if (input.fetchString !== undefined) {//additional search criteria in here for registered users or admins
-            finalFetch = input.fetchString;
-            finalFetch = finalFetch.concat("&q=", input.q, "&app_id=", input.app_id, "&app_key=", input.app_key);
+
+        let finalFetch = "";
+        if (fetchIndex < 1) {//if less than one: get the initial fetch for api before appending automatically generated links from api.
+            input.q = input.q.replaceAll(" ", "%");
+            finalFetch = ("https://api.edamam.com/api/recipes/v2?type=public&q=" + input.q + "&app_id=" + input.app_id + "&app_key=" + input.app_key);
+            if (input.fetchString !== undefined) {//additional search criteria in here for registered users or admins
+                finalFetch = input.fetchString;
+                finalFetch = finalFetch.concat("&q=", input.q, "&app_id=", input.app_id, "&app_key=", input.app_key);
+            }
+            let copyArray = [...fetches];
+            copyArray.push(finalFetch);
+            setFetches(copyArray);
+            let currentIndex = fetchIndex;
+            currentIndex++;
+            setFetchIndex(currentIndex);
+        } else {
+            finalFetch = nextLink;
         }
+
         fetch(finalFetch, {
             method: "GET",
             headers: {
@@ -38,14 +55,20 @@ function SearchResultPage({ searchTerm }) {
             } else {
                 return Promise.reject(await response.json());
             }
-        }).then(recipesOutput => {
-            setRecipes(recipesOutput.hits);
+        }).then(recipesOutput => {//setNextLink may or may not be used: depends on size of index vs. fetches
+            let nextLinkString = recipesOutput._links.next.href
+            setNextLink(nextLinkString);
+            let oldRecipes = [...recipes];
+            oldRecipes.push(...recipesOutput.hits);
+            setRecipes(oldRecipes);
         }).catch(error => {
             if (error instanceof TypeError) {//is this error even possible here?
+                console.log(error);
                 const copyArray = [];
                 copyArray.push("Remote api is currently timed out: please wait for new results.");
                 setErrorsToAppend(copyArray);
             } else {
+                console.log(error);
                 const copyArray = [];
                 copyArray.push(...error);
                 setErrorsToAppend(copyArray);
@@ -70,6 +93,7 @@ function SearchResultPage({ searchTerm }) {
             getRecipesFromRemoteApi(searchObject);
         }).catch(error => {
             if (error instanceof TypeError) {
+                console.log(error);
                 const copyArray = [];
                 copyArray.push("Could not connect to local api from public recipe files.");
                 setErrorsToAppend(copyArray);
@@ -261,9 +285,31 @@ function SearchResultPage({ searchTerm }) {
             });
     }
 
+    function getNextRecipes(event) {
+        event.preventDefault();
+
+        console.log("next button clicked");
+
+        let currentIndex = fetchIndex;
+        currentIndex++;
+        setFetchIndex(currentIndex);
+        if (!fetches[currentIndex]) {//this will append finalFetch to first index of fetches.
+            let copyArray = [...fetches]
+            copyArray.push(nextLink);
+            setFetches(copyArray);
+        }
+        let currentMaxRecipeIndex = maxRecipeIndex;
+        currentMaxRecipeIndex += 20;
+        setMaxRecipeIndex(currentMaxRecipeIndex);
+        getRecipesFromRemoteApi("not null");
+    }
+
+    function topFunction() {
+        document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
+      }
+
     useEffect(//the main structure of this component: see console.log in this useEffect
         () => {
-            //assume that searchTerm is valid and doesn't need to be manually fixed in this line.
             let input = { searchCriteria: searchTerm };
             if (userData.user === null) {
                 console.log("userData is null. do not build special string. do nothing.");
@@ -281,7 +327,7 @@ function SearchResultPage({ searchTerm }) {
             {(recipes.length > 0) ?
                 <div className="container p-3">
                     <div className="card-columns">
-                        {recipes.map((r, index) => <RecipeCardItem
+                        {recipes.slice(0, maxRecipeIndex).map((r, index) => <RecipeCardItem
                             key={r.recipe.uri.substr(r.recipe.uri.length - 32)}
                             recipeData={r.recipe}
                             index={index}
@@ -293,10 +339,8 @@ function SearchResultPage({ searchTerm }) {
                     </div>
 
                     <div className="mt-6 p4">
-                        <button type="button" className="btn btn-dark mx-1">Prev</button>
-                        {/* I should preload the next 20 recipes for each render. If there are 20 more recipes, 
-                        make the "next" button show up. and if there are 20 previous recipes, make prev show up. */}
-                        <button type="button" className="btn btn-dark mx-1">Next</button>
+                        <button type="button" className="btn btn-dark mx-1" onClick={getNextRecipes}>Load More Recipes</button>
+                        <button type="button" className="btn btn-dark mx-1" onClick={topFunction}>Return to the Top</button>
                     </div>
 
                 </div>
