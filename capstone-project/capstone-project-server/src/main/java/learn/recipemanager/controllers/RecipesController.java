@@ -19,8 +19,6 @@ public class RecipesController {
     @Autowired
     AppUserService service;
     // todo is there a better place to initialize these variables?
-    private String app_id = "6cb09ed9";
-    private String app_key = "d6a13e436430e1c7060acb41373f73cf";
 
     @PostMapping("/public")
     public ResponseEntity<?> getRecipes(@RequestBody SearchCriteria searchCriteria) {//find random 20 recipes with search criteria as input
@@ -52,8 +50,9 @@ public class RecipesController {
                 return new ResponseEntity("Search criteria and fetch information are required", HttpStatus.FORBIDDEN);
             }
             //return app_id and app_key to make api request using q query
-            apiQueryInput.put("app_id", app_id);
-            apiQueryInput.put("app_key", app_key);
+            Map<String, String> api_login = generateApiLogin();
+            apiQueryInput.put("app_id", api_login.get("id"));
+            apiQueryInput.put("app_key", api_login.get("key"));
             apiQueryInput.put("q", searchCriteria.getSearchCriteria());
             apiQueryInput.put("fetchString", searchCriteria.getFetchString());
             return ResponseEntity.ok(apiQueryInput);
