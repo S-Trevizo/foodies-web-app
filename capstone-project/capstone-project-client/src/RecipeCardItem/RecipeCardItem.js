@@ -59,7 +59,7 @@ function RecipeCardItem(props,{userCopy, setUserCopy}) { //
                                         </button>
                                     </h5>
                                 </div>
-                                <div id="collapseOne" className="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
+                                <div id="collapseOne" className="collapse" aria-labelledby="headingOne" data-parent="#accordion">
                                     <div className="card-body">
                                         {props.recipeData.ingredients.map((i, index) => <Ingredient key={index} ingredientData={i} />)}
                                     </div>
