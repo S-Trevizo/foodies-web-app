@@ -67,14 +67,14 @@ function Favorites() {
         //add functionality to filter by ingredient maybe?
         //if there are recipes: display them in some format. https://mdbootstrap.com/docs/standard/extended/gallery/
 
-        <div>
-            <div className="container">
+        <div className="container ">
+            <div>
                 {errorsToAppend ? errorsToAppend.map((e, index) =>
                     <ErrorMessages key={index} errorData={e} />) : null}
             </div>
-            <div className="container mt-5 p-4 bg-light rounded">
-                <h6 className="text-center border-bottom-2">Summary of Current Dietary Preferences: </h6>
-                <div className="row p-4">
+            <div id="card" className="card mt-4 p-0 ">
+                <h4 className="card-header text-center border-bottom-2">Summary of Current Dietary Preferences: </h4>
+                <div className=" card-body p-4">
                     <div>
                         {user.healthLabels && user.healthLabels.length > 0 ?
                             <ul>
@@ -87,12 +87,12 @@ function Favorites() {
                 </div>
             </div>
 
-            <div className="container mt-5 p-4 bg-light rounded text-center">
-                <h6 className="text-center border-bottom-2">Favorites: </h6>
-                <div className="text-center row p-4">
+            <div id="card" className="card mt-4 mb-3 p-0 ">
+                <h4 className="card-header text-center border-bottom-2">Favorites: </h4>
+                <div className="card-body d-flex justify-content-center  text-center row p-4">
 
                     {user.favorites.length > 0 ? user.favorites.map((r, index) => (
-                        <div key={index} className="card col-4 mb-3">
+                        <div key={index} className="card col-3 mb-3 mx-4 p-0">
                             <img clasName="card-img-top" src={r.imageUrl}></img>
                             <div className="card-header">
                                 <h5 className="d-inline">{r.recipeName}</h5>

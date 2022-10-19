@@ -1,12 +1,10 @@
-import { useContext, useEffect, useState } from "react";
-import AuthContext from "../AuthContext";
+import { useEffect, useState } from "react";
 import ErrorMessages from "../ErrorMessages/ErrorMessages";
 import UserCard from "../User/UserCard";
 import '../Styles/Shading.css';
 
 function AdminPage() {
 
-    const auth = useContext(AuthContext);
     const [errorsToAppend, setErrorsToAppend] = useState([]);
     const [users, setUsers] = useState([]);
 
