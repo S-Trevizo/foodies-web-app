@@ -58,25 +58,25 @@ function HomePage(props) {
         history.push("/searchResultPage");
     }
     return (
-        <div className=" container mt-5">
+        <div className="mt-5">
 
             <form onSubmit={handleSubmit} className="bg-light rounded p-4 mb-3" id="homeSearchBar">
                 <div className=" input-group">
                     <input onChange={(e) => props.setSearchData(e.target.value)} className={"form-control form-control w-90 "} type={"text"} placeholder={"Welcome to Foodies! Start your search here, or click on a featured recipe's name below."} />
                     <div className="input-group-append">
-                        <button className={"btn btn-primary  input-group-append"} onClick={handleSubmit} id="searchBarText">Submit</button>
+                        <button className={"btn btn-primary input-group-append"} onClick={handleSubmit} id="searchBarText">Submit</button>
                     </div>
                 </div>
             </form>
 
-            <div className="container row text-center">
+            <div className="container text-center row m-0 p-0">
 
-                <div className="col-9">
+                <div className="container col-9 pl-0">
                     <TwentyRandomRecipes />
                 </div>
 
-                <div className="card col-3 bg-light rounded" id="card">
-                    <h5 className="card-header ">Pantry</h5>
+                <div className="card col-3 bg-light rounded p-0 " id="card">
+                    <h5 className="card-header">Pantry</h5>
                     <div className="card-body">
                         {!auth.user ?
                             <Link to="/login">
@@ -93,6 +93,10 @@ function HomePage(props) {
                     {auth.user ? <div className="m-2">
                         <Link to="/pantry" className="btn btn-primary">Add</Link>
                     </div> : null}
+                </div>
+
+                <div className="container bg-light rounded mt-3" id="card">
+                    <h6>about us....</h6>
                 </div>
             </div>
         </div>

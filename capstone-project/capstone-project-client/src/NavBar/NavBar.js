@@ -25,7 +25,7 @@ function NavBar({ searchData, setSearchData }) {//if there is search data, websi
                 <h1 className="text-center">Foodies </h1>
                 <div id="edamam-badge" data-color="transparent"></div>
             </div>
-            <nav className="navbar navbar-expand-lg navbar-dark bg-dark" >
+            <nav className="navbar navbar-expand-lg navbar-dark bg-dark rounded" >
                 <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
                     <span className="navbar-toggler-icon"></span>
                 </button>
