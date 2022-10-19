@@ -15,14 +15,14 @@ import SearchResultPage from './SearchResultPage/SearchResultPage';
 import Pantry from './Pantry/Pantry';
 import Preferences from './Preferences/Preferences';
 import Favorites from './Favorites/Favorites';
-
+import './Background/Background.css';
 
 const LOCAL_STORAGE_TOKEN_KEY = "foodiesToken";
 
 function App() {
 
-  const [user,setUser] = useState(null);
-  const [searchData,setSearchData] = useState("random");
+  const [user, setUser] = useState(null);
+  const [searchData, setSearchData] = useState("random");
 
   const [restoreLoginAttemptCompleted, setRestoreLoginAttemptCompleted] = useState(false);
 
@@ -34,14 +34,14 @@ function App() {
     setRestoreLoginAttemptCompleted(true);
   }, []);
 
-  
+
 
   const login = (token) => {
     localStorage.setItem(LOCAL_STORAGE_TOKEN_KEY, token);
     const { sub: username,
       roles: authoritiesString,
       jti: userId } = jwtDecode(token);
-      
+
 
 
 
@@ -77,52 +77,54 @@ function App() {
     logout
   };
 
-  
+
 
   if (!restoreLoginAttemptCompleted) {
     return null;
   }
 
   return (
-
-    <div className="App">
-      <AuthContext.Provider value={auth}>
-        <BrowserRouter>
-          <NavBar searchData={searchData} setSearchData={setSearchData}/>
-          <Switch>
-            <Route exact path="/">
-              <HomePage setSearchData={setSearchData}/>
-            </Route>
-            <Route path="/favorites">
-              <Favorites/>
-            </Route>
-            <Route path="/login">
-              <Login />
-            </Route>
-            <Route path="/register">
-              <Register />
-            </Route>
-            <Route path="/admin">
-              <AdminPage />
-            </Route>
-            <Route path="/delete">
-              <Delete />
-            </Route>
-            <Route path="/searchResultPage">
-              <SearchResultPage searchTerm={searchData}/>
-            </Route>
-            <Route path="/account/*">
-              <Account />
-            </Route>
-            <Route path="/pantry">
-              <Pantry />
-            </Route>
-            <Route path="/preferences/*">
-              <Preferences/>
-            </Route>
-          </Switch>
-        </BrowserRouter>
-      </AuthContext.Provider>
+    <div className='app'>
+      <div className="background" id='background'></div>
+      <div className="content">
+        <AuthContext.Provider value={auth}>
+          <BrowserRouter>
+            <NavBar searchData={searchData} setSearchData={setSearchData} />
+            <Switch>
+              <Route exact path="/">
+                <HomePage setSearchData={setSearchData} />
+              </Route>
+              <Route path="/favorites">
+                <Favorites />
+              </Route>
+              <Route path="/login">
+                <Login />
+              </Route>
+              <Route path="/register">
+                <Register />
+              </Route>
+              <Route path="/admin">
+                <AdminPage />
+              </Route>
+              <Route path="/delete">
+                <Delete />
+              </Route>
+              <Route path="/searchResultPage">
+                <SearchResultPage searchTerm={searchData} />
+              </Route>
+              <Route path="/account/*">
+                <Account />
+              </Route>
+              <Route path="/pantry">
+                <Pantry />
+              </Route>
+              <Route path="/preferences/*">
+                <Preferences />
+              </Route>
+            </Switch>
+          </BrowserRouter>
+        </AuthContext.Provider>
+      </div>
     </div>
 
   );

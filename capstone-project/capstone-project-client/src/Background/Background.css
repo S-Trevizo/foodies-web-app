@@ -1,0 +1,16 @@
+#background {
+    background: url(./AdobeStock_499375635.jpeg);
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+}
+.content {
+    position: absolute;
+        left: 50%;
+        margin-top: 5rem;
+        transform: translateX(-50%);
+        width: 80%;
+}

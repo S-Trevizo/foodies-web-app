@@ -9,7 +9,7 @@ function UserCard({user}) {
         return;
     }
     return (
-        <div className="card bg-secondary text-white user col-4 mx-1 mb-2" id="userCard">
+        <div className="card user col-4 mx-1 mb-2 p-0" id="userCard">
             <div className="card-header">
                 <h5 className="d-inline">{user.name ? user.name : "[No Name Given]" }</h5>
             </div>
