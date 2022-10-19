@@ -89,7 +89,7 @@ function Favorites() {
 
             <div id="card" className="card mt-4 mb-3 p-0 ">
                 <h4 className="card-header text-center border-bottom-2">Favorites: </h4>
-                <div className="card-body d-flex justify-content-center  row p-4">
+                <div className="card-body d-flex justify-content-center  text-center row p-4">
 
                     {user.favorites.length > 0 ? user.favorites.map((r, index) => (
                         <div key={index} className="card col-3 mb-3 mx-4 p-0">
