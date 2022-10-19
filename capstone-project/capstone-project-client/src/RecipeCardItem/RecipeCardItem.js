@@ -41,9 +41,9 @@ function RecipeCardItem(props,{userCopy, setUserCopy}) { //
                             {((props.userId) === null) ? <input className="form-check-input" type="checkbox" value="" id="defaultCheck2" disabled /> :
                                 // check if it is favorited in user's data:
                                 (isFavorited === true ?
-                                    <input className="form-check-input" type="checkbox" value="" onClick={props.addOrRemoveFavorite(props.recipeData)} id="defaultCheck2" checked />
+                                    <input className="form-check-input" type="checkbox" value="" onClick={(e) => props.addOrRemoveFavorite(e, props.recipeData)} id="defaultCheck2" checked />
                                     :
-                                    <input className="form-check-input" type="checkbox" value="" onClick={props.addOrRemoveFavorite(props.recipeData)} id="defaultCheck2" />
+                                    <input className="form-check-input" type="checkbox" value="" onClick={(e) => props.addOrRemoveFavorite(e, props.recipeData)} id="defaultCheck2" />
                                 )
                             }
                             <label className="form-check-label" htmlFor="defaultCheck2">

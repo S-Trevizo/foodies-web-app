@@ -170,21 +170,6 @@ function SearchResultPage({ searchTerm }) {
                 }
                 console.log(copyUser);
                 setUserCopy(copyUser);
-            // }).then(response => {
-            //     console.log(response);
-            //     let copyUser = {
-            //         userId: response.userId,
-            //         email: response.email,
-            //         passHash: response.passHash,
-            //         isDeleted: response.deleted,
-            //         userRoles: response.userRoles,
-            //         name: response.name,
-            //         favorites: response.favorites,
-            //         healthLabels: response.healthLabels,
-            //         ingredients: response.ingredients
-            //     }
-            //     console.log(copyUser);
-            //     setUserCopy(copyUser);
             }).catch(error => {
                 if (error instanceof TypeError) {
                     const errors = [];
