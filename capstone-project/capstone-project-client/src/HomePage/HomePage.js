@@ -98,7 +98,7 @@ function HomePage(props) {
 
                 <div className="container bg-light rounded mt-3" id="card">
                     <p>
-                        <button className="btn text-muted text-decoration-none" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                        <button className="btn text-muted text-decoration-none btn-outline-secondary mt-2" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
                             about us....
                         </button>
                     </p>
