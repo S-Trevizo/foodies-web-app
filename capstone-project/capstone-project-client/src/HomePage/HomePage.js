@@ -4,6 +4,7 @@ import { Link, useHistory } from "react-router-dom";
 import AuthContext from "../AuthContext";
 import ErrorMessages from "../ErrorMessages/ErrorMessages";
 import '../Styles/Shading.css';
+import About from "../About/About";
 
 
 
@@ -69,13 +70,13 @@ function HomePage(props) {
                 </div>
             </form>
 
-            <div className="container text-center row m-0 p-0">
+            <div className="container row m-0 p-0">
 
                 <div className="container col-9 pl-0">
                     <TwentyRandomRecipes />
                 </div>
 
-                <div className="card col-3 bg-light rounded p-0 " id="card">
+                <div className="card text-center col-3 bg-light rounded p-0 " id="card">
                     <h5 className="card-header">Pantry</h5>
                     <div className="card-body">
                         {!auth.user ?
@@ -96,7 +97,14 @@ function HomePage(props) {
                 </div>
 
                 <div className="container bg-light rounded mt-3" id="card">
-                    <h6>about us....</h6>
+                    <p>
+                        <button className="btn text-muted text-decoration-none" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                            about us....
+                        </button>
+                    </p>
+                    <div className="collapse" id="collapseExample">
+                        <About/>
+                    </div>
                 </div>
             </div>
         </div>
