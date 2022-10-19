@@ -2,6 +2,8 @@ import AuthContext from "../AuthContext";
 import { useContext, useState, useEffect } from "react";
 import ErrorMessages from "../ErrorMessages/ErrorMessages";
 import RecipeCardItem from "../RecipeCardItem/RecipeCardItem";
+import '../Styles/Shading.css';
+
 //this component searches random for public user. for registered user, it automatically filters results to include user's allergens/healthlabels. (example: "soy-free")
 
 function SearchResultPage({ searchTerm }) {
@@ -339,8 +341,8 @@ function SearchResultPage({ searchTerm }) {
                     </div>
 
                     <div className="mt-6 p4">
-                        <button type="button" className="btn btn-dark mx-1" onClick={getNextRecipes}>Load More Recipes</button>
-                        <button type="button" className="btn btn-dark mx-1" onClick={topFunction}>Return to the Top</button>
+                        <button type="button" id="button" className="btn btn-dark mx-1" onClick={getNextRecipes}>Load More Recipes</button>
+                        <button type="button" id="button" className="btn btn-dark mx-1" onClick={topFunction}>Return to the Top</button>
                     </div>
 
                 </div>
