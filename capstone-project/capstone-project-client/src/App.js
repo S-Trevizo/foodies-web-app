@@ -15,7 +15,7 @@ import SearchResultPage from './SearchResultPage/SearchResultPage';
 import Pantry from './Pantry/Pantry';
 import Preferences from './Preferences/Preferences';
 import Favorites from './Favorites/Favorites';
-
+import './Background/Background.css';
 
 const LOCAL_STORAGE_TOKEN_KEY = "foodiesToken";
 
@@ -85,7 +85,7 @@ function App() {
 
   return (
 
-    <div className="App">
+    <div className="App" id='background'>
       <AuthContext.Provider value={auth}>
         <BrowserRouter>
           <NavBar searchData={searchData} setSearchData={setSearchData}/>
