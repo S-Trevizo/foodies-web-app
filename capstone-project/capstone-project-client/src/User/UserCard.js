@@ -15,7 +15,7 @@ function UserCard({user}) {
             </div>
             <div className="card-body">
                 <p className="card-text">
-                    <b>UserId::</b> {user.userId}
+                    <b>UserId:</b> {user.userId}
                 </p>
                 <p className="card-text">
                     <b>Email:</b> {user.email}
