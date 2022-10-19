@@ -58,7 +58,7 @@ function HomePage(props) {
         history.push("/searchResultPage");
     }
     return (
-        <div className="mt-5">
+        <div className=" container mt-5">
 
             <form onSubmit={handleSubmit} className="bg-light rounded p-4 mb-3" id="homeSearchBar">
                 <div className=" input-group">

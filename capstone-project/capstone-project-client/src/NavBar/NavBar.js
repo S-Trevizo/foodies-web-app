@@ -21,8 +21,8 @@ function NavBar({ searchData, setSearchData }) {//if there is search data, websi
     return (
 
         <div>
-            <div>
-                <h1 className="text-center">Foodies </h1>
+            <div className="jumbotron bg-transparent">
+                <h1 className="text-center display-2">Foodies </h1>
                 <div id="edamam-badge" data-color="transparent"></div>
             </div>
             <nav className="navbar navbar-expand-lg navbar-dark bg-dark rounded" >

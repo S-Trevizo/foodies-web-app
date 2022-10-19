@@ -170,7 +170,7 @@ function Pantry() {
             </div>
 
 
-            <button id="button" className={"btn btn-primary mb-1" + (!state.hidden ? " d-none" : "")} onClick={() => setState({ user: { ...state.user }, errors: state.errors, hidden: false, edit: false })}> Add an Ingredient to Your Pantry</button>
+            <button id="button" className={"btn btn-primary mb-1" + (!state.hidden ? " d-none" : "")} onClick={() => setState({ user: { ...state.user }, errors: state.errors, hidden: false, edit: false })} > Add an Ingredient to Your Pantry</button>
 
             <div className={"card my-2" + (state.hidden ? " d-none" : "")} id="card">
                 <div className="card-header">
