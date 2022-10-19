@@ -3,6 +3,8 @@ import AuthContext from "../AuthContext";
 import { useContext, useState, useEffect } from "react";
 import ErrorMessages from "../ErrorMessages/ErrorMessages";
 import { useParams, Link, useHistory } from "react-router-dom";
+import '../Styles/Shading.css';
+
 
 function RecipeCardItem(props,{userCopy, setUserCopy}) { //
     const userData = useContext(AuthContext);
@@ -27,7 +29,7 @@ function RecipeCardItem(props,{userCopy, setUserCopy}) { //
                 null
             }
             <div className="card">
-                <div className="card-body">
+                <div className="card-body" id="card">
                     <img src={props.recipeData.image} className="card-img-top" alt="..." />
                     <div className="card-text">{<a href={props.recipeData.shareAs} className="card-text badge-light"><h6 className="card-title">{props.recipeData.label}</h6></a>}</div>
 

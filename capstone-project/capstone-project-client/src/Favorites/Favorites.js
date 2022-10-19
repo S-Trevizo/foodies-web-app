@@ -8,19 +8,12 @@ function Favorites() {
         userId: "",
         email: "",
         passHash: "",
+        isDeleted: false,
         userRoles: [],
         name: "",
         favorites: [],
         healthLabels: [],
-        ingredients: [],
-        password: "",
-        enabled: false,
-        deleted: false,
-        username: "",
-        accountNonLocked: false,
-        accountNonExpired: false,
-        credentialsNonExpired: false,
-        authorities: []
+        ingredients: []
     }
 
     const [errorsToAppend, setErrorsToAppend] = useState([]);
@@ -46,8 +39,18 @@ function Favorites() {
                 return Promise.reject(await response.json());
             }
         }).then(async returned => {
-            console.log(returned);
-            setUser(returned);
+            let updated = {
+                userId: returned.userId,
+                email: returned.email,
+                passHash: returned.passHash,
+                isDeleted: returned.deleted,
+                userRoles: returned.userRoles,
+                name: returned.name,
+                favorites: returned.favorites,
+                healthLabels: returned.healthLabels,
+                ingredients: returned.ingredients
+            }
+            setUser(updated);
         }).catch(error => {
             if (error instanceof TypeError) {
                 const errors = [];
@@ -61,6 +64,58 @@ function Favorites() {
             }
         })
     }, []);
+
+    function removeFavorite(e, index) {
+        let toUpdate = {...user};
+
+        toUpdate.favorites.splice(index,1);
+
+        fetch("http://localhost:8080/api/user/update", {
+            method: "PUT",
+            body: JSON.stringify(toUpdate),
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": "Bearer " + localStorage.getItem("foodiesToken")
+            }
+        })
+            .then(async response => {
+                if (response.status === 200) {
+                    return response.json();
+                } else if (response.status === 404) {
+                    return Promise.reject(["User not found (possibly deleted)."]);
+                } else if (response.status === 400) {//bad request.
+                    return Promise.reject(await response.json());
+                } else if (response.status === 403) {// 403 is forbidden: not admin nor user
+                    return Promise.reject(await response.json());
+                }
+            }).then(async response => {
+                let updated = {
+                    userId: response.userId,
+                    email: response.email,
+                    passHash: response.passHash,
+                    isDeleted: response.deleted,
+                    userRoles: response.userRoles,
+                    name: response.name,
+                    favorites: response.favorites,
+                    healthLabels: response.healthLabels,
+                    ingredients: response.ingredients
+                }
+                setUser(updated);
+            }).catch(errorList => {
+                if (errorList instanceof TypeError) {
+                    const copyArray = [];
+                    copyArray.push("Could not connect to api.");
+                    setErrorsToAppend(copyArray);
+                } else if (errorList instanceof Error) {
+                    //doing nothing is a bad habit.
+                    console.log(errorList);
+                } else {
+                    const copyArray = [];
+                    copyArray.push(...errorList);
+                    setErrorsToAppend(copyArray);
+                }
+            });
+    }
 
     return (
         // {/* <div>Favorite Recipes:   with filter by ingredient</div> */}
@@ -92,14 +147,15 @@ function Favorites() {
                 <div className="card-body d-flex justify-content-center  text-center row p-4">
 
                     {user.favorites.length > 0 ? user.favorites.map((r, index) => (
-                        <div key={index} className="card col-3 mb-3 mx-4 p-0">
-                            <img clasName="card-img-top" src={r.imageUrl}></img>
+                        <div key={r.recipeId} className="card col-3 mb-3 mx-4 p-0">
+                            <img className="card-img-top" src={r.imageUrl}></img>
                             <div className="card-header">
                                 <h5 className="d-inline">{r.recipeName}</h5>
                             </div>
                             <div className="card-body">
                                 <div className="card-text">
-                                    <a href={r.recipeUrl} className="btn btn-primary">Details</a>
+                                    <a href={r.recipeUrl} className="btn btn-primary mr-1">Details</a>
+                                    <button className="btn btn-danger" onClick={(e) => removeFavorite(e, index)}>Delete</button>
                                 </div>
                             </div>
                         </div>)
