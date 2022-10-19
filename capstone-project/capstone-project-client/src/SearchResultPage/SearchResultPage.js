@@ -5,19 +5,10 @@ import RecipeCardItem from "../RecipeCardItem/RecipeCardItem";
 //this component searches random for public user. for registered user, it automatically filters results to include user's allergens/healthlabels. (example: "soy-free")
 
 function SearchResultPage({ searchTerm }) {
-    // console.log("searchData from searchresultpage: " + searchTerm);
-    // console.log("change page");
-    //refresh on this component and twentyrandomrecipes.js don't work rn.
-    //using a setter redraws the current component it is in. This is done after retrieving data to display.
     const [recipes, setRecipes] = useState([]);
     const [errorsToAppend, setErrorsToAppend] = useState([]);
     const userData = useContext(AuthContext);
-    const [userCopy, setUserCopy] = useState(null);//todo: might use this so I have a way to update user's favorites. not sure yet.
-
-    //maintain the user from one spot. searchresultpage is okay.each card will se user data. when something is checked, 
-    //send the event back up to the component.
-    
-
+    const [userCopy, setUserCopy] = useState(null);
 
     function getRecipesFromRemoteApi(input) {
         if (input === null) {
@@ -82,8 +73,7 @@ function SearchResultPage({ searchTerm }) {
                 const copyArray = [];
                 copyArray.push("Could not connect to local api from public recipe files.");
                 setErrorsToAppend(copyArray);
-            } else {//if page is refreshed, a string is outputted. doesn't quite work here, it seems?
-                // console.log(error);
+            } else {
                 const copyArray = [];
                 copyArray.push(...error);
                 setErrorsToAppend(copyArray);
@@ -117,8 +107,7 @@ function SearchResultPage({ searchTerm }) {
                 const copyArray = [];
                 copyArray.push("Could not connect to local api from private recipe files.");
                 setErrorsToAppend(copyArray);
-            } else {//if page is refreshed, a string is outputted. doesn't quite work here, it seems? not sure I'd want this particular error to show to user though.
-                // console.log(error);
+            } else {
                 const copyArray = [];
                 copyArray.push(...error);
                 setErrorsToAppend(copyArray);
@@ -186,15 +175,14 @@ function SearchResultPage({ searchTerm }) {
     }
 
     function addOrRemoveFavorite(event, loadedRecipe) {
-        console.log(loadedRecipe);
-        //event.target.checked
+        console.log(loadedRecipe);//event.target.checked
         let index = 0;
         console.log(userCopy);
 
         if (!userCopy.favorites) {
             index = 0;
         } else {
-            for (let i = 0; i < userCopy.favorites.length; i++) {//could also check for duplicates maybe?
+            for (let i = 0; i < userCopy.favorites.length; i++) {
                 if ((userCopy.favorites[i].recipeId) === (loadedRecipe.uri.substr(loadedRecipe.uri.length - 32))) {//props.recipeData
                     index = i;
                     break;
@@ -291,16 +279,26 @@ function SearchResultPage({ searchTerm }) {
         <div className="container text-center">
             {errorsToAppend.map((r, index) => <ErrorMessages key={index} errorData={r} />)}
             {(recipes.length > 0) ?
-                <div className="card-columns">
-                    {recipes.map((r, index) => <RecipeCardItem 
-                    key={r.recipe.uri.substr(r.recipe.uri.length - 32)} 
-                    recipeData={r.recipe} 
-                    index={index} 
-                    userCopy={userCopy}
-                    setUserCopy={setUserCopy}
-                    userId={(userData.user === null) ? null : userData.user.userId}
-                    addOrRemoveFavorite={addOrRemoveFavorite}
-                    />)}
+                <div className="container p-3">
+                    <div className="card-columns">
+                        {recipes.map((r, index) => <RecipeCardItem
+                            key={r.recipe.uri.substr(r.recipe.uri.length - 32)}
+                            recipeData={r.recipe}
+                            index={index}
+                            userCopy={userCopy}
+                            setUserCopy={setUserCopy}
+                            userId={(userData.user === null) ? null : userData.user.userId}
+                            addOrRemoveFavorite={addOrRemoveFavorite}
+                        />)}
+                    </div>
+
+                    <div className="mt-6 p4">
+                        <button type="button" className="btn btn-dark mx-1">Prev</button>
+                        {/* I should preload the next 20 recipes for each render. If there are 20 more recipes, 
+                        make the "next" button show up. and if there are 20 previous recipes, make prev show up. */}
+                        <button type="button" className="btn btn-dark mx-1">Next</button>
+                    </div>
+
                 </div>
                 : <div>No recipes found.</div>}
         </div>
