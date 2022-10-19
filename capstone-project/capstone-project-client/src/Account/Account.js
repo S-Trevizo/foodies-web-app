@@ -2,6 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import { Link, useHistory } from "react-router-dom";
 import AuthContext from "../AuthContext";
 import ErrorMessages from "../ErrorMessages/ErrorMessages";
+import '../Styles/Shading.css';
 
 
 
@@ -102,8 +103,8 @@ function Account() {
     return (
 
         <div >
-            <h2 className="text-center">Account Info</h2>
-            <form className="container mt-4 p-4 bg-light rounded" onSubmit={submitHandler}>
+            <h2 className="text-center mt-5">Account Info</h2>
+            <form className="container mt-4 p-4 bg-light rounded" id="form" onSubmit={submitHandler}>
                 <label className="form-label">Name</label>
                 <input className="form-control" name="name" id={user.name} defaultValue={user.name} onChange={handleChange} />
 

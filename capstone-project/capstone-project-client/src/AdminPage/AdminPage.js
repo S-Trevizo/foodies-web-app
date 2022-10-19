@@ -2,6 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import AuthContext from "../AuthContext";
 import ErrorMessages from "../ErrorMessages/ErrorMessages";
 import UserCard from "../User/UserCard";
+import '../Styles/Shading.css';
 
 function AdminPage() {
 
@@ -43,10 +44,10 @@ function AdminPage() {
         })}, []);
 
         return (
-            <div className="container-fluid">
-            <h2>User Administration</h2>
+            <div className="container-fluid mt-5">
+            <h2 className="text-center">User Administration</h2>
             {errorsToAppend ?
-                <div className="container bg-secondary rounded">
+                <div className="container bg-secondary rounded" id="card">
                     {errorsToAppend.map((e, index) => 
                     <ErrorMessages key={index} errorData={e} />)}
                 </div>

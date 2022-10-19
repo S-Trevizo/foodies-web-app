@@ -2,6 +2,7 @@ import { useContext, useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import AuthContext from '../AuthContext';
 import ErrorMessages from '../ErrorMessages/ErrorMessages';
+import '../Styles/Shading.css';
 
 
 
@@ -54,7 +55,7 @@ function Login(props) {
 
     return (
         <div className="container mt-5 p-4">
-            <div className='card'>
+            <div className='card' id='form'>
                 <h2 className='text-center card-header'>Login</h2>
                 <div className='card-body'>
                     <form onSubmit={loginHandler} >

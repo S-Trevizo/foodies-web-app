@@ -3,7 +3,7 @@ import { useContext, useState, useEffect } from "react";
 import { Link, useHistory } from "react-router-dom";
 import AuthContext from "../AuthContext";
 import ErrorMessages from "../ErrorMessages/ErrorMessages";
-import './HomePage.css';
+import '../Styles/Shading.css';
 
 
 
@@ -58,7 +58,7 @@ function HomePage(props) {
         history.push("/searchResultPage");
     }
     return (
-        <div className=" container my-4">
+        <div className=" container mt-5">
 
             <form onSubmit={handleSubmit} className="bg-light rounded p-4 mb-3" id="homeSearchBar">
                 <div className=" input-group">
@@ -75,7 +75,7 @@ function HomePage(props) {
                     <TwentyRandomRecipes />
                 </div>
 
-                <div className="card col-3 bg-light rounded" id="homePantryCard">
+                <div className="card col-3 bg-light rounded" id="card">
                     <h5 className="card-header ">Pantry</h5>
                     <div className="card-body">
                         {!auth.user ?
@@ -90,7 +90,7 @@ function HomePage(props) {
                             </div>
                         }
                     </div>
-                    {userToVeiw ? <div className="m-2">
+                    {auth.user ? <div className="m-2">
                         <Link to="/pantry" className="btn btn-primary">Add</Link>
                     </div> : null}
                 </div>

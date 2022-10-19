@@ -2,6 +2,7 @@ import { useState, useEffect, useContext } from "react";
 import { Link, useHistory } from "react-router-dom";
 import AuthContext from "../AuthContext";
 import ErrorMessages from "../ErrorMessages/ErrorMessages";
+import '../Styles/Shading.css';
 
 function Pantry() {
 
@@ -161,7 +162,7 @@ function Pantry() {
 
     return (
         <div className="container">
-            <h2 className="text-center">Your Pantry</h2>
+            <h2 className="text-center mt-5">Your Pantry</h2>
 
             <div>
                 {state.errors.length > 0 ? state.errors.map((e, index) =>
@@ -171,7 +172,7 @@ function Pantry() {
 
             <button className={"btn btn-primary mb-1" + (!state.hidden ? " d-none" : "")} onClick={() => setState({ user: { ...state.user }, errors: state.errors, hidden: false, edit: false })}> Add an Ingredient to Your Pantry</button>
 
-            <div className={"card my-2" + (state.hidden ? " d-none" : "")}>
+            <div className={"card my-2" + (state.hidden ? " d-none" : "")} id="card">
                 <div className="card-header">
                     {state.edit ? <h4 className="card-title">Edit an ingredient</h4> : <h4 className="card-title">Add an ingredient</h4>}
                 </div>
@@ -200,7 +201,7 @@ function Pantry() {
 
 
 
-            <div className="card my-2">
+            <div className="card my-2" id="card">
                 <div className="card-header">
                     <h4 className="card-title">Current Inventory</h4>
                 </div>

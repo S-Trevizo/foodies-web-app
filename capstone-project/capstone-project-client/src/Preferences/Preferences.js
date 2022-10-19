@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import AuthContext from "../AuthContext";
 import ErrorMessages from "../ErrorMessages/ErrorMessages";
-
+import '../Styles/Shading.css';
 
 function Preferences() {
 
@@ -129,9 +129,9 @@ function Preferences() {
     }
 
     return (
-        <div className="container mt-5 p-4 bg-light rounded">
+        <div className="container mt-5">
             <h2 className="text-center border-bottom-2">Health Preferences</h2>
-            {user ? <form className="container" onSubmit={submitHandler} >
+            {user ? <form className="container p-3 mt-4 bg-light rounded" id="form" onSubmit={submitHandler} >
                 <div className="row p-4">
                     {options.map((a, index) =>
                         <div className="form-check col-4">
@@ -142,17 +142,16 @@ function Preferences() {
                                 id={a.value}
                                 name={a.value}
                                 key={index} />
-                            <label>{a.label}</label>
+                            <label className="ml-1">{a.label}</label>
                         </div>)}
                     <div className="container">
                         {errors ? errors.map((e, index) =>
                             <ErrorMessages key={index} errorData={e} />) : null}
                     </div>
-                    <div>
-                        <button className="btn btn-primary">Save</button>
-                    </div>
                 </div>
-
+                <div className="text-right">
+                    <button className="btn btn-primary ">Save</button>
+                </div>
             </form> : null}
         </div>
 

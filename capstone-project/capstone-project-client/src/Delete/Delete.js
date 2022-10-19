@@ -1,4 +1,5 @@
 import { Link, useHistory } from "react-router-dom";
+import '../Styles/Shading.css';
 
 function Delete() {
     
@@ -23,9 +24,9 @@ function Delete() {
 
 
     return( 
-        <div className="container card card-default bg-secondary col-8 pt-3 pb-3 mt-4">
+        <div className="container card card-default bg-secondary col-8 pt-3 pb-3 mt-4" id="card">
             <div className="d-flex justify-content-center">
-                <h3>Do you really want to delete userId {user.userId} {user.name} ?</h3>
+                <h3 className="text-light">Do you really want to delete userId {user.userId} {user.name} ?</h3>
             </div>
             <div className="d-flex justify-content-center">
                 <button className="btn btn-danger btn-lg mr-3" onClick={handleDelete}>Delete</button>

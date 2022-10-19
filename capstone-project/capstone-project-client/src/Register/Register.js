@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import Select from 'react-select';
 import makeAnimated from 'react-select/animated';
 import ErrorMessages from '../ErrorMessages/ErrorMessages';
+import '../Styles/Shading.css';
 
 
 
@@ -104,7 +105,7 @@ function Register() {
     return (
 
         <div className="container mt-5 p-4">
-            <div className='card'>
+            <div className='card'id='form'>
                 <h2 className='card-header text-center'>Register</h2>
                 <div className='card-body'>
                     <form>
