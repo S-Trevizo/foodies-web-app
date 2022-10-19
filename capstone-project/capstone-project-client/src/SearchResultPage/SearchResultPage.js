@@ -5,44 +5,68 @@ import RecipeCardItem from "../RecipeCardItem/RecipeCardItem";
 //this component searches random for public user. for registered user, it automatically filters results to include user's allergens/healthlabels. (example: "soy-free")
 
 function SearchResultPage({ searchTerm }) {
-    const [recipes, setRecipes] = useState([]);
-    const [errorsToAppend, setErrorsToAppend] = useState([]);
-    const [nextLink, setNextLink] = useState("");
     const userData = useContext(AuthContext);
+
+    //refactoring ideas: could have java api do background in searches to hide api key info
+    //could process the data in backend in java
+    //(generally: get rid of state that doesn't affect how it looks)
+    //move some functions into a library. what's a library? a "utility class". hmm.
+    //yeah we reuse a lot of methods that are similar.
+    //example: get user: "import User from "../GetUser/GetUser";
+    //better variable names. I'm bad at naming I need help with this :o
+    //reordering functions: make useEffect at the top and the methods called in order from top-bottom
+
+    const [recipes, setRecipes] = useState([]);//these should be updated together
+    const [nextLink, setNextLink] = useState("");
+    const [errorsToAppend, setErrorsToAppend] = useState([]);
     const [userCopy, setUserCopy] = useState(null);
-    const [fetches, setFetches] = useState([]);
-    const [fetchIndex, setFetchIndex] = useState(0);
-    const [maxRecipeIndex, setMaxRecipeIndex] = useState(20);
+
+    function loadNextRemoteRecipes() {
+
+        fetch(nextLink)
+            .then(async response => {
+                if (response.status === 200) {
+                    const toReturn = response.json();
+                    return toReturn;
+                } else if (response.status === 400) {
+                    return Promise.reject(await response.json());
+                } else if (response.status === 403) {
+                    return Promise.reject(await response.json());
+                } else if (response.status === 429) {//this doesn't quite seem to catch 429 errors
+                    return Promise.reject(["Too many requests sent to the api."]);
+                } else {
+                    return Promise.reject(await response.json());
+                }
+            }).then(recipesOutput => {//setNextLink may or may not be used: depends on size of index vs. fetches
+                let nextLinkString = recipesOutput._links.next.href
+                setNextLink(nextLinkString);
+                let oldRecipes = [...recipes];
+                oldRecipes.push(...recipesOutput.hits);
+                setRecipes(oldRecipes);
+            }).catch(error => {
+                if (error instanceof TypeError) {//is this error even possible here?
+                    console.log(error);
+                    const copyArray = [];
+                    copyArray.push("Remote api is currently timed out: please wait for new results.");
+                    setErrorsToAppend(copyArray);
+                } else {
+                    console.log(error);
+                    const copyArray = [];
+                    copyArray.push(...error);
+                    setErrorsToAppend(copyArray);
+                }
+            });
+    }
 
     function getRecipesFromRemoteApi(input) {
-        if (input === null) {
-            return;
+        input.q = input.q.replaceAll(" ", "%20");//replace with %
+        let finalFetch = ("https://api.edamam.com/api/recipes/v2?type=public&q=" + input.q + "&app_id=" + input.app_id + "&app_key=" + input.app_key);
+        if (input.fetchString !== undefined) {//additional search criteria in here for registered users or admins
+            finalFetch = input.fetchString;
+            finalFetch = finalFetch.concat("&q=", input.q, "&app_id=", input.app_id, "&app_key=", input.app_key);
         }
 
-        let finalFetch = "";
-        if (fetchIndex < 1) {//if less than one: get the initial fetch for api before appending automatically generated links from api.
-            input.q = input.q.replaceAll(" ", "%");
-            finalFetch = ("https://api.edamam.com/api/recipes/v2?type=public&q=" + input.q + "&app_id=" + input.app_id + "&app_key=" + input.app_key);
-            if (input.fetchString !== undefined) {//additional search criteria in here for registered users or admins
-                finalFetch = input.fetchString;
-                finalFetch = finalFetch.concat("&q=", input.q, "&app_id=", input.app_id, "&app_key=", input.app_key);
-            }
-            let copyArray = [...fetches];
-            copyArray.push(finalFetch);
-            setFetches(copyArray);
-            let currentIndex = fetchIndex;
-            currentIndex++;
-            setFetchIndex(currentIndex);
-        } else {
-            finalFetch = nextLink;
-        }
-
-        fetch(finalFetch, {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json"
-            }
-        }).then(async response => {
+        fetch(finalFetch).then(async response => {
             if (response.status === 200) {
                 const toReturn = response.json();
                 return toReturn;
@@ -58,9 +82,7 @@ function SearchResultPage({ searchTerm }) {
         }).then(recipesOutput => {//setNextLink may or may not be used: depends on size of index vs. fetches
             let nextLinkString = recipesOutput._links.next.href
             setNextLink(nextLinkString);
-            let oldRecipes = [...recipes];
-            oldRecipes.push(...recipesOutput.hits);
-            setRecipes(oldRecipes);
+            setRecipes([...recipesOutput.hits]);
         }).catch(error => {
             if (error instanceof TypeError) {//is this error even possible here?
                 console.log(error);
@@ -285,31 +307,24 @@ function SearchResultPage({ searchTerm }) {
             });
     }
 
+    //one function for initial page load 
+    //and another one for pulling extra recipes.
+
     function getNextRecipes(event) {
         event.preventDefault();
 
         console.log("next button clicked");
 
-        let currentIndex = fetchIndex;
-        currentIndex++;
-        setFetchIndex(currentIndex);
-        if (!fetches[currentIndex]) {//this will append finalFetch to first index of fetches.
-            let copyArray = [...fetches]
-            copyArray.push(nextLink);
-            setFetches(copyArray);
-        }
-        let currentMaxRecipeIndex = maxRecipeIndex;
-        currentMaxRecipeIndex += 20;
-        setMaxRecipeIndex(currentMaxRecipeIndex);
-        getRecipesFromRemoteApi("not null");
+        loadNextRemoteRecipes();
     }
 
     function topFunction() {
-        document.documentElement.scrollTop = 0; 
-      }
+        document.documentElement.scrollTop = 0;
+    }
 
     useEffect(//the main structure of this component: see console.log in this useEffect
         () => {
+            console.log("page refreshed");
             let input = { searchCriteria: searchTerm };
             if (userData.user === null) {
                 console.log("userData is null. do not build special string. do nothing.");
@@ -327,7 +342,7 @@ function SearchResultPage({ searchTerm }) {
             {(recipes.length > 0) ?
                 <div className="container p-3">
                     <div className="card-columns">
-                        {recipes.slice(0, maxRecipeIndex).map((r, index) => <RecipeCardItem
+                        {recipes.map((r, index) => <RecipeCardItem
                             key={r.recipe.uri.substr(r.recipe.uri.length - 32)}
                             recipeData={r.recipe}
                             index={index}

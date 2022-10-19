@@ -20,8 +20,6 @@ function RecipeCardItem(props,{userCopy, setUserCopy}) { //
     const currentRecipeId = (props.recipeData.uri.substr(props.recipeData.uri.length - 32));
     let isFavorited = (props.userCopy && props.userCopy.favorites.some((r) => r.recipeId === currentRecipeId));
 
-    console.log(props);
-
     return (
         <>
             {errorsToAppend ?
@@ -36,12 +34,7 @@ function RecipeCardItem(props,{userCopy, setUserCopy}) { //
                     <div className="card-text">
                         <div className="form-check form-check-inline">
                             {((props.userId) === null) ? <input className="form-check-input" type="checkbox" value="" id="defaultCheck2" disabled /> :
-                                // check if it is favorited in user's data:
-                                // (isFavorited === true ?
                                     <input className="form-check-input" type="checkbox" value="" onClick={(e) => props.addOrRemoveFavorite(e, props.recipeData)} id="defaultCheck2" checked={isFavorited} />
-                                //     :
-                                //     <input className="form-check-input" type="checkbox" value="" onClick={(e) => props.addOrRemoveFavorite(e, props.recipeData)} id="defaultCheck2" />
-                                // )
                             }
                             <label className="form-check-label" htmlFor="defaultCheck2">
                                 Save to favorites
@@ -51,12 +44,12 @@ function RecipeCardItem(props,{userCopy, setUserCopy}) { //
                             <div className="card">
                                 <div className="card-header" id="headingOne">
                                     <h5 className="mb-0">
-                                        <button className="btn btn-link" data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                                        <button className="btn btn-link" data-toggle="collapse" data-target={"#collapse"+currentRecipeId} aria-expanded="false" aria-controls={"collapse"+currentRecipeId}>
                                             Toggle Ingredients List
                                         </button>
                                     </h5>
                                 </div>
-                                <div id="collapseOne" className="collapse" aria-labelledby="headingOne" data-parent="#accordion">
+                                <div id={"collapse"+currentRecipeId} className="collapse" aria-labelledby="headingOne" data-parent="#accordion">
                                     <div className="card-body">
                                         {props.recipeData.ingredients.map((i, index) => <Ingredient key={index} ingredientData={i} />)}
                                     </div>
