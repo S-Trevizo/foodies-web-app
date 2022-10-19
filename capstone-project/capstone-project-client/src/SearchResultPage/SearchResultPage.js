@@ -307,8 +307,8 @@ function SearchResultPage({ searchTerm }) {
     }
 
     function topFunction() {
-        document.documentElement.scrollTop = 0; 
-      }
+        document.documentElement.scrollTop = 0;
+    }
 
     useEffect(//the main structure of this component: see console.log in this useEffect
         () => {
@@ -322,6 +322,15 @@ function SearchResultPage({ searchTerm }) {
             }
         },
         [searchTerm]);
+
+    function hasIngredients(userIngredients, recipeIngredients) {
+        for (var i = 0; i < recipeIngredients.length; i++) {
+            if (userIngredients.indexOf(recipeIngredients[i]) === -1) {
+                return false;
+            }
+        }
+        return true;
+    }
 
     return (
         <div className="container text-center">
@@ -337,6 +346,7 @@ function SearchResultPage({ searchTerm }) {
                             setUserCopy={setUserCopy}
                             userId={(userData.user === null) ? null : userData.user.userId}
                             addOrRemoveFavorite={addOrRemoveFavorite}
+                            hasIngredients={hasIngredients(userCopy.ingredients.map((i) => i.name.toLowerCase()), r.recipe.ingredients.map(i => i.food.toLowerCase()))}
                         />)}
                     </div>
 

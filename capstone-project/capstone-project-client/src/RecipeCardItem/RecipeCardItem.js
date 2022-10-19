@@ -6,7 +6,7 @@ import { useParams, Link, useHistory } from "react-router-dom";
 import '../Styles/Shading.css';
 
 
-function RecipeCardItem(props,{userCopy, setUserCopy}) { //
+function RecipeCardItem(props, { userCopy, setUserCopy }) { //
     const userData = useContext(AuthContext);
     const [errorsToAppend, setErrorsToAppend] = useState([]);
     useEffect(
@@ -36,19 +36,24 @@ function RecipeCardItem(props,{userCopy, setUserCopy}) { //
                     <div className="card-text">{<a href={props.recipeData.shareAs} className="card-text badge-light"><h6 className="card-title">{props.recipeData.label}</h6></a>}</div>
 
                     <div className="card-text">
+                        <div>
+                            {props.hasIngredients ? <span class="badge badge-pill badge-success">Ready to make!</span> : null}
+                        </div>
                         <div className="form-check form-check-inline">
                             {((props.userId) === null) ? <input className="form-check-input" type="checkbox" value="" id="defaultCheck2" disabled /> :
                                 // check if it is favorited in user's data:
                                 // (isFavorited === true ?
-                                    <input className="form-check-input" type="checkbox" value="" onClick={(e) => props.addOrRemoveFavorite(e, props.recipeData)} id="defaultCheck2" checked={isFavorited} />
+                                <input className="form-check-input" type="checkbox" value="" onClick={(e) => props.addOrRemoveFavorite(e, props.recipeData)} id="defaultCheck2" checked={isFavorited} />
                                 //     :
                                 //     <input className="form-check-input" type="checkbox" value="" onClick={(e) => props.addOrRemoveFavorite(e, props.recipeData)} id="defaultCheck2" />
                                 // )
                             }
+
                             <label className="form-check-label" htmlFor="defaultCheck2">
                                 Save to favorites
                             </label>
                         </div>
+
                         <div id="accordion">
                             <div className="card">
                                 <div className="card-header" id="headingOne">
