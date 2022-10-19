@@ -6,178 +6,24 @@ import { useParams, Link, useHistory } from "react-router-dom";
 
 //the preload favorites isn't working
 
-function RecipeCardItem(props) {    // props.recipeData = single datapoint/recipe
-    //useState is used for redraws. It's not a global variable. In that case, just use a variable with bigger scope.
+function RecipeCardItem(props,{userCopy, setUserCopy}) { //
     const userData = useContext(AuthContext);
     const [errorsToAppend, setErrorsToAppend] = useState([]);
-    const [userCopy, setUserCopy] = useState(null);
-
-    function addOrRemoveFavorite(event) {
-        //event.target.checked
-        let index = 0;
-        console.log(userCopy);
-        if (!userCopy.favorites) {//=== undefined || userCopy.favorites === null
-            index = 0;
-        } else {
-            for (let i = 0; i < userCopy.favorites.length; i++) {//could also check for duplicates maybe?
-                if ((userCopy.favorites[i].recipeId) === (props.recipeData.uri.substr(props.recipeData.uri.length - 32))) {
-                    index = i;
-                    break;//break out of loop
-                }
-            }
-        }
-        let editedUserCopy = null;
-        if (event.target.checked === true) {
-            let favoritesCopy = [];
-            if (userCopy.favorites !== null) {
-                favoritesCopy = [...(userCopy.favorites)];
-            }
-            const recipeCopy = {
-                recipeId: props.recipeData.uri.substr(props.recipeData.uri.length - 32),
-                recipeUrl: props.recipeData.shareAs,
-                imageUrl: props.recipeData.image,
-                recipeName: props.recipeData.label
-            }
-            favoritesCopy.push(recipeCopy);
-            editedUserCopy = { ...userCopy, favorites: favoritesCopy };
-        } else {
-            let favoritesCopy = [];
-            favoritesCopy = [...(userCopy.favorites)];
-            favoritesCopy.splice(index, 1);
-            editedUserCopy = { ...userCopy, favorites: favoritesCopy };
-        }
-        console.log(editedUserCopy);
-        updateUserInDatabase(editedUserCopy);
-    }
-
-    function updateUserInDatabase(editedUserCopy) {
-        fetch("http://localhost:8080/api/user/update", {
-            method: "PUT",
-            body: JSON.stringify(editedUserCopy),
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization": "Bearer " + localStorage.getItem("foodiesToken")
-            }
-        })
-            .then(async response => {
-                if (response.status === 204) {//no response.json needed: no_content response
-                    // setUserCopy(editedUserCopy);
-                    // fetchUser();
-                    // history.go();
-                    return response.json();
-                } else if (response.status === 404) {
-                    return Promise.reject(["User not found (possibly deleted)."]);
-                } else if (response.status === 400) {//bad request.
-                    return Promise.reject(await response.json());
-                } else if (response.status === 403) {// 403 is forbidden: not admin nor user
-                    return Promise.reject(await response.json());
-                }
-            }).then(response => {
-                let copyUser = {//did I copy the arrays properly? (favorites, etc.)
-                    userId: response.userId,
-                    email: response.email,
-                    passHash: response.passHash,
-                    isDeleted: response.deleted,
-                    userRoles: response.userRoles,
-                    name: response.name,
-                    favorites: response.favorites,
-                    healthLabels: response.healthLabels,
-                    ingredients: response.ingredients
-                }
-                setUserCopy(copyUser);//set does trigger reload. It does not happen until after the method has executed.
-                // determineIfRecipeIsFavorited(response);//so calling this here is redundant
-            }).catch(errorList => {
-                if (errorList instanceof TypeError) {
-                    const copyArray = [];
-                    copyArray.push("Could not connect to api.");
-                    setErrorsToAppend(copyArray);
-                } else if (errorList instanceof Error) {
-                    //do nothing
-                } else {
-                    const copyArray = [];
-                    copyArray.push(...errorList);
-                    setErrorsToAppend(copyArray);
-                }
-            });
-    }
-
-    // function determineIfRecipeIsFavorited(response) {
-    //     if (response.favorites === null) {
-    //         return;
-    //     } else {
-    //         for (let i = 0; i < response.favorites.length; i++) {//todo verify this works when favorites isn't empty
-    //             if ((response.favorites[i].recipeId) === (props.recipeData.uri.substr(props.recipeData.uri.length - 32))) {
-    //                 setIsFavorited(true);
-    //                 return;
-    //             }
-    //         }
-    //     }
-    // }
-
-    function fetchUser() {
-        fetch("http://localhost:8080/api/user/" + userData.user.userId, {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization": "Bearer " + localStorage.getItem("foodiesToken")
-            }
-        }).then(async response => {
-            if (response.status === 200) {
-                const toReturn = response.json();
-                return toReturn;
-            } else if (response.status === 400) {
-                return Promise.reject(await response.json());
-            } else if (response.status === 403) {
-                return Promise.reject(await response.json());
-            } else {
-                return Promise.reject(await response.json());
-            }
-        }).then(response => {
-            let copyUser = {//did I copy the arrays properly? (favorites, etc.)
-                userId: response.userId,
-                email: response.email,
-                passHash: response.passHash,
-                isDeleted: response.deleted,
-                userRoles: response.userRoles,
-                name: response.name,
-                favorites: response.favorites,
-                healthLabels: response.healthLabels,
-                ingredients: response.ingredients
-            }
-            setUserCopy(copyUser);
-            // determineIfRecipeIsFavorited(response);
-        }).catch(error => {
-            if (error instanceof TypeError) {
-                const errors = [];
-                // errors.push("Could not connect to api from user files.");   this has been triggered when external api runs out. so I'll comment this out for now.
-                setErrorsToAppend(errors);
-            } else {
-                // console.log(error);
-                const errors = [];
-                errors.push(...error);
-                setErrorsToAppend(errors);
-            }
-        })
-    }
-
-    useEffect(//need to reload page when searchterm changes. or when I make a request.
+    // const [userCopy, setUserCopy] = useState(null);
+    useEffect(
         () => {
-            isFavorited = false;
             if (userData.user === null) {
                 console.log("userData is null. make 'add to favorites' button disabled");
             } else {
                 console.log("userData exists: make favorites button functional and see if foodId is in their list of favorites");
-                fetchUser();
             }
         },
         []);
 
-    //current user and list of favorites
     const currentRecipeId = (props.recipeData.uri.substr(props.recipeData.uri.length - 32));
-    let isFavorited = (userCopy && userCopy.favorites.some((r) => r.recipeId === currentRecipeId));
-    
-    //goes inside each object and checks for an id that matches...
-    //[i].recipeId
+    let isFavorited = (props.userCopy && props.userCopy.favorites.some((r) => r.recipeId === currentRecipeId));
+
+    console.log(props);
 
     return (
         <>
@@ -195,9 +41,9 @@ function RecipeCardItem(props) {    // props.recipeData = single datapoint/recip
                             {((props.userId) === null) ? <input className="form-check-input" type="checkbox" value="" id="defaultCheck2" disabled /> :
                                 // check if it is favorited in user's data:
                                 (isFavorited === true ?
-                                    <input className="form-check-input" type="checkbox" value="" onClick={addOrRemoveFavorite} id="defaultCheck2" checked />
+                                    <input className="form-check-input" type="checkbox" value="" onClick={props.addOrRemoveFavorite(props.recipeData)} id="defaultCheck2" checked />
                                     :
-                                    <input className="form-check-input" type="checkbox" value="" onClick={addOrRemoveFavorite} id="defaultCheck2" />
+                                    <input className="form-check-input" type="checkbox" value="" onClick={props.addOrRemoveFavorite(props.recipeData)} id="defaultCheck2" />
                                 )
                             }
                             <label className="form-check-label" htmlFor="defaultCheck2">
@@ -237,3 +83,137 @@ export default RecipeCardItem;
 {/* {recipeData.ingredients.map((i, index) => <Ingredient key={index} ingredientData={i} />)} */ }
 {/* <div> recipe image link: </div>
 <img src={recipeData.image}></img> */}
+
+
+
+    // function addOrRemoveFavorite(event) {
+    //     //event.target.checked
+    //     let index = 0;
+    //     console.log(userCopy);
+
+    //     if (!userCopy.favorites) {
+    //         index = 0;
+    //     } else {
+    //         for (let i = 0; i < userCopy.favorites.length; i++) {//could also check for duplicates maybe?
+    //             if ((userCopy.favorites[i].recipeId) === (props.recipeData.uri.substr(props.recipeData.uri.length - 32))) {
+    //                 index = i;
+    //                 break;
+    //             }
+    //         }
+    //     }
+    //     let editedUserCopy = null;
+    //     if (event.target.checked === true) {
+    //         let favoritesCopy = [];
+    //         if (userCopy.favorites !== null) {
+    //             favoritesCopy = [...(userCopy.favorites)];
+    //         }
+    //         const recipeCopy = {
+    //             recipeId: props.recipeData.uri.substr(props.recipeData.uri.length - 32),
+    //             recipeUrl: props.recipeData.shareAs,
+    //             imageUrl: props.recipeData.image,
+    //             recipeName: props.recipeData.label
+    //         }
+    //         favoritesCopy.push(recipeCopy);
+    //         editedUserCopy = { ...userCopy, favorites: favoritesCopy };
+    //     } else {
+    //         let favoritesCopy = [];
+    //         favoritesCopy = [...(userCopy.favorites)];
+    //         favoritesCopy.splice(index, 1);
+    //         editedUserCopy = { ...userCopy, favorites: favoritesCopy };
+    //     }
+    //     console.log(editedUserCopy);
+    //     updateUserInDatabase(editedUserCopy);
+    // }
+
+    // function updateUserInDatabase(editedUserCopy) {
+    //     fetch("http://localhost:8080/api/user/update", {
+    //         method: "PUT",
+    //         body: JSON.stringify(editedUserCopy),
+    //         headers: {
+    //             "Content-Type": "application/json",
+    //             "Authorization": "Bearer " + localStorage.getItem("foodiesToken")
+    //         }
+    //     })
+    //         .then(async response => {
+    //             if (response.status === 200) {
+    //                 return response.json();
+    //             } else if (response.status === 404) {
+    //                 return Promise.reject(["User not found (possibly deleted)."]);
+    //             } else if (response.status === 400) {//bad request.
+    //                 return Promise.reject(await response.json());
+    //             } else if (response.status === 403) {// 403 is forbidden: not admin nor user
+    //                 return Promise.reject(await response.json());
+    //             }
+    //         }).then(async response => {
+    //             let copyUser = {
+    //                 userId: response.userId,
+    //                 email: response.email,
+    //                 passHash: response.passHash,
+    //                 isDeleted: response.deleted,
+    //                 userRoles: response.userRoles,
+    //                 name: response.name,
+    //                 favorites: response.favorites,
+    //                 healthLabels: response.healthLabels,
+    //                 ingredients: response.ingredients
+    //             }
+    //             setUserCopy(copyUser);//why this not executing?
+    //             //maybe I deleted the result.payload with a 204 and didn't rerun it for a while
+    //             //and never noticed. But it was running that way and it works otherwise now?
+    //         }).catch(errorList => {
+    //             if (errorList instanceof TypeError) {
+    //                 const copyArray = [];
+    //                 copyArray.push("Could not connect to api.");
+    //                 setErrorsToAppend(copyArray);
+    //             } else if (errorList instanceof Error) {
+    //                 //doing nothing is a bad habit.
+    //                 console.log(errorList);
+    //             } else {
+    //                 const copyArray = [];
+    //                 copyArray.push(...errorList);
+    //                 setErrorsToAppend(copyArray);
+    //             }
+    //         });
+    // }
+
+    // function fetchUser() {
+    //     fetch("http://localhost:8080/api/user/" + userData.user.userId, {
+    //         method: "GET",
+    //         headers: {
+    //             "Content-Type": "application/json",
+    //             "Authorization": "Bearer " + localStorage.getItem("foodiesToken")
+    //         }
+    //     }).then(async response => {
+    //         if (response.status === 200) {
+    //             const toReturn = response.json();
+    //             return toReturn;
+    //         } else if (response.status === 400) {
+    //             return Promise.reject(await response.json());
+    //         } else if (response.status === 403) {
+    //             return Promise.reject(await response.json());
+    //         } else {
+    //             return Promise.reject(await response.json());
+    //         }
+    //     }).then(response => {
+    //         let copyUser = {
+    //             userId: response.userId,
+    //             email: response.email,
+    //             passHash: response.passHash,
+    //             isDeleted: response.deleted,
+    //             userRoles: response.userRoles,
+    //             name: response.name,
+    //             favorites: response.favorites,
+    //             healthLabels: response.healthLabels,
+    //             ingredients: response.ingredients
+    //         }
+    //         setUserCopy(copyUser);
+    //     }).catch(error => {
+    //         if (error instanceof TypeError) {
+    //             const errors = [];
+    //             setErrorsToAppend(errors);
+    //         } else {
+    //             const errors = [];
+    //             errors.push(...error);
+    //             setErrorsToAppend(errors);
+    //         }
+    //     })
+    // }
