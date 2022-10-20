@@ -46,7 +46,6 @@
 
 
 .checkbox input[type="checkbox"]:checked+label::after {
-    font-family: 'FontAwesome';
     content: '✓';
 }
 
