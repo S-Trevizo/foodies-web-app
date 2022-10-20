@@ -9,12 +9,11 @@ function About(){
                 Hello there,<br />
                 <br />
                 We are the Foodies.<br /><br />
-                We've have arrived serve you with an app that allows you to save your health preferences and search with these health preferences in mind.<br /><br />
+                We've arrived serve you with an app that allows you to save your health preferences and search with these health preferences in mind.<br /><br />
                 If you're tired of looking through your pantry to find out what you have,
-                why not create a virtual pantry here that will notify you if your searching matches the ingredients in your vitual pantry.<br />
-                *Fortunately we are not creepy and do not spy on you, so our knowlegde of your pantry in only what you add to your virtual pantry.<br /><br />
+                why not create a virtual pantry here that will notify you if your search results match the ingredients in your vitual pantry.<br />
                 Find a Favorite Recipe, add it to your favorites with just one click.<br /><br />
-                All of these settings are available with just a quick sign-up.<br /><br />
+                All of these features are available with just a quick sign-up.<br /><br />
                 We hope you enjoy our Application. <br /><br />
                 Developers:<br /><br />
                 <div className="row">

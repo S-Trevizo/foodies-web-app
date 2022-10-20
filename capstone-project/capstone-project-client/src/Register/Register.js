@@ -4,6 +4,7 @@ import Select from 'react-select';
 import makeAnimated from 'react-select/animated';
 import ErrorMessages from '../ErrorMessages/ErrorMessages';
 import '../Styles/Shading.css';
+import './Register.css';
 
 
 
@@ -102,6 +103,15 @@ function Register() {
             });
     }
 
+    const customStyles = {
+        multiValue: (styles, { data }) => {
+            return {
+              ...styles,
+              width:  Math.log(data.label.length) * 48
+            };
+          }
+    }
+
     return (
 
         <div className="container mt-5 p-4">
@@ -122,9 +132,9 @@ function Register() {
                             <input id="password" name="password" type="password" className="form-control" onChange={e => setPassword(e.target.value)} />
                         </div>
 
-                        <div className='form-group'>
+                        <div id='select' className='form-group'>
                             <label>Health Labels: </label>
-                            <Select isMulti={true} closeMenuOnSelect={false} components={animated} className='basic-multi-select' classNamePrefix="select" options={options} onChange={handleChange}></Select>
+                            <Select styles={customStyles} isMulti={true} closeMenuOnSelect={false} components={animated} className='basic-multi-select' classNamePrefix="select" options={options} onChange={handleChange}></Select>
                         </div>
                         <div className="container">
                             {errors ? errors.map((e, index) =>
