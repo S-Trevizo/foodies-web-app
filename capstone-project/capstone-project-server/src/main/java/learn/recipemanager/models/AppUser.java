@@ -25,7 +25,7 @@ public class AppUser implements UserDetails {
     private List<AppRole> userRoles;
     private String name;
     private List<Recipe> favorites = new ArrayList<>();
-    private List<HealthLabel> healthLabels;
+    private List<HealthLabel> healthLabels = new ArrayList<>();
     private List<Ingredient> ingredients = new ArrayList<>();
 
 

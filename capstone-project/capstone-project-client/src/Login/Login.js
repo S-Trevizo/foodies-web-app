@@ -74,14 +74,14 @@ function Login(props) {
                                 <ErrorMessages key={index} errorData={e} />) : null}
                         </div>
                         <div className="text-right">
-                            <button className="btn btn-primary mr-2">Log In</button>
+                            <button className="btn btn-success mr-2">Log In</button>
                             <Link to="/" className="btn btn-danger">Cancel</Link>
                         </div>
 
                     </form>
                 </div>
                 <div className='card-footer text-center'>
-                    <p>New user? <Link to="/register">Register here</Link> </p>
+                    <a>New user? <Link to="/register" className='text-success'>Register here</Link> </a>
                 </div>
             </div>
         </div>

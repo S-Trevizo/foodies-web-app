@@ -5,7 +5,7 @@ function About(){
     return(
 
         <div>
-            <div class="card card-body">
+            <div className="card card-body">
                 Hello there,<br />
                 <br />
                 We are the Foodies.<br /><br />
@@ -33,7 +33,7 @@ function About(){
                 </div>
             </div>
             <div className="text-right">
-                <img src={img} class="rounded float-right" alt="..."></img>
+                <img src={img} className="rounded float-right" alt="..."></img>
             </div>
         </div>
 

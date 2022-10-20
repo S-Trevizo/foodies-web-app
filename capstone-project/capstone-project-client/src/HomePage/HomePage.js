@@ -65,7 +65,7 @@ function HomePage(props) {
                 <div className=" input-group">
                     <input onChange={(e) => props.setSearchData(e.target.value)} className={"form-control form-control w-90 "} type={"text"} placeholder={"Welcome to Foodies! Start your search here, or click on a featured recipe's name below."} />
                     <div className="input-group-append">
-                        <button className={"btn btn-primary input-group-append"} onClick={handleSubmit} id="searchBarText">Submit</button>
+                        <button className={"btn btn-success input-group-append"} onClick={handleSubmit} id="searchBarText">Submit</button>
                     </div>
                 </div>
             </form>
@@ -92,14 +92,14 @@ function HomePage(props) {
                         }
                     </div>
                     {auth.user ? <div className="m-2">
-                        <Link to="/pantry" className="btn btn-primary">Add</Link>
+                        <Link to="/pantry" className="btn btn-success">Add</Link>
                     </div> : null}
                 </div>
 
                 <div className="container bg-light rounded mt-3" id="card">
                     <p>
                         <button className="btn text-muted text-decoration-none btn-outline-secondary mt-2" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-                            about us....
+                            about us...
                         </button>
                     </p>
                     <div className="collapse" id="collapseExample">

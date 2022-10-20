@@ -170,7 +170,7 @@ function Pantry() {
             </div>
 
 
-            <button id="button" className={"btn btn-primary mb-1" + (!state.hidden ? " d-none" : "")} onClick={() => setState({ user: { ...state.user }, errors: state.errors, hidden: false, edit: false })} > Add an Ingredient to Your Pantry</button>
+            <button id="button" className={"btn btn-success mb-1" + (!state.hidden ? " d-none" : "")} onClick={() => setState({ user: { ...state.user }, errors: state.errors, hidden: false, edit: false })} > Add an Ingredient to Your Pantry</button>
 
             <div className={"card my-2" + (state.hidden ? " d-none" : "")} id="card">
                 <div className="card-header">
@@ -191,7 +191,7 @@ function Pantry() {
                         <input name="measure" value={toAdd.measure === "" ? "" : toAdd.measure} className="form-control" onChange={handleChange} />
 
                         <div className="text-right">
-                            <button className="btn btn-primary mr-2 mt-2" onClick={state.edit ? (e) => handleEdit(e) : (e) => handleAdd(e)}>Submit</button>
+                            <button className="btn btn-success mr-2 mt-2" onClick={state.edit ? (e) => handleEdit(e) : (e) => handleAdd(e)}>Submit</button>
                             <button className="btn btn-danger mt-2" onClick={(e) => { e.preventDefault(); setState({ user: { ...state.user }, errors: state.errors, hidden: true, edit: false }); handleReset(); }}>Close</button>
                         </div>
                     </form>
@@ -226,7 +226,7 @@ function Pantry() {
                                     <td>{i.quantity}</td>
                                     <td>{i.measure}</td>
                                     <td className="text-right">
-                                        <button type="button" className="btn btn-primary btn-sm mx-1" onClick={(e) => prepareEdit(e, index)}>Edit</button>
+                                        <button type="button" className="btn btn-success btn-sm mx-1" onClick={(e) => prepareEdit(e, index)}>Edit</button>
                                         <button type="button" className="btn btn-danger btn-sm mx-1" onClick={(e) => handleDelete(e, index)}>Delete</button>
                                     </td>
                                 </tr>

@@ -131,13 +131,13 @@ function Register() {
                                 <ErrorMessages key={index} errorData={e} />) : null}
                         </div>
                         <div className="text-right">
-                            <button className="btn btn-primary mr-2" onClick={registerHandler}>Submit</button>
+                            <button className="btn btn-success mr-2" onClick={registerHandler}>Submit</button>
                             <Link to="/" className="btn btn-danger">Cancel</Link>
                         </div>
                     </form>
                 </div>
                 <div className='card-footer text-center'>
-                    <p>Already a member? <Link to="/login">Click here</Link> </p>
+                    <a>Already a member? <Link to="/login" className='text-success'>Click here</Link> </a>
                 </div>
             </div>
         </div>

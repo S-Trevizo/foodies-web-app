@@ -124,7 +124,7 @@ function Account() {
                         <ErrorMessages key={index} errorData={e} />) : null}
                 </div>
                 <div className="text-right">
-                    <button className="btn btn-primary mr-2 mt-2">Submit</button>
+                    <button className="btn btn-success mr-2 mt-2">Submit</button>
                     <Link to="/" className="btn btn-danger mt-2">Cancel</Link>
                 </div>
             </form>

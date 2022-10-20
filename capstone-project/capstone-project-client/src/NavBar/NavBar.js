@@ -74,7 +74,7 @@ function NavBar({ searchData, setSearchData }) {//if there is search data, websi
                                 <Link className="btn btn-outline-success my-3  mr-2 " to="/login"  >Log In</Link>
                             </div>
                             <div>
-                                <Link className="btn btn-outline-info my-3 " to="/register"  >Register</Link>
+                                <Link className="btn btn-outline-warning my-3 " to="/register"  >Register</Link>
                             </div>
                         </>)}
                 </div>

@@ -15,7 +15,7 @@ import SearchResultPage from './SearchResultPage/SearchResultPage';
 import Pantry from './Pantry/Pantry';
 import Preferences from './Preferences/Preferences';
 import Favorites from './Favorites/Favorites';
-import './Background/Background.css';
+import './Styles/Background.css';
 
 const LOCAL_STORAGE_TOKEN_KEY = "foodiesToken";
 

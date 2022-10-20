@@ -3,6 +3,7 @@ import { useHistory } from "react-router-dom";
 import AuthContext from "../AuthContext";
 import ErrorMessages from "../ErrorMessages/ErrorMessages";
 import '../Styles/Shading.css';
+import '../Styles/Checkbox.css';
 
 function Preferences() {
 
@@ -118,10 +119,10 @@ function Preferences() {
         const copy = { ...user };
 
         if (addingCheck) {
-            if (!copy.healthLabels == null) {
+            if (!copy.healthLabels === null) {
                 copy.healthLabels = [];
             }
-            copy.healthLabels.push({ healthLabel });
+            copy.healthLabels.push({healthLabel});
         } else {
             copy.healthLabels = copy.healthLabels.filter(i => i.healthLabel !== healthLabel)
         }
@@ -134,23 +135,23 @@ function Preferences() {
             {user ? <form className="container p-3 mt-4 bg-light rounded" id="form" onSubmit={submitHandler} >
                 <div className="row p-4">
                     {options.map((a, index) =>
-                        <div className="form-check col-4">
+                        <div className="checkbox checkbox-success col-4">
                             <input
                                 type="checkbox"
                                 checked={user.healthLabels ? user.healthLabels.map((h) => h.healthLabel).includes(a.value) : false}
                                 onChange={selectHandler}
-                                id={a.value}
+                                id={a.label}
                                 name={a.value}
                                 key={index} />
-                            <label className="ml-1">{a.label}</label>
+                            <label className="ml-1" htmlFor={a.label}>{a.label}</label>
                         </div>)}
-                    <div className="container">
+                    <div className="container ">
                         {errors ? errors.map((e, index) =>
                             <ErrorMessages key={index} errorData={e} />) : null}
                     </div>
                 </div>
                 <div className="text-right">
-                    <button className="btn btn-primary ">Save</button>
+                    <button className="btn btn-success ">Save</button>
                 </div>
             </form> : null}
         </div>
