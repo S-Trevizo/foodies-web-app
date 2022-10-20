@@ -165,27 +165,27 @@ public class AppUserService implements UserDetailsService {
 
     }
 
-    public Result<AppUser> updatePantry(EditUserPantryRequest request) {
-        Result<AppUser> userResult = validateIngredients(request.getIngredients());
+    public Result<AppUser> updatePantry(AppUser user) {
+        Result<AppUser> userResult = validateIngredients(user.getIngredients());
 
         if (!userResult.isSuccess()) {
             return userResult;
         }
 
-        if (request.getUserId() == null || request.getUserId().isBlank()) {
+        if (user.getUserId() == null || user.getUserId().isBlank()) {
             userResult.addMessage("User Id is required", ResultType.INVALID);
         }
 
         if (userResult.isSuccess()) {
-            Optional userOptional = repo.findById(request.getUserId());
+            Optional userOptional = repo.findById(user.getUserId());
             if (userOptional.isPresent()){
-                AppUser user = (AppUser)userOptional.get();
 
-                user.setIngredients(request.getIngredients());
+                AppUser userRecord = (AppUser) userOptional.get();
 
-                repo.save(user);
+                userRecord.setIngredients(user.getIngredients());
 
-
+                repo.save(userRecord);
+                
                 userResult.setPayload(user);
 
                 return userResult;

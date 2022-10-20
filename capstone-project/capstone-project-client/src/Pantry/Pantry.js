@@ -42,8 +42,21 @@ function Pantry() {
                 return Promise.reject(await response.json());
             }
         }).then(userToEdit => {
+
+            let returnedUser = {
+                userId: userToEdit.userId,
+                email: userToEdit.email,
+                passHash: userToEdit.passHash,
+                isDeleted: userToEdit.deleted,
+                userRoles: userToEdit.userRoles,
+                name: userToEdit.name,
+                favorites: userToEdit.favorites,
+                healthLabels: userToEdit.healthLabels,
+                ingredients: userToEdit.ingredients
+            }
+
             setState({
-                user: { ...userToEdit },
+                user: returnedUser,
                 errors: state.errors,
                 hidden: true,
                 edit: false
@@ -63,23 +76,46 @@ function Pantry() {
 
     function submitHandler(toUpdate) {
 
-        fetch(`http://localhost:8080/api/pantry`, {
+        fetch("http://localhost:8080/api/pantry", {
             method: "PUT",
+            body: JSON.stringify(toUpdate),
             headers: {
                 "Content-Type": "application/json",
-                Accept: "application/json",
-                Authorization: `Bearer ${auth.user.token}`
-            },
-            body: JSON.stringify(toUpdate),
+                "Authorization": "Bearer " + localStorage.getItem("foodiesToken")
+            }
         })
-            .then(async response => {
-                if (response.status === 204) {
-                    history.go();
-                } else if (response.status === 400) {
-                    return Promise.reject(await response.json());
-                } else {
-                    return Promise.reject(["Failed to update user's pantry."]);
+        .then(async response => {
+
+            if (response.status === 200) {
+                return response.json();
+            } else if (response.status === 400) {
+                return Promise.reject(await response.json());
+            } else if (response.status === 403) {
+                return Promise.reject(await response.json());
+            } else {
+                return Promise.reject(await response.json());
+            }
+        })
+            .then (async response => {
+                let updated = {
+                    userId: response.userId,
+                    email: response.email,
+                    passHash: response.passHash,
+                    isDeleted: response.deleted,
+                    userRoles: response.userRoles,
+                    name: response.name,
+                    favorites: response.favorites,
+                    healthLabels: response.healthLabels,
+                    ingredients: response.ingredients
                 }
+                resetForm()
+
+                setState({
+                    user: updated,
+                    errors: state.errors,
+                    hidden: state.hidden,
+                    edit: false
+                })
             })
             .catch((error) => {
                 if (error instanceof TypeError) {
@@ -100,6 +136,11 @@ function Pantry() {
             })
 
                 
+    }
+
+    function resetForm() {
+        setToAdd(DEFAULT_INGREDIENT);
+
     }
 
     function handleChange(e) {
@@ -179,16 +220,16 @@ function Pantry() {
                 <div className="card-body">
                     <form>
                         <label className="form-label">Ingredient Name</label>
-                        <input name="name" value={toAdd.name === "" ? "" : toAdd.name} className="form-control" onChange={handleChange} />
+                        <input id="name" name="name" value={toAdd.name === "" ? "" : toAdd.name} className="form-control" onChange={handleChange} />
 
                         <label className="form-label">Category</label>
-                        <input name="foodCategory" value={toAdd.foodCategory === "" ? "" : toAdd.foodCategory} className="form-control" onChange={handleChange} />
+                        <input id="category" name="foodCategory" value={toAdd.foodCategory === "" ? "" : toAdd.foodCategory} className="form-control" onChange={handleChange} />
 
                         <label className="form-label">Quantity</label>
-                        <input name="quantity" value={toAdd.quantity === 0 ? 0 : toAdd.quantity} type="number" className="form-control" onChange={handleChange} />
+                        <input id="quantity" name="quantity" value={toAdd.quantity === 0 ? 0 : toAdd.quantity} type="number" className="form-control" onChange={handleChange} />
 
-                        <label className="form-label">Measure</label>
-                        <input name="measure" value={toAdd.measure === "" ? "" : toAdd.measure} className="form-control" onChange={handleChange} />
+                        <label className="form-label">Unit of Measure</label>
+                        <input id="measure" name="measure" value={toAdd.measure === "" ? "" : toAdd.measure} className="form-control" onChange={handleChange} />
 
                         <div className="text-right">
                             <button className="btn btn-success mr-2 mt-2" onClick={state.edit ? (e) => handleEdit(e) : (e) => handleAdd(e)}>Submit</button>

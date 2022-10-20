@@ -9,6 +9,7 @@ import learn.recipemanager.models.viewmodels.EditUserPantryRequest;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,17 +23,24 @@ public class PantryController {
 
     @PutMapping
     @DeleteMapping
-    public ResponseEntity<?> updatePantry(@RequestBody EditUserPantryRequest request) {
-        Result<AppUser> result = appUserService.updatePantry(request);
-
-        if (!result.isSuccess()) {
-            if (result.getType() == ResultType.NOT_FOUND) {
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-            } else {
-                return ErrorResponse.build(result);
+    public ResponseEntity<?> updatePantry(@RequestBody AppUser user) {
+        AppUser currentUser = (AppUser) SecurityContextHolder//validate that person is admin or user. else, forbidden
+                .getContext()
+                .getAuthentication()
+                .getPrincipal();
+        boolean isAdmin = currentUser.getUserRoles().stream().anyMatch(r -> r.getRoleName().equalsIgnoreCase("admin"));//I wish admin were an enum
+        boolean isUser = currentUser.getUserRoles().stream().anyMatch(r -> r.getRoleName().equalsIgnoreCase("user"));
+        if (isAdmin || isUser) {//good case: user or admin. can update user now.
+            Result<AppUser> result = appUserService.updatePantry(user);
+            if (result.isSuccess()) {//return good: 200
+                return new ResponseEntity<>(result.getPayload(), HttpStatus.OK);
+            } else if (result.getType() == ResultType.NOT_FOUND) {//return 404: not found
+                return new ResponseEntity<>(result.getMessages(),HttpStatus.NOT_FOUND);
+            } else if (result.getType() == ResultType.INVALID) {//return 400: bad request
+                return new ResponseEntity<>(result.getMessages(),HttpStatus.BAD_REQUEST);
             }
         }
-        return new ResponseEntity<>(List.of("Successfully updated"),HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(List.of("Error: must be a registered admin or user."),HttpStatus.FORBIDDEN);//403
     }
 
 

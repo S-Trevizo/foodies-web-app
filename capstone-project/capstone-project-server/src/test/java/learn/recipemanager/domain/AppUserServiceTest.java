@@ -174,99 +174,99 @@ class AppUserServiceTest {
         assertTrue(service.deleteById("id"));
 
     }
-
-    @Test
-    void shouldNotAddIngredientWithoutName() {
-        EditUserPantryRequest request = generateEditPantryRequest();
-        request.getIngredients().add(new Ingredient("", "Fruit", 1 , "Teaspoon"));
-
-        Result<AppUser> result = service.updatePantry(request);
-
-        assertFalse(result.isSuccess());
-        assertEquals("Ingredient name is required", result.getMessages().get(0));
-    }
-
-    @Test
-    void shouldNotAddIngredientWithoutFoodCategory() {
-        EditUserPantryRequest request = generateEditPantryRequest();
-        request.getIngredients().add(new Ingredient("Grape", null, 1 , "Teaspoon"));
-
-        Result<AppUser> result = service.updatePantry(request);
-
-        assertFalse(result.isSuccess());
-        assertEquals("Food category is required", result.getMessages().get(0));
-    }
-
-    @Test
-    void shouldNotAddIngredientWithNegativeQuantity() {
-        EditUserPantryRequest request = generateEditPantryRequest();
-        request.getIngredients().add(new Ingredient("Grape", "Fruit", -1 , "Teaspoon"));
-
-        Result<AppUser> result = service.updatePantry(request);
-
-        assertFalse(result.isSuccess());
-        assertEquals("Quantity is requires and cannot be negative", result.getMessages().get(0));
-    }
-
-    @Test
-    void shouldNotAddIngredientWithoutMeasure() {
-        EditUserPantryRequest request = generateEditPantryRequest();
-        request.getIngredients().add(new Ingredient("Grape", "Fruit", 3 , ""));
-
-        Result<AppUser> result = service.updatePantry(request);
-
-        assertFalse(result.isSuccess());
-        assertEquals("Measure is required", result.getMessages().get(0));
-    }
-
-    @Test
-    void shouldNotAddDuplicateIngredient() {
-        EditUserPantryRequest request = generateEditPantryRequest();
-        request.getIngredients().add(new Ingredient("Apple", "Fruit", 3 , ""));
-
-        Result<AppUser> result = service.updatePantry(request);
-
-        assertFalse(result.isSuccess());
-        assertEquals("Ingredient cannot be a duplicate", result.getMessages().get(0));
-    }
-
-    @Test
-    void shouldNotAddValidIngredientWithoutUserId() {
-        EditUserPantryRequest request = generateEditPantryRequest();
-        request.getIngredients().add(new Ingredient("Kiwi", "Fruit", 3 , "Each"));
-
-        request.setUserId("");
-
-        Result<AppUser> result = service.updatePantry(request);
-
-        assertFalse(result.isSuccess());
-        assertEquals("User Id is required", result.getMessages().get(0));
-    }
-
-    @Test
-    void shouldNotAddValidIngredientWithNotFoundUser() {
-        EditUserPantryRequest request = generateEditPantryRequest();
-        request.getIngredients().add(new Ingredient("Kiwi", "Fruit", 3 , "Each"));
-
-        when(repo.findById(any())).thenReturn(Optional.empty());
-
-        Result<AppUser> result = service.updatePantry(request);
-
-        assertFalse(result.isSuccess());
-        assertEquals("User not found", result.getMessages().get(0));
-    }
-
-    @Test
-    void shouldAddValidIngredient() {
-        EditUserPantryRequest request = generateEditPantryRequest();
-        request.getIngredients().add(new Ingredient("Kiwi", "Fruit", 3 , "Each"));
-
-        when(repo.findById(any())).thenReturn(Optional.of(createUser()));
-
-        Result<AppUser> result = service.updatePantry(request);
-
-        assertTrue(result.isSuccess());
-    }
+//
+//    @Test
+//    void shouldNotAddIngredientWithoutName() {
+//        EditUserPantryRequest request = generateEditPantryRequest();
+//        request.getIngredients().add(new Ingredient("", "Fruit", 1 , "Teaspoon"));
+//
+//        Result<AppUser> result = service.updatePantry(request);
+//
+//        assertFalse(result.isSuccess());
+//        assertEquals("Ingredient name is required", result.getMessages().get(0));
+//    }
+//
+//    @Test
+//    void shouldNotAddIngredientWithoutFoodCategory() {
+//        EditUserPantryRequest request = generateEditPantryRequest();
+//        request.getIngredients().add(new Ingredient("Grape", null, 1 , "Teaspoon"));
+//
+//        Result<AppUser> result = service.updatePantry(request);
+//
+//        assertFalse(result.isSuccess());
+//        assertEquals("Food category is required", result.getMessages().get(0));
+//    }
+//
+//    @Test
+//    void shouldNotAddIngredientWithNegativeQuantity() {
+//        EditUserPantryRequest request = generateEditPantryRequest();
+//        request.getIngredients().add(new Ingredient("Grape", "Fruit", -1 , "Teaspoon"));
+//
+//        Result<AppUser> result = service.updatePantry(request);
+//
+//        assertFalse(result.isSuccess());
+//        assertEquals("Quantity is requires and cannot be negative", result.getMessages().get(0));
+//    }
+//
+//    @Test
+//    void shouldNotAddIngredientWithoutMeasure() {
+//        EditUserPantryRequest request = generateEditPantryRequest();
+//        request.getIngredients().add(new Ingredient("Grape", "Fruit", 3 , ""));
+//
+//        Result<AppUser> result = service.updatePantry(request);
+//
+//        assertFalse(result.isSuccess());
+//        assertEquals("Measure is required", result.getMessages().get(0));
+//    }
+//
+//    @Test
+//    void shouldNotAddDuplicateIngredient() {
+//        EditUserPantryRequest request = generateEditPantryRequest();
+//        request.getIngredients().add(new Ingredient("Apple", "Fruit", 3 , ""));
+//
+//        Result<AppUser> result = service.updatePantry(request);
+//
+//        assertFalse(result.isSuccess());
+//        assertEquals("Ingredient cannot be a duplicate", result.getMessages().get(0));
+//    }
+//
+//    @Test
+//    void shouldNotAddValidIngredientWithoutUserId() {
+//        EditUserPantryRequest request = generateEditPantryRequest();
+//        request.getIngredients().add(new Ingredient("Kiwi", "Fruit", 3 , "Each"));
+//
+//        request.setUserId("");
+//
+//        Result<AppUser> result = service.updatePantry(request);
+//
+//        assertFalse(result.isSuccess());
+//        assertEquals("User Id is required", result.getMessages().get(0));
+//    }
+//
+//    @Test
+//    void shouldNotAddValidIngredientWithNotFoundUser() {
+//        EditUserPantryRequest request = generateEditPantryRequest();
+//        request.getIngredients().add(new Ingredient("Kiwi", "Fruit", 3 , "Each"));
+//
+//        when(repo.findById(any())).thenReturn(Optional.empty());
+//
+//        Result<AppUser> result = service.updatePantry(request);
+//
+//        assertFalse(result.isSuccess());
+//        assertEquals("User not found", result.getMessages().get(0));
+//    }
+//
+//    @Test
+//    void shouldAddValidIngredient() {
+//        EditUserPantryRequest request = generateEditPantryRequest();
+//        request.getIngredients().add(new Ingredient("Kiwi", "Fruit", 3 , "Each"));
+//
+//        when(repo.findById(any())).thenReturn(Optional.of(createUser()));
+//
+//        Result<AppUser> result = service.updatePantry(request);
+//
+//        assertTrue(result.isSuccess());
+//    }
 
 
 
