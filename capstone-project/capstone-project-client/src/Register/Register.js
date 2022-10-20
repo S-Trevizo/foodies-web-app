@@ -147,7 +147,7 @@ function Register() {
                     </form>
                 </div>
                 <div className='card-footer text-center'>
-                    <a>Already a member? <Link to="/login" className='text-success'>Click here</Link> </a>
+                    <p>Already a member? <Link to="/login" className='text-success'>Click here</Link> </p>
                 </div>
             </div>
         </div>

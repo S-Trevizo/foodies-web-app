@@ -81,7 +81,7 @@ function Login(props) {
                     </form>
                 </div>
                 <div className='card-footer text-center'>
-                    <a>New user? <Link to="/register" className='text-success'>Register here</Link> </a>
+                    <p>New user? <Link to="/register" className='text-success'>Register here</Link> </p>
                 </div>
             </div>
         </div>
