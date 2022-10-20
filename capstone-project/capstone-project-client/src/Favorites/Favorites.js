@@ -66,9 +66,9 @@ function Favorites() {
     }, []);
 
     function removeFavorite(e, index) {
-        let toUpdate = {...user};
+        let toUpdate = { ...user };
 
-        toUpdate.favorites.splice(index,1);
+        toUpdate.favorites.splice(index, 1);
 
         fetch("http://localhost:8080/api/user/update", {
             method: "PUT",
@@ -154,8 +154,26 @@ function Favorites() {
                             </div>
                             <div className="card-body">
                                 <div className="card-text">
-                                    <a href={r.recipeUrl} className="btn btn-primary mr-1">Details</a>
-                                    <button className="btn btn-danger" onClick={(e) => removeFavorite(e, index)}>Delete</button>
+
+
+                                    <div className="btn-group w-75 justify-content-center" role="group" aria-label="Basic example">
+                                        
+                                    <a href={r.recipeUrl} className="btn btn-dark col-11">   Details   </a>
+                                    <button className="btn btn-warning col-11" onClick={(e) => removeFavorite(e, index)}>Delete</button>
+
+                                    </div>
+
+
+
+
+                                    {/* <div className="d-inline">
+                                        <a href={r.recipeUrl} className="btn btn-dark btn-small">   Details   </a>
+                                    </div>
+
+                                    <div className="d-inline">
+                                        <button className="btn btn-warning btn-small" onClick={(e) => removeFavorite(e, index)}>Delete</button>
+                                    </div> */}
+
                                 </div>
                             </div>
                         </div>)
