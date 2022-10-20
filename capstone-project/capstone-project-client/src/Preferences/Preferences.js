@@ -135,14 +135,14 @@ function Preferences() {
             {user ? <form className="container p-3 mt-4 bg-light rounded" id="form" onSubmit={submitHandler} >
                 <div className="row p-4">
                     {options.map((a, index) =>
-                        <div className="checkbox checkbox-success col-4">
+                        <div className="checkbox checkbox-success col-4" key={index}>
+                           
                             <input
                                 type="checkbox"
                                 checked={user.healthLabels ? user.healthLabels.map((h) => h.healthLabel).includes(a.value) : false}
                                 onChange={selectHandler}
                                 id={a.label}
-                                name={a.value}
-                                key={index} />
+                                name={a.value} />
                             <label className="ml-1" htmlFor={a.label}>{a.label}</label>
                         </div>)}
                     <div className="container ">

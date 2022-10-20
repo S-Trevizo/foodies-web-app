@@ -112,6 +112,16 @@ function Register() {
           }
     }
 
+    function check() {
+        if (document.getElementById('password').value === document.getElementById('toConfirm').value) {
+            document.getElementById('message').style.color = 'green';
+            document.getElementById('message').innerHTML = 'Passwords match';
+        } else {
+            document.getElementById('message').style.color = 'red';
+            document.getElementById('message').innerHTML = 'Password and Confirm Password are not matching';
+        }
+    }
+
     return (
 
         <div className="container mt-5 p-4">
@@ -130,6 +140,10 @@ function Register() {
                         <div className="form-group">
                             <label htmlFor="password">Password:</label>
                             <input id="password" name="password" type="password" className="form-control" onChange={e => setPassword(e.target.value)} />
+                            <label className="form-label">Confirm Password:</label>
+                            <input className="form-control" name="toConfirm" type="password" id="toConfirm" onChange={handleChange}
+                                onKeyUp={check} />
+                            <span id="message"></span>
                         </div>
 
                         <div id='select' className='form-group'>

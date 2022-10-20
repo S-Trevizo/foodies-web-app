@@ -40,10 +40,7 @@ function SearchResultPage({ searchTerm }) {
                     return Promise.reject(await response.json());
                 }
             }).then(recipesOutput => {//setNextLink may or may not be used: depends on size of index vs. fetches
-                let nextLinkString = "";
-                if (recipesOutput._links.next) {
-                    nextLinkString = recipesOutput._links.next.href;
-                }
+                let nextLinkString = recipesOutput._links.next.href
                 setNextLink(nextLinkString);
                 let oldRecipes = [...recipes];
                 oldRecipes.push(...recipesOutput.hits);
@@ -52,7 +49,7 @@ function SearchResultPage({ searchTerm }) {
                 if (error instanceof TypeError) {//is this error even possible here?
                     console.log(error);
                     const copyArray = [];
-                    copyArray.push("Remote api is currently timed out: please search again for new results.");
+                    copyArray.push("Remote api is currently timed out: please wait for new results.");
                     setErrorsToAppend(copyArray);
                 } else {
                     console.log(error);
@@ -85,10 +82,7 @@ function SearchResultPage({ searchTerm }) {
                 return Promise.reject(await response.json());
             }
         }).then(recipesOutput => {//setNextLink may or may not be used: depends on size of index vs. fetches
-            let nextLinkString = "";
-            if (recipesOutput._links.next) {
-                nextLinkString = recipesOutput._links.next.href;
-            }
+            let nextLinkString = recipesOutput._links.next.href
             setNextLink(nextLinkString);
             setRecipes([...recipesOutput.hits]);
         }).catch(error => {
@@ -180,7 +174,8 @@ function SearchResultPage({ searchTerm }) {
     }
 
     function fetchUser() {
-        fetch("http://localhost:8080/api/user/" + userData.user.userId, {
+        {
+            fetch("http://localhost:8080/api/user/" + userData.user.userId, {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
@@ -224,6 +219,7 @@ function SearchResultPage({ searchTerm }) {
                     setErrorsToAppend(errors);
                 }
             })
+        }
     }
 
     function addOrRemoveFavorite(event, loadedRecipe) {

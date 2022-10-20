@@ -62,7 +62,8 @@ function Account() {
         })
             .then(async response => {
                 if (response.status === 204) {
-                    history.push("/");
+                    auth.logout();
+                    history.push("/login");
                     return response.json();
                 } else if (response.status === 400) {
                     return Promise.reject(await response.json());
@@ -105,13 +106,13 @@ function Account() {
         <div >
             <h2 className="text-center mt-5">Account Info</h2>
             <form className="container mt-4 p-4 bg-light rounded" id="form" onSubmit={submitHandler}>
-                <label className="form-label">Name</label>
+                <label className="form-label">Name:</label>
                 <input className="form-control" name="name" id={user.name} defaultValue={user.name} onChange={handleChange} />
 
-                <label className="form-label">Username</label>
+                <label className="form-label">Username:</label>
                 <input className="form-control id" name="email" id={user.username} defaultValue={user.username} onChange={handleChange} />
 
-                <label className="form-label">Password</label>
+                <label className="form-label">Password:</label>
                 <input className="form-control" name="password" type="password" id="password" onChange={handleChange}
                     onKeyUp={check} />
 
