@@ -361,7 +361,7 @@ function SearchResultPage({ searchTerm }) {
                             setUserCopy={setUserCopy}
                             userId={(userData.user === null) ? null : userData.user.userId}
                             addOrRemoveFavorite={addOrRemoveFavorite}
-                            hasIngredients={hasIngredients(userCopy.ingredients.map((i) => i.name.toLowerCase()), r.recipe.ingredients.map(i => i.food.toLowerCase()))}
+                            hasIngredients={ userCopy ? hasIngredients( userCopy.ingredients.map((i) => i.name.toLowerCase()) , r.recipe.ingredients.map(i => i.food.toLowerCase())): false}
                         />)}
                     </div>
 
