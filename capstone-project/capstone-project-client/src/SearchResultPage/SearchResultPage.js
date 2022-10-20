@@ -180,8 +180,7 @@ function SearchResultPage({ searchTerm }) {
     }
 
     function fetchUser() {
-        {
-            fetch("http://localhost:8080/api/user/" + userData.user.userId, {
+        fetch("http://localhost:8080/api/user/" + userData.user.userId, {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
@@ -225,7 +224,6 @@ function SearchResultPage({ searchTerm }) {
                     setErrorsToAppend(errors);
                 }
             })
-        }
     }
 
     function addOrRemoveFavorite(event, loadedRecipe) {
